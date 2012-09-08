@@ -7,12 +7,9 @@ package
 		[Embed(source="data/darwin.png")] private var ImgDarwin:Class;
 		
 		public var startTime:Number;
-		
-		private var jumpPower:int;
-		private var lastVelocityY:int;
-		private var jumping:Boolean;
-		public var landing:Boolean;
 		public var roundOver:Boolean;
+		
+		public const MOVEMENT_SPEED:int = 400.0;
 		
 		public function Player(X:int,Y:int)
 		{
@@ -26,20 +23,16 @@ package
 			offset.y = 16;
 			
 			// Init
-			jumping = false;
 			roundOver = false;
 			
 			// Start time
 			startTime = 0.5;
-			
-			lastVelocityY = velocity.y;
-			
+
 			// Basic player physics
-			var runSpeed:uint = 140;
-			drag.x = runSpeed*8;
-			jumpPower = 180;
-			maxVelocity.x = runSpeed;
-			maxVelocity.y = jumpPower;
+			drag.x = MOVEMENT_SPEED*8;
+			drag.y = MOVEMENT_SPEED*8;
+			maxVelocity.x = MOVEMENT_SPEED;
+			maxVelocity.y = MOVEMENT_SPEED;
 			
 			// Gravity
 			acceleration.y = 0;
@@ -50,6 +43,35 @@ package
 			addAnimation("jump", [8,9,10], 18, false);
 			addAnimation("land", [8], 20);
 			addAnimation("stun", [11,12], 15);
+		}
+		
+		public function stop():void
+		{
+			velocity.x = 0;
+			velocity.y = 0;
+		}
+		
+		public function processControl(control:String):void
+		{
+			if( control == "Left" )
+			{
+				velocity.x = -MOVEMENT_SPEED;
+			}
+			else if ( control == "Right" )
+			{
+				velocity.x = MOVEMENT_SPEED;
+			}
+			else if ( control == "Up" )
+			{
+				velocity.y = -MOVEMENT_SPEED;
+			}
+			else if ( control == "Down" )
+			{
+				velocity.y = MOVEMENT_SPEED;
+			}
+			else if ( control == "Bomb" )
+			{
+			}
 		}
 
 		override public function update():void
@@ -68,44 +90,6 @@ package
 				return;
 			}
 
-			if( landing ) 
-			{
-				play("land");
-				if(finished)
-				{
-					landing = false;					
-				}
-				return;
-			}	
-			
-			// MOVEMENT Left, Right
-			acceleration.x = 0;
-			if(FlxG.keys.LEFT || FlxG.keys.A)
-			{
-				facing = LEFT;
-				acceleration.x -= drag.x;
-			}
-			else if(FlxG.keys.RIGHT || FlxG.keys.D)
-			{
-				facing = RIGHT;
-				acceleration.x += drag.x;
-			}
-			
-			// MOVEMENT Jump
-//			if( FlxG.keys.UP || FlxG.keys.W)
-//			{
-//				if( !velocity.y && !jumping )
-//				{
-//					play("jump");
-//					velocity.y = -jumpPower;
-//				}
-//				jumping = true;
-//			}
-//			else
-//			{
-//				jumping = false;
-//			}
-			
 			// Animation
 			if( !velocity.y )
 			{
@@ -117,17 +101,6 @@ package
 				{
 					play("run");
 				}
-			}
-
-			// Landing
-			if( lastVelocityY != 0 && velocity.y == 0 )
-			{
-				landing = true;
-				lastVelocityY = 0;		
-			}
-			else
-			{
-				lastVelocityY = velocity.y;
 			}
 		}
 	}

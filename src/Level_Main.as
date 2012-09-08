@@ -23,6 +23,12 @@ package    {
 		private var player1ControlText:FlxText;
 		private var player2ControlText:FlxText;
 		
+		// HUD
+		private var player1LabelText:FlxText;
+		private var player2LabelText:FlxText;
+		private var player1NumberText:FlxText;
+		private var player2NumberText:FlxText;
+		
 		// Round End
 		private var roundEnd:Boolean;
 		private var roundEndContinueText:FlxText;
@@ -30,8 +36,10 @@ package    {
 		
 		// Consts
 		public const MAX_TIME:uint = 10;
-		public const CONTROL_UPDATE_TIME:uint = 1.0;
+		public const CONTROL_UPDATE_TIME:int = 1.0;
 		public const TEXT_COLOR:uint = 0xFF555555;
+		
+		public const DEBUG_CONTROLS:Boolean = false;
 		
 		public function Level_Main( group:FlxGroup ) {
 			
@@ -39,12 +47,12 @@ package    {
 			levelSizeY = 240;
 
 			// Create player
-			player = new Player(FlxG.height*1/4,FlxG.height/2);
-			PlayState.groupPlayer.add(player);
+			player1 = new Player(FlxG.width*1/4,FlxG.height/2);
+			PlayState.groupPlayer.add(player1);
 
 			// Create enemy
-			enemy = new Enemy(FlxG.height*3/4,FlxG.height/2);
-			PlayState.groupPlayer.add(enemy);
+			player2 = new Player(FlxG.width*3/4,FlxG.height/2);
+			PlayState.groupPlayer.add(player2);
 			
 			// Timer
 			startTime = 1.0;
@@ -72,6 +80,9 @@ package    {
 			player2ControlText.scrollFactor.x = player2ControlText.scrollFactor.y = 0;
 			PlayState.groupBackground.add(player2ControlText);
 			
+			// HUD
+			buildHUD();
+			
 			// Round end
 			roundEnd = false;
 			buildRoundEnd();
@@ -80,6 +91,25 @@ package    {
 			controlUpdateTimer = CONTROL_UPDATE_TIME;
 			
 			super();
+		}
+		
+		private function buildHUD():void {
+			
+			player1LabelText = new FlxText(0, FlxG.height - 80, FlxG.width*1/2, "Player 1");
+			player1LabelText.setFormat(null,8,TEXT_COLOR,"center");
+			PlayState.groupForeground.add(player1LabelText);	
+			
+			player2LabelText = new FlxText(FlxG.width*1/2, FlxG.height - 80, FlxG.width*1/2, "Player 1");
+			player2LabelText.setFormat(null,8,TEXT_COLOR,"center");
+			PlayState.groupForeground.add(player2LabelText);
+			
+			player1NumberText = new FlxText(0, FlxG.height - 64, FlxG.width*1/2, "415-494-8532");
+			player1NumberText.setFormat(null,16,TEXT_COLOR,"center");
+			PlayState.groupForeground.add(player1NumberText);	
+			
+			player2NumberText = new FlxText(FlxG.width*1/2, FlxG.height - 64, FlxG.width*1/2, "415-494-8538");
+			player2NumberText.setFormat(null,16,TEXT_COLOR,"center");
+			PlayState.groupForeground.add(player2NumberText);	
 		}
 			
 		public function buildRoundEnd():void {
@@ -96,7 +126,7 @@ package    {
 			PlayState.groupForeground.add(roundEndPointsText);
 		}
 		
-		private function updateSQLData():void {
+		private function updateSQLControls():void {
 			
 			var myLoader:URLLoader = new URLLoader();
 			myLoader.dataFormat = URLLoaderDataFormat.VARIABLES;
@@ -109,21 +139,56 @@ package    {
 				for(var i:uint=0; i < loader.data.count; i++) {
 					if( loader.data["player"+i] == 1 ) {
 						player1ControlText.text = loader.data["control"+i];
+						player1.processControl( loader.data["control"+i] );
 					} else {
-						player2ControlText.text = loader.data["control"+i];			
+						player2ControlText.text = loader.data["control"+i];
+						player2.processControl( loader.data["control"+i] );
 					}
-
 				}
 			}
 			
+		}
+		
+		private function updateKeyboardControls():void {
+			if(FlxG.keys.A)
+				player1.processControl("Left");
+			else if(FlxG.keys.D)
+				player1.processControl("Right");
+			else if(FlxG.keys.W)
+				player1.processControl("Up");
+			else if(FlxG.keys.S)	
+				player1.processControl("Down");
+			else if(FlxG.keys.E)
+				player1.processControl("Bomb");
+			
+			if(FlxG.keys.LEFT)
+				player2.processControl("Left");
+			else if(FlxG.keys.RIGHT)
+				player2.processControl("Right");
+			else if(FlxG.keys.UP)
+				player2.processControl("Up");
+			else if(FlxG.keys.DOWN)	
+				player2.processControl("Down");
+			else if(FlxG.keys.M)
+				player2.processControl("Bomb");
 		}
 		
 		private function updateControls():void
 		{
 			if( controlUpdateTimer <= 0 )
 			{
+				player1.stop();
+				player2.stop();
+				
 				controlUpdateTimer = CONTROL_UPDATE_TIME;
-				updateSQLData();				
+				if( !DEBUG_CONTROLS )
+				{
+					updateSQLControls();				
+				}
+				else
+				{
+					updateKeyboardControls();
+				}
 			}
 			else
 			{
@@ -184,7 +249,8 @@ package    {
 		
 		private function showEndPrompt():void 
 		{
-			PlayState._currLevel.player.roundOver = true;
+			PlayState._currLevel.player1.roundOver = true;
+			PlayState._currLevel.player2.roundOver = true;
 			roundEndPointsText.visible = true;
 		}
 		

@@ -35,14 +35,6 @@ package
 		
 		override public function update():void
 		{			
-			// Camera
-			if( _currLevel.player != null )
-			{
-				FlxG.camera.follow(_currLevel.player, FlxCamera.STYLE_PLATFORMER);
-				FlxG.camera.width = FlxG.width;
-				FlxG.camera.setBounds(0,0,_currLevel.levelSizeX,_currLevel.levelSizeY);
-			}
-			
 			// Update level
 			_currLevel.update();
 			
