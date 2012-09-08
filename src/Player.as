@@ -56,12 +56,15 @@ package
 			{
 				if( y < _tileMatrix[x].length )
 				{
-					var tile:FlxSprite = _tileMatrix[x][y];	
-					tileX = x;
-					tileY = y;
-					
-					this.x = tile.x;
-					this.y = tile.y;
+					var tile:Tile = _tileMatrix[x][y];	
+					if( tile.type == 0 )
+					{
+						tileX = x;
+						tileY = y;
+						
+						this.x = tile.x;
+						this.y = tile.y;
+					}
 				}
 			}
 		}
@@ -71,7 +74,7 @@ package
 			tileX = x;
 			tileY = y;
 			
-			var tile:FlxSprite = _tileMatrix[tileX][tileY];	
+			var tile:Tile = _tileMatrix[tileX][tileY];	
 			this.x = tile.x;
 			this.y = tile.y;
 			super.update();

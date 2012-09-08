@@ -10,6 +10,7 @@ package
 		
 		private var _player1:Player;
 		private var _player2:Player;
+		public var type:int;
 		
 		public function Tile( tileType:Number, X:Number, Y:Number, player1:Player, player2:Player ):void
 		{
@@ -17,6 +18,7 @@ package
 			
 			_player1 = player1;
 			_player2 = player2;
+			type = tileType;
 			
 			width = 32;
 			height = 36;

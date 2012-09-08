@@ -44,7 +44,7 @@ package    {
 		public const CONTROL_UPDATE_TIME:int = 1.0;
 		public const TEXT_COLOR:uint = 0xFFFFFFFF;
 		
-		public const DEBUG_CONTROLS:Boolean = false;
+		public const DEBUG_CONTROLS:Boolean = true;
 		
 		public function Level_Main( group:FlxGroup ) {
 			
@@ -104,7 +104,7 @@ package    {
 					}
 					
 					var tile:Tile = new Tile(type, startX + x*offsetX,  startY + y*offsetY, player1, player2);
-					PlayState.groupTilemap.add(tile);
+					PlayState.groupTiles.add(tile);
 					column.push(tile);
 				}
 				
