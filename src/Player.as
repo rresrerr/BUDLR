@@ -7,24 +7,29 @@ package
 		[Embed(source="data/darwin.png")] private var ImgDarwin:Class;
 		
 		public var startTime:Number;
-		public var roundOver:Boolean;
+		
+		public var tileX:Number = 0;
+		public var tileY:Number = 0;
+		
+		public var moving:Boolean = false; 
+		public var moveTo:FlxSprite;
+		
+		public var roundOver:Boolean = false;
+		private var _tileMatrix:Array;
 		
 		public const MOVEMENT_SPEED:int = 400.0;
 		
-		public function Player(X:int,Y:int)
+		public function Player(X:int,Y:int,tileMatrix:Array)
 		{
 			super(X,Y);
 			loadGraphic(ImgDarwin,true,true,32,32);
 			
+			_tileMatrix = tileMatrix;
+			
 			// Bounding box tweaks
-			width = 16;
-			height = 16;
-			offset.x = 8;
-			offset.y = 16;
-			
-			// Init
-			roundOver = false;
-			
+			width = 32;
+			height = 32;
+
 			// Start time
 			startTime = 0.5;
 
@@ -45,8 +50,36 @@ package
 			addAnimation("stun", [11,12], 15);
 		}
 		
+		public function moveToTile( x:int, y:int ):void
+		{
+			if( x < _tileMatrix.length )
+			{
+				if( y < _tileMatrix[x].length )
+				{
+					var tile:FlxSprite = _tileMatrix[x][y];	
+					tileX = x;
+					tileY = y;
+					
+					this.x = tile.x;
+					this.y = tile.y;
+				}
+			}
+		}
+		
+		public function setTilePosition( x:int, y:int ):void
+		{
+			tileX = x;
+			tileY = y;
+			
+			var tile:FlxSprite = _tileMatrix[tileX][tileY];	
+			this.x = tile.x;
+			this.y = tile.y;
+			super.update();
+		}
+		
 		public function stop():void
 		{
+			moving = false;
 			velocity.x = 0;
 			velocity.y = 0;
 		}
@@ -55,19 +88,23 @@ package
 		{
 			if( control == "Left" )
 			{
-				velocity.x = -MOVEMENT_SPEED;
+				moving = true;
+				moveToTile( tileX - 1, tileY);
 			}
 			else if ( control == "Right" )
 			{
-				velocity.x = MOVEMENT_SPEED;
+				moving = true;
+				moveToTile( tileX + 1, tileY);
 			}
 			else if ( control == "Up" )
 			{
-				velocity.y = -MOVEMENT_SPEED;
+				moving = true;
+				moveToTile( tileX, tileY + 1);
 			}
 			else if ( control == "Down" )
 			{
-				velocity.y = MOVEMENT_SPEED;
+				moving = true;
+				moveToTile( tileX, tileY - 1);
 			}
 			else if ( control == "Bomb" )
 			{
@@ -75,7 +112,7 @@ package
 		}
 
 		override public function update():void
-		{			
+		{		
 			super.update();
 
 			if( startTime > 0 )
