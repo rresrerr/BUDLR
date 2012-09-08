@@ -32,7 +32,7 @@ package    {
 		// Round End
 		private var roundEnd:Boolean;
 		private var roundEndContinueText:FlxText;
-		private var roundEndPointsText:FlxText;
+		private var roundEndText:FlxText;
 		
 		// Tiles
 		public var tileMatrix:Array; 
@@ -82,18 +82,42 @@ package    {
 			var startY:int = 256;
 			var offsetX:int = 32;
 			var offsetY:int = -32;
+			var type:int = 0;
 			tileMatrix = new Array();
 			
+			var blockRow:Boolean = false;
+			var blockColumn:Boolean = false;
 			for( var x:int = 0; x < BOARD_TILE_WIDTH; x++ )
-			{
+			{	
 				var column:Array = new Array();
 				for( var y:int = 0; y < BOARD_TILE_HEIGHT; y++ )
 				{
-					var tile:Tile = new Tile(0, startX + x*offsetX,  startY + y*offsetY, player1, player2);
-					tile.alpha = 0;
+					if( blockRow && blockColumn )
+					{
+						type = 1;
+						blockRow = false;
+					}
+					else
+					{
+						type = 0;
+						blockRow = true;
+					}
+					
+					var tile:Tile = new Tile(type, startX + x*offsetX,  startY + y*offsetY, player1, player2);
 					PlayState.groupTilemap.add(tile);
 					column.push(tile);
 				}
+				
+				if( blockColumn )
+				{
+					blockColumn = false;
+				}
+				else
+				{
+					blockColumn = true;
+				}
+				blockRow = false;
+				
 				tileMatrix.push(column);
 			}
 		}
@@ -146,17 +170,17 @@ package    {
 		}
 			
 		public function buildRoundEnd():void {
-			roundEndContinueText = new FlxText(0, FlxG.height - 16, FlxG.width, "PRESS ANY KEY TO CONTINUE");
-			roundEndContinueText.setFormat(null,8,TEXT_COLOR,"center");
+			roundEndContinueText = new FlxText(0, FlxG.height - 220, FlxG.width, "PRESS ANY KEY TO CONTINUE");
+			roundEndContinueText.setFormat(null,16,TEXT_COLOR,"center");
 			roundEndContinueText.scrollFactor.x = roundEndContinueText.scrollFactor.y = 0;	
 			roundEndContinueText.visible = false;
 			PlayState.groupForeground.add(roundEndContinueText);
 			
-			roundEndPointsText = new FlxText(0, FlxG.height - 48, FlxG.width, "0");
-			roundEndPointsText.setFormat(null,16,TEXT_COLOR,"center");
-			roundEndPointsText.scrollFactor.x = roundEndContinueText.scrollFactor.y = 0;	
-			roundEndPointsText.visible = false;
-			PlayState.groupForeground.add(roundEndPointsText);
+			roundEndText = new FlxText(0, FlxG.height/2 - 64, FlxG.width, "ROUND OVER");
+			roundEndText.setFormat(null,32,TEXT_COLOR,"center");
+			roundEndText.scrollFactor.x = roundEndContinueText.scrollFactor.y = 0;	
+			roundEndText.visible = false;
+			PlayState.groupForeground.add(roundEndText);
 		}
 		
 		private function updateSQLControls():void {
@@ -275,7 +299,6 @@ package    {
 
 			// Update points text
 			pointsText.text = "" + points + " (" + PlayState._currLevel.multiplier + "x)";
-			roundEndPointsText.text = "" + points;
 			
 			super.update();
 		}
@@ -284,7 +307,7 @@ package    {
 		{
 			PlayState._currLevel.player1.roundOver = true;
 			PlayState._currLevel.player2.roundOver = true;
-			roundEndPointsText.visible = true;
+			roundEndText.visible = true;
 		}
 		
 		private function checkAnyKey():void 

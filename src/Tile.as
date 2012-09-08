@@ -4,9 +4,9 @@ package
 	
 	public class Tile extends FlxSprite
 	{
-		[Embed(source='../data/skull1.png')] private var ImgTile1:Class;
-		[Embed(source='../data/skull2.png')] private var ImgTile2:Class;
-		[Embed(source='../data/skull3.png')] private var ImgTile3:Class;
+		[Embed(source='../data/block.png')] private var ImgTile1:Class;
+		[Embed(source='../data/block.png')] private var ImgTile2:Class;
+		[Embed(source='../data/barrel.png')] private var ImgTile3:Class;
 		
 		private var _player1:Player;
 		private var _player2:Player;
@@ -19,11 +19,13 @@ package
 			_player2 = player2;
 			
 			width = 32;
-			height = 32;
+			height = 36;
+			offset.y = 4;
 			
 			switch (tileType){
 				case 0:
 					loadGraphic(ImgTile1, true, true, width, height);
+					alpha = 0;
 					break;
 				case 1:
 					loadGraphic(ImgTile2, true, true, width, height);
