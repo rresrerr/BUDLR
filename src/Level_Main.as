@@ -191,22 +191,22 @@ package    {
 			PlayState.groupBackground.add(pointsText);
 			
 			// Debug
-			player1ControlText = new FlxText(0, FlxG.height - 24, FlxG.width*1/2, "");
+			player1ControlText = new FlxText(0, FlxG.height - 22, FlxG.width*1/2, "");
 			player1ControlText.setFormat(null,16,0x19b6d8,"left");
 			player1ControlText.scrollFactor.x = player1ControlText.scrollFactor.y = 0;
 			PlayState.groupBackground.add(player1ControlText);
 			
-			player2ControlText = new FlxText(FlxG.width*1/2, FlxG.height - 24, FlxG.width*1/2, "");
+			player2ControlText = new FlxText(FlxG.width*1/2, FlxG.height - 22, FlxG.width*1/2, "");
 			player2ControlText.setFormat(null,16,0xff9a00,"right");
 			player2ControlText.scrollFactor.x = player2ControlText.scrollFactor.y = 0;
 			PlayState.groupBackground.add(player2ControlText);
 			
-			player3ControlText = new FlxText(0, 0, FlxG.width*1/2, "");
+			player3ControlText = new FlxText(0, -1, FlxG.width*1/2, "");
 			player3ControlText.setFormat(null,16,0xcb3e4e,"left");
 			player3ControlText.scrollFactor.x = player3ControlText.scrollFactor.y = 0;
 			PlayState.groupBackground.add(player3ControlText);
 			
-			player4ControlText = new FlxText(FlxG.width*1/2, 0, FlxG.width*1/2, "");
+			player4ControlText = new FlxText(FlxG.width*1/2, -1, FlxG.width*1/2, "");
 			player4ControlText.setFormat(null,16,0x11d27a,"right");
 			player4ControlText.scrollFactor.x = player4ControlText.scrollFactor.y = 0;
 			PlayState.groupBackground.add(player4ControlText);
