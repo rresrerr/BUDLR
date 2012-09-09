@@ -75,9 +75,9 @@ package
 		
 		public function moveToTile( x:int, y:int ):void
 		{
-			if( x < _tileMatrix.length )
+			if( x >= 0 && x < _tileMatrix.length )
 			{
-				if( y < _tileMatrix[x].length )
+				if( y >= 0 && y < _tileMatrix[x].length )
 				{
 					var tile:Tile = _tileMatrix[x][y];	
 					if( tile.type != 1 )
