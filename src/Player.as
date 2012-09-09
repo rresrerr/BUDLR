@@ -26,18 +26,19 @@ package
 		public function Player( number:int, X:int, Y:int, tileMatrix:Array )
 		{
 			super(X,Y);
-			if( number == 1 )
-				loadGraphic(ImgPlayer1,true,true,32,32);
-			else
-				loadGraphic(ImgPlayer2,true,true,32,32);
-			
-			_tileMatrix = tileMatrix;
-			
+
 			// Bounding box tweaks
 			width = 32;
 			height = 40;
 			offset.y = 8;
 
+			if( number == 1 )
+				loadGraphic(ImgPlayer1,true,true,width,height);
+			else
+				loadGraphic(ImgPlayer2,true,true,width,height);
+			
+			_tileMatrix = tileMatrix;
+			
 			// Start time
 			startTime = 3.0;
 

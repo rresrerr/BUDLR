@@ -40,6 +40,7 @@ package
 			
 			width = 32;
 			height = 32;
+			offset.y = 6;
 			loadGraphic(ImgBomb, true, true, width, height);
 			
 			addAnimation("ticktock0", [0,1], 2);
