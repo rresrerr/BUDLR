@@ -10,6 +10,7 @@ package
 		public static var groupPlayer:FlxGroup;
 		public static var groupCollects:FlxGroup;
 		public static var groupTiles:FlxGroup;
+		public static var groupBlocks:FlxGroup;
 		public static var groupForeground:FlxGroup;
 		
 		function PlayState():void
@@ -20,6 +21,7 @@ package
 			groupPlayer = new FlxGroup;
 			groupCollects = new FlxGroup;
 			groupTiles = new FlxGroup;
+			groupBlocks = new FlxGroup;
 			groupForeground = new FlxGroup;
 			
 			// Create the level
@@ -30,6 +32,7 @@ package
 			this.add(groupTiles);
 			this.add(groupCollects);
 			this.add(groupPlayer);
+			this.add(groupBlocks);
 			this.add(groupForeground);
 		}
 		

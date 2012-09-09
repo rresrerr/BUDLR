@@ -4,7 +4,8 @@ package
 	
 	public class Player extends FlxSprite
 	{
-		[Embed(source="data/darwin.png")] private var ImgDarwin:Class;
+		[Embed(source="data/player1.png")] private var ImgPlayer1:Class;
+		[Embed(source="data/player2.png")] private var ImgPlayer2:Class;
 		
 		public var startTime:Number;
 		
@@ -22,10 +23,13 @@ package
 		
 		public const MOVEMENT_SPEED:int = 400.0;
 		
-		public function Player( X:int, Y:int, tileMatrix:Array )
+		public function Player( number:int, X:int, Y:int, tileMatrix:Array )
 		{
 			super(X,Y);
-			loadGraphic(ImgDarwin,true,true,32,32);
+			if( number == 1 )
+				loadGraphic(ImgPlayer1,true,true,32,32);
+			else
+				loadGraphic(ImgPlayer2,true,true,32,32);
 			
 			_tileMatrix = tileMatrix;
 			
@@ -34,7 +38,7 @@ package
 			height = 32;
 
 			// Start time
-			startTime = 0.5;
+			startTime = 3.0;
 
 			// Basic player physics
 			drag.x = MOVEMENT_SPEED*8;
@@ -46,11 +50,8 @@ package
 			acceleration.y = 0;
 			
 			addAnimation("idle", [0]);
-			addAnimation("run", [1,2,3,4], 18);
-			addAnimation("dig", [5,6,7], 32);
-			addAnimation("jump", [8,9,10], 18, false);
-			addAnimation("land", [8], 20);
-			addAnimation("stun", [11,12], 15);
+			addAnimation("run", [0], 18);
+			addAnimation("stun", [0], 15);
 		}
 		
 		public function setOtherPlayer( otherPlayer:Player ):void
@@ -111,14 +112,14 @@ package
 		{
 			if( hit )
 			{
-				if( hitTimer <= 0.0 )
-				{
-					hit = false;
-				}
-				else
-				{
-					hitTimer -= FlxG.elapsed;
-				}
+//				if( hitTimer <= 0.0 )
+//				{
+//					hit = false;
+//				}
+//				else
+//				{
+//					hitTimer -= FlxG.elapsed;
+//				}
 				return true;
 			}
 			return false;
@@ -131,13 +132,20 @@ package
 				return
 			}
 			
+			if( startTime > 0 )
+			{
+				return;
+			}
+			
 			if( control == "Left" )
 			{
+				facing = LEFT;
 				moving = true;
 				moveToTile( tileX - 1, tileY);
 			}
 			else if ( control == "Right" )
 			{
+				facing = RIGHT;
 				moving = true;
 				moveToTile( tileX + 1, tileY);
 			}
@@ -156,20 +164,25 @@ package
 				dropBomb();
 			}
 		}
+		
+		public function player2SetFacing():void
+		{
+			facing = LEFT;	
+		}
 
 		override public function update():void
 		{		
 			super.update();
 
-			if( updateHit() )
-			{
-				play("stun");
-				return;
-			}
-			
 			if( startTime > 0 )
 			{
 				startTime -= FlxG.elapsed;
+				return;
+			}
+			
+			if( updateHit() )
+			{
+				play("stun");
 				return;
 			}
 			

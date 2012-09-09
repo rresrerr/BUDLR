@@ -33,6 +33,7 @@ package    {
 		private var roundEnd:Boolean;
 		private var roundEndContinueText:FlxText;
 		private var roundEndText:FlxText;
+		private var roundEndPlayerText:FlxText;
 		
 		// Tiles
 		public var tileMatrix:Array; 
@@ -65,13 +66,14 @@ package    {
 			createTiles();
 			
 			// Create player 1
-			player1 = new Player(FlxG.width*1/4,FlxG.height/2,tileMatrix);
+			player1 = new Player(1, FlxG.width*1/4,FlxG.height/2,tileMatrix);
 			PlayState.groupPlayer.add(player1);
 			player1.setTilePosition(0,0);
 			
 			// Create player 2
-			player2 = new Player(FlxG.width*3/4,FlxG.height/2,tileMatrix);
+			player2 = new Player(2, FlxG.width*3/4,FlxG.height/2,tileMatrix);
 			PlayState.groupPlayer.add(player2);
+			player2.player2SetFacing();
 			player2.setTilePosition(BOARD_TILE_WIDTH-1,BOARD_TILE_HEIGHT-1);
 			
 			player2.setOtherPlayer( player1 );
@@ -109,7 +111,7 @@ package    {
 					var tile:Tile = new Tile(type, startX + x*offsetX,  startY + y*offsetY, player1, player2);
 					
 					if( type == 1 )
-						PlayState.groupForeground.add(tile);
+						PlayState.groupBlocks.add(tile);
 					else
 						PlayState.groupTiles.add(tile);
 					
@@ -142,7 +144,7 @@ package    {
 			PlayState.groupBackground.add(backgroundSprite);
 			
 			// Timer
-			startTime = 1.0;
+			startTime = 3.0;
 			endTime = 3.0;
 			timer = MAX_TIME;
 			timerText = new FlxText(0, FlxG.height - 104, FlxG.width, "0:00");
@@ -158,15 +160,15 @@ package    {
 			PlayState.groupBackground.add(pointsText);
 			
 			// Debug
-			player1ControlText = new FlxText(0, FlxG.height - 64, FlxG.width*1/2, "");
-			player1ControlText.setFormat(null,32,TEXT_COLOR,"center");
-			player1ControlText.scrollFactor.x = player1ControlText.scrollFactor.y = 0;
-			PlayState.groupBackground.add(player1ControlText);
-			
-			player2ControlText = new FlxText(FlxG.width*1/2, FlxG.height - 64, FlxG.width*1/2, "");
-			player2ControlText.setFormat(null,32,TEXT_COLOR,"center");
-			player2ControlText.scrollFactor.x = player2ControlText.scrollFactor.y = 0;
-			PlayState.groupBackground.add(player2ControlText);
+//			player1ControlText = new FlxText(0, FlxG.height - 64, FlxG.width*1/2, "");
+//			player1ControlText.setFormat(null,32,TEXT_COLOR,"center");
+//			player1ControlText.scrollFactor.x = player1ControlText.scrollFactor.y = 0;
+//			PlayState.groupBackground.add(player1ControlText);
+//			
+//			player2ControlText = new FlxText(FlxG.width*1/2, FlxG.height - 64, FlxG.width*1/2, "");
+//			player2ControlText.setFormat(null,32,TEXT_COLOR,"center");
+//			player2ControlText.scrollFactor.x = player2ControlText.scrollFactor.y = 0;
+//			PlayState.groupBackground.add(player2ControlText);
 		}
 			
 		public function buildRoundEnd():void {
@@ -176,11 +178,17 @@ package    {
 			roundEndContinueText.visible = false;
 			PlayState.groupForeground.add(roundEndContinueText);
 			
-			roundEndText = new FlxText(0, FlxG.height/2 - 64, FlxG.width, "ROUND OVER");
+			roundEndText = new FlxText(0, FlxG.height/2 - 100, FlxG.width, "ROUND OVER");
 			roundEndText.setFormat(null,32,TEXT_COLOR,"center");
 			roundEndText.scrollFactor.x = roundEndContinueText.scrollFactor.y = 0;	
 			roundEndText.visible = false;
 			PlayState.groupForeground.add(roundEndText);
+			
+			roundEndPlayerText = new FlxText(0, FlxG.height/2 - 64, FlxG.width, "");
+			roundEndPlayerText.setFormat(null,32,TEXT_COLOR,"center");
+			roundEndPlayerText.scrollFactor.x = roundEndContinueText.scrollFactor.y = 0;	
+			roundEndPlayerText.visible = false;
+			PlayState.groupForeground.add(roundEndPlayerText);
 		}
 		
 		private function updateSQLControls():void {
@@ -195,10 +203,10 @@ package    {
 
 				for(var i:uint=0; i < loader.data.count; i++) {
 					if( loader.data["player"+i] == 1 ) {
-						player1ControlText.text = loader.data["control"+i];
+//						player1ControlText.text = loader.data["control"+i];
 						player1.processControl( loader.data["control"+i] );
 					} else {
-						player2ControlText.text = loader.data["control"+i];
+//						player2ControlText.text = loader.data["control"+i];
 						player2.processControl( loader.data["control"+i] );
 					}
 				}
@@ -268,8 +276,15 @@ package    {
 			}
 			
 			// Check round end
-			if( timer <= 0 )
+			if( timer <= 0 || player1.hit || player2.hit )
 			{
+				if( player1.hit )
+					roundEndPlayerText.text = "Player 1 WINS!";
+				else if( player2.hit )
+					roundEndPlayerText.text = "Player 2 WINS!";
+				else
+					roundEndPlayerText.text = "DRAW";
+				
 				showEndPrompt();
 				if( endTime <= 0 )
 				{
@@ -307,6 +322,7 @@ package    {
 		{
 			PlayState._currLevel.player1.roundOver = true;
 			PlayState._currLevel.player2.roundOver = true;
+			roundEndPlayerText.visible = true;
 			roundEndText.visible = true;
 		}
 		

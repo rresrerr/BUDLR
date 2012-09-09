@@ -6,26 +6,6 @@
 	$id = $_GET['id'];
 	$message = "Player $player: Control not understood. Try (U)p, (D)own, (L)eft or (R)ight.";
 	
-	if (strpos($body,'l') !== false) {
-	    $control = "Left";
-	}
-	
-	if (strpos($body,'r') !== false) {
-	    $control = "Right";
-	}
-	
-	if (strpos($body,'u') !== false) {
-	    $control = "Up";
-	}
-
-	if (strpos($body,'d') !== false) {
-	    $control = "Down";
-	}
-	
-	if (strpos($body,'b') !== false) {
-	    $control = "Bomb";
-	}
-	
 	if( $control != "None" )
 	{
 		$message = "Player $player: Moving $control";
@@ -43,6 +23,26 @@
 			}
 			else
 			{
+				if (strpos($body,'l') !== false) {
+				    $control = "Left";
+				}
+
+				if (strpos($body,'r') !== false) {
+				    $control = "Right";
+				}
+
+				if (strpos($body,'u') !== false) {
+				    $control = "Up";
+				}
+
+				if (strpos($body,'d') !== false) {
+				    $control = "Down";
+				}
+
+				if (strpos($body,'b') !== false) {
+				    $control = "Bomb";
+				}
+				
 				$query=" INSERT INTO controls (id, player, control ) VALUES ('$id', '$player', '$control')";
 				if ( !mysql_query($query) )
 				{
