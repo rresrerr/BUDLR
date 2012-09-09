@@ -7,8 +7,8 @@ package
 		public static var _currLevel:Level;
 		
 		public static var groupBackground:FlxGroup;
-		public static var groupCollects:FlxGroup;
 		public static var groupPlayer:FlxGroup;
+		public static var groupCollects:FlxGroup;
 		public static var groupTiles:FlxGroup;
 		public static var groupForeground:FlxGroup;
 		
@@ -18,8 +18,8 @@ package
 			
 			groupBackground = new FlxGroup;
 			groupPlayer = new FlxGroup;
-			groupTiles = new FlxGroup;
 			groupCollects = new FlxGroup;
+			groupTiles = new FlxGroup;
 			groupForeground = new FlxGroup;
 			
 			// Create the level
@@ -27,9 +27,10 @@ package
 			_currLevel = new currLevelClass( groupBackground );
 			
 			this.add(groupBackground);
-			this.add(groupPlayer);
 			this.add(groupTiles);
+			this.add(groupPlayer);
 			this.add(groupCollects);
+			
 			this.add(groupForeground);
 		}
 		

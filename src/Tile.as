@@ -18,11 +18,16 @@ package
 			
 			_player1 = player1;
 			_player2 = player2;
-			type = tileType;
 			
+			updateGraphic(tileType);
+		}
+		
+		private function updateGraphic( tileType:int):void
+		{
 			width = 32;
 			height = 36;
 			offset.y = 4;
+			alpha = 1;
 			
 			switch (tileType){
 				case 0:
@@ -35,7 +40,13 @@ package
 				case 2:
 					loadGraphic(ImgTile3, true, true, width, height);
 					break;
-			}			
+			}
+			type = tileType;
+		}
+		
+		public function catchFire():void
+		{
+			updateGraphic( 2 );
 		}
 		
 		override public function update():void

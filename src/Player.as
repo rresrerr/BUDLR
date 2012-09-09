@@ -12,14 +12,17 @@ package
 		public var tileY:Number = 0;
 		
 		public var moving:Boolean = false; 
+		public var hit:Boolean = false; 
+		public var hitTimer:Number = 2.0;
 		public var moveTo:FlxSprite;
 		
 		public var roundOver:Boolean = false;
 		private var _tileMatrix:Array;
+		private var _otherPlayer:Player;
 		
 		public const MOVEMENT_SPEED:int = 400.0;
 		
-		public function Player(X:int,Y:int,tileMatrix:Array)
+		public function Player( X:int, Y:int, tileMatrix:Array )
 		{
 			super(X,Y);
 			loadGraphic(ImgDarwin,true,true,32,32);
@@ -50,6 +53,11 @@ package
 			addAnimation("stun", [11,12], 15);
 		}
 		
+		public function setOtherPlayer( otherPlayer:Player ):void
+		{
+			_otherPlayer = otherPlayer;
+		}
+		
 		public function moveToTile( x:int, y:int ):void
 		{
 			if( x < _tileMatrix.length )
@@ -57,7 +65,7 @@ package
 				if( y < _tileMatrix[x].length )
 				{
 					var tile:Tile = _tileMatrix[x][y];	
-					if( tile.type == 0 )
+					if( tile.type != 1 )
 					{
 						tileX = x;
 						tileY = y;
@@ -87,8 +95,42 @@ package
 			velocity.y = 0;
 		}
 		
+		public function dropBomb():void
+		{
+			var bomb:Bomb = new Bomb( tileX, tileY, _tileMatrix, this, _otherPlayer);
+			PlayState.groupCollects.add(bomb);
+		}
+		
+		public function catchFire():void 
+		{
+			hit = true;
+			hitTimer = 2.0;
+		}
+		
+		public function updateHit():Boolean
+		{
+			if( hit )
+			{
+				if( hitTimer <= 0.0 )
+				{
+					hit = false;
+				}
+				else
+				{
+					hitTimer -= FlxG.elapsed;
+				}
+				return true;
+			}
+			return false;
+		}
+	
 		public function processControl(control:String):void
 		{
+			if( hit )
+			{
+				return
+			}
+			
 			if( control == "Left" )
 			{
 				moving = true;
@@ -111,6 +153,7 @@ package
 			}
 			else if ( control == "Bomb" )
 			{
+				dropBomb();
 			}
 		}
 
@@ -118,6 +161,12 @@ package
 		{		
 			super.update();
 
+			if( updateHit() )
+			{
+				play("stun");
+				return;
+			}
+			
 			if( startTime > 0 )
 			{
 				startTime -= FlxG.elapsed;

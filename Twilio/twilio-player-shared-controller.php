@@ -22,6 +22,10 @@
 	    $control = "Down";
 	}
 	
+	if (strpos($body,'b') !== false) {
+	    $control = "Bomb";
+	}
+	
 	if( $control != "None" )
 	{
 		$message = "Player $player: Moving $control";

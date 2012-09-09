@@ -41,10 +41,10 @@ package    {
 		
 		// Consts
 		public const MAX_TIME:uint = 60;
-		public const CONTROL_UPDATE_TIME:int = 1.0;
+		public const CONTROL_UPDATE_TIME:Number = 0.5;
 		public const TEXT_COLOR:uint = 0xFFFFFFFF;
 		
-		public const DEBUG_CONTROLS:Boolean = true;
+		public const DEBUG_CONTROLS:Boolean = false;
 		
 		public function Level_Main( group:FlxGroup ) {
 			
@@ -73,6 +73,9 @@ package    {
 			player2 = new Player(FlxG.width*3/4,FlxG.height/2,tileMatrix);
 			PlayState.groupPlayer.add(player2);
 			player2.setTilePosition(BOARD_TILE_WIDTH-1,BOARD_TILE_HEIGHT-1);
+			
+			player2.setOtherPlayer( player1 );
+			player1.setOtherPlayer( player2 );
 			
 			super();
 		}
@@ -133,20 +136,12 @@ package    {
 			backgroundSprite.loadGraphic(ImgBackground, true, true, levelSizeX, levelSizeY);	
 			PlayState.groupBackground.add(backgroundSprite);
 			
-			player1NumberText = new FlxText(0, FlxG.height - 108, FlxG.width*1/2, "415-494-8532");
-			player1NumberText.setFormat(null,16,TEXT_COLOR,"center");
-			PlayState.groupForeground.add(player1NumberText);	
-			
-			player2NumberText = new FlxText(FlxG.width*1/2, FlxG.height - 108, FlxG.width*1/2, "415-494-8538");
-			player2NumberText.setFormat(null,16,TEXT_COLOR,"center");
-			PlayState.groupForeground.add(player2NumberText);	
-			
 			// Timer
 			startTime = 1.0;
 			endTime = 3.0;
 			timer = MAX_TIME;
-			timerText = new FlxText(0, FlxG.height - 48, FlxG.width, "0:00");
-			timerText.setFormat(null,16,TEXT_COLOR,"center");
+			timerText = new FlxText(0, FlxG.height - 104, FlxG.width, "0:00");
+			timerText.setFormat(null,32,TEXT_COLOR,"center");
 			timerText.scrollFactor.x = timerText.scrollFactor.y = 0;
 			PlayState.groupBackground.add(timerText);
 			
