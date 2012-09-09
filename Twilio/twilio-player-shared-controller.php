@@ -6,47 +6,51 @@
 	$id = $_GET['id'];
 	$message = "Player $player: Control not understood. Try (U)p, (D)own, (L)eft or (R)ight.";
 	
-	if( $control != "None" )
+	// Send control to server
+	if ( !mysql_connect("mysql.travis.aristomatic.com","travischen","ghandi") )
 	{
-		$message = "Player $player: Moving $control";
-		
-		// Send control to server
-		if ( !mysql_connect("mysql.travis.aristomatic.com","travischen","ghandi") )
+		$message = "MYSQL ERROR: could not connect to mysel server.";
+	}
+	else
+	{
+		if( !mysql_select_db("disrupt_controls") )
 		{
-			$message = "MYSQL ERROR: could not connect to mysel server.";
+			$message = "MYSQL ERROR: can't select DB.";	
 		}
 		else
 		{
-			if( !mysql_select_db("disrupt_controls") )
-			{
-				$message = "MYSQL ERROR: can't select DB.";	
-			}
-			else
-			{
-				if (strpos($body,'l') !== false) {
+			for ( $i=0; $i < strlen($body); $i++ ) {  
+				
+				$character = substr($body, $i,1); 
+				$control = "None";
+				
+				if ( $character == "l" ) {
 				    $control = "Left";
 				}
 
-				if (strpos($body,'r') !== false) {
+				if ( $character == "r" ) {
 				    $control = "Right";
 				}
 
-				if (strpos($body,'u') !== false) {
+				if ( $character == "u" ) {
 				    $control = "Up";
 				}
 
-				if (strpos($body,'d') !== false) {
+				if ( $character == "d" ) {
 				    $control = "Down";
 				}
 
-				if (strpos($body,'b') !== false) {
+				if ( $character == "b" ) {
 				    $control = "Bomb";
 				}
-				
-				$query=" INSERT INTO controls (id, player, control ) VALUES ('$id', '$player', '$control')";
-				if ( !mysql_query($query) )
-				{
-					$message = "MYSQL ERROR: query failed.";
+
+				if ( $control != "None" ) {
+					$query="INSERT INTO controls (id, player, control ) VALUES ('$id', '$player', '$control')";
+					$message = "Player 1, Control Sent: $body";
+					if ( !mysql_query($query) )
+					{
+						$message = "MYSQL ERROR: Query failed";
+					}
 				}
 			}
 		}

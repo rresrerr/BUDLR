@@ -45,7 +45,7 @@ package    {
 		public const CONTROL_UPDATE_TIME:Number = 0.5;
 		public const TEXT_COLOR:uint = 0xFFFFFFFF;
 		
-		public const DEBUG_CONTROLS:Boolean = true;
+		public const DEBUG_CONTROLS:Boolean = false;
 		
 		public function Level_Main( group:FlxGroup ) {
 			
@@ -84,7 +84,7 @@ package    {
 		
 		private function createTiles():void {
 			var startX:int = 64;
-			var startY:int = 256;
+			var startY:int = 288;
 			var offsetX:int = 32;
 			var offsetY:int = -32;
 			var type:int = 0;
@@ -111,7 +111,7 @@ package    {
 					var tile:Tile = new Tile(type, startX + x*offsetX,  startY + y*offsetY, player1, player2);
 					
 					if( type == 1 )
-						PlayState.groupBlocks.add(tile);
+						PlayState.groupBackground.add(tile);
 					else
 						PlayState.groupTiles.add(tile);
 					
@@ -147,8 +147,8 @@ package    {
 			startTime = 3.0;
 			endTime = 3.0;
 			timer = MAX_TIME;
-			timerText = new FlxText(0, FlxG.height - 104, FlxG.width, "0:00");
-			timerText.setFormat(null,32,TEXT_COLOR,"center");
+			timerText = new FlxText(0, 4, FlxG.width, "0:00");
+			timerText.setFormat(null,16,TEXT_COLOR,"center");
 			timerText.scrollFactor.x = timerText.scrollFactor.y = 0;
 			PlayState.groupBackground.add(timerText);
 			
@@ -278,10 +278,12 @@ package    {
 			// Check round end
 			if( timer <= 0 || player1.hit || player2.hit )
 			{
-				if( player1.hit )
-					roundEndPlayerText.text = "Player 1 WINS!";
-				else if( player2.hit )
+				if( player1.hit && player2.hit )
+					roundEndPlayerText.text = "DRAW";
+				else if( player1.hit )
 					roundEndPlayerText.text = "Player 2 WINS!";
+				else if( player2.hit )
+					roundEndPlayerText.text = "Player 1 WINS!";
 				else
 					roundEndPlayerText.text = "DRAW";
 				
