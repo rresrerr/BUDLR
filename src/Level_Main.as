@@ -56,7 +56,7 @@ package    {
 		private var roundEndSound:Boolean = false;
 		
 		// Consts
-		public const MAX_TIME:uint = 10;
+		public const MAX_TIME:uint = 120;
 		public const CONTROL_UPDATE_TIME:Number = 0.25;
 		public const TEXT_COLOR:uint = 0xFFFFFFFF;
 		public const CONTINUE_COLOR:uint = 0x00C0F8;
