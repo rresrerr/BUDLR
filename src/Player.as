@@ -96,7 +96,7 @@ package
 						tileX = x;
 						tileY = y;
 						
-						FlxG.play(SndMove,0.8);
+						FlxG.play(SndMove,0.4);
 						moveTo = tile;
 						moving = true;
 						movementDistance = Math.abs( FlxU.getDistance( this.getMidpoint(), moveTo.getMidpoint() ) );
@@ -172,7 +172,7 @@ package
 		
 		public function particleExplode():void
 		{
-			FlxG.play(SndHit,1.0);
+			FlxG.play(SndHit,0.7);
 			
 			particle.x = x + width/2;
 			particle.y = y + height/2;
