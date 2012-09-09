@@ -11,7 +11,8 @@ package    {
 	public class Level_Main extends Level{
 	
 		[Embed(source = '../data/background.png')] private var ImgBackground:Class;
-
+		[Embed(source = '../data/roundover.png')] private var ImgRoundEnd:Class;
+		
 		// Points
 		private var pointsText:FlxText;
 
@@ -28,13 +29,22 @@ package    {
 		// Debug
 		private var player1ControlText:FlxText;
 		private var player2ControlText:FlxText;
+		private var player3ControlText:FlxText;
+		private var player4ControlText:FlxText;
 		
 		// Round End
 		private var roundEnd:Boolean;
 		private var roundEndContinueText:FlxText;
-		private var roundEndText:FlxText;
 		private var roundEndPlayerText:FlxText;
+		private var roundEndForeground:FlxSprite;
 		
+		// Round Start
+		private var roundStart:Boolean = false;
+		private var roundStartContinueText:FlxText;
+		private var roundStartPlayerText:FlxText;
+		private var roundStartExampleText:FlxText;
+		private var roundStartForeground:FlxSprite;
+
 		// Tiles
 		public var tileMatrix:Array; 
 		public const BOARD_TILE_WIDTH:uint = 11;
@@ -42,8 +52,9 @@ package    {
 		
 		// Consts
 		public const MAX_TIME:uint = 120;
-		public const CONTROL_UPDATE_TIME:Number = 0.5;
+		public const CONTROL_UPDATE_TIME:Number = 0.25;
 		public const TEXT_COLOR:uint = 0xFFFFFFFF;
+		public const CONTINUE_COLOR:uint = 0x00C0F8;
 		
 		public const DEBUG_CONTROLS:Boolean = false;
 		
@@ -54,6 +65,9 @@ package    {
 			
 			// HUD
 			buildHUD();
+			
+			// Round start
+			buildRoundStart();
 			
 			// Round end
 			roundEnd = false;
@@ -161,10 +175,10 @@ package    {
 			PlayState.groupBackground.add(backgroundSprite);
 			
 			// Timer
-			startTime = 3.0;
+			startTime = 5.0;
 			endTime = 3.0;
 			timer = MAX_TIME;
-			timerText = new FlxText(0, 28, FlxG.width, "0:00");
+			timerText = new FlxText(0, 32, FlxG.width, "0:00");
 			timerText.setFormat(null,16,TEXT_COLOR,"center");
 			timerText.scrollFactor.x = timerText.scrollFactor.y = 0;
 			PlayState.groupBackground.add(timerText);
@@ -177,32 +191,68 @@ package    {
 			PlayState.groupBackground.add(pointsText);
 			
 			// Debug
-//			player1ControlText = new FlxText(0, FlxG.height - 64, FlxG.width*1/2, "");
-//			player1ControlText.setFormat(null,32,TEXT_COLOR,"center");
-//			player1ControlText.scrollFactor.x = player1ControlText.scrollFactor.y = 0;
-//			PlayState.groupBackground.add(player1ControlText);
-//			
-//			player2ControlText = new FlxText(FlxG.width*1/2, FlxG.height - 64, FlxG.width*1/2, "");
-//			player2ControlText.setFormat(null,32,TEXT_COLOR,"center");
-//			player2ControlText.scrollFactor.x = player2ControlText.scrollFactor.y = 0;
-//			PlayState.groupBackground.add(player2ControlText);
+			player1ControlText = new FlxText(0, FlxG.height - 24, FlxG.width*1/2, "");
+			player1ControlText.setFormat(null,16,0x19b6d8,"left");
+			player1ControlText.scrollFactor.x = player1ControlText.scrollFactor.y = 0;
+			PlayState.groupBackground.add(player1ControlText);
+			
+			player2ControlText = new FlxText(FlxG.width*1/2, FlxG.height - 24, FlxG.width*1/2, "");
+			player2ControlText.setFormat(null,16,0xff9a00,"right");
+			player2ControlText.scrollFactor.x = player2ControlText.scrollFactor.y = 0;
+			PlayState.groupBackground.add(player2ControlText);
+			
+			player3ControlText = new FlxText(0, 0, FlxG.width*1/2, "");
+			player3ControlText.setFormat(null,16,0xcb3e4e,"left");
+			player3ControlText.scrollFactor.x = player3ControlText.scrollFactor.y = 0;
+			PlayState.groupBackground.add(player3ControlText);
+			
+			player4ControlText = new FlxText(FlxG.width*1/2, 0, FlxG.width*1/2, "");
+			player4ControlText.setFormat(null,16,0x11d27a,"right");
+			player4ControlText.scrollFactor.x = player4ControlText.scrollFactor.y = 0;
+			PlayState.groupBackground.add(player4ControlText);
+		}
+		
+		public function buildRoundStart():void {
+			roundStartForeground = new FlxSprite(0,0);
+			roundStartForeground.loadGraphic(ImgRoundEnd, true, true, levelSizeX, levelSizeY);
+			roundStartForeground.scrollFactor.x = roundStartForeground.scrollFactor.y = 0;
+			roundStartForeground.visible = true;
+			PlayState.groupForeground.add(roundStartForeground);
+			
+			roundStartContinueText = new FlxText(0, FlxG.height - 160, FlxG.width, "PRESS ANY KEY TO CONTINUE");
+			roundStartContinueText.setFormat(null,16,CONTINUE_COLOR,"center");
+			roundStartContinueText.scrollFactor.x = roundStartContinueText.scrollFactor.y = 0;	
+			roundStartContinueText.visible = false;
+			PlayState.groupForeground.add(roundStartContinueText);
+			
+			roundStartPlayerText = new FlxText(0, FlxG.height/2 - 72, FlxG.width, "B U D L R");
+			roundStartPlayerText.setFormat(null,64,TEXT_COLOR,"center");
+			roundStartPlayerText.scrollFactor.x = roundStartPlayerText.scrollFactor.y = 0;	
+			roundStartPlayerText.visible = true;
+			PlayState.groupForeground.add(roundStartPlayerText);
+
+			roundStartExampleText = new FlxText(0, FlxG.height/2 + 10, FlxG.width, "EXAMPLE SMS: \"UUBRRDDL\"");
+			roundStartExampleText.setFormat(null,16,TEXT_COLOR,"center");
+			roundStartExampleText.scrollFactor.x = roundStartExampleText.scrollFactor.y = 0;	
+			roundStartExampleText.visible = true;
+			PlayState.groupForeground.add(roundStartExampleText);
 		}
 			
 		public function buildRoundEnd():void {
-			roundEndContinueText = new FlxText(0, FlxG.height - 220, FlxG.width, "PRESS ANY KEY TO CONTINUE");
-			roundEndContinueText.setFormat(null,16,TEXT_COLOR,"center");
+			roundEndForeground = new FlxSprite(0,0);
+			roundEndForeground.loadGraphic(ImgRoundEnd, true, true, levelSizeX, levelSizeY);
+			roundEndForeground.scrollFactor.x = roundEndForeground.scrollFactor.y = 0;
+			roundEndForeground.visible = false;
+			PlayState.groupForeground.add(roundEndForeground);
+			
+			roundEndContinueText = new FlxText(0, FlxG.height - 160, FlxG.width, "PRESS ANY KEY TO CONTINUE");
+			roundEndContinueText.setFormat(null,16,CONTINUE_COLOR,"center");
 			roundEndContinueText.scrollFactor.x = roundEndContinueText.scrollFactor.y = 0;	
 			roundEndContinueText.visible = false;
 			PlayState.groupForeground.add(roundEndContinueText);
 			
-			roundEndText = new FlxText(0, FlxG.height/2 - 100, FlxG.width, "ROUND OVER");
-			roundEndText.setFormat(null,32,TEXT_COLOR,"center");
-			roundEndText.scrollFactor.x = roundEndContinueText.scrollFactor.y = 0;	
-			roundEndText.visible = false;
-			PlayState.groupForeground.add(roundEndText);
-			
-			roundEndPlayerText = new FlxText(0, FlxG.height/2 - 64, FlxG.width, "");
-			roundEndPlayerText.setFormat(null,32,TEXT_COLOR,"center");
+			roundEndPlayerText = new FlxText(0, FlxG.height/2 - 50, FlxG.width, "");
+			roundEndPlayerText.setFormat(null,64,TEXT_COLOR,"center");
 			roundEndPlayerText.scrollFactor.x = roundEndContinueText.scrollFactor.y = 0;	
 			roundEndPlayerText.visible = false;
 			PlayState.groupForeground.add(roundEndPlayerText);
@@ -218,17 +268,35 @@ package    {
 			function onDataLoad(event:Event):void {
 				var loader:URLLoader = URLLoader(event.target);
 
+				var player1ControlString:String = "";
+				var player2ControlString:String = "";
+				var player3ControlString:String = "";
+				var player4ControlString:String = "";
 				for(var i:uint=0; i < loader.data.count; i++) {
-					if( loader.data["player"+i] == 1 ) {
+					
+					if( loader.data["player"+i] == 1 && !player1.hit ) {
 						player1ControlArray[player1ControlArray.length] = loader.data["control"+i];
-					} else if( loader.data["player"+i] == 2 ) {
+						player1ControlString = player1ControlString + loader.data["control"+i].charAt(0).toUpperCase();
+					} else if( loader.data["player"+i] == 2 && !player2.hit ) {
 						player2ControlArray[player2ControlArray.length] = loader.data["control"+i];
-					} else if( loader.data["player"+i] == 3 ) {
+						player2ControlString = player2ControlString + loader.data["control"+i].charAt(0).toUpperCase();
+					} else if( loader.data["player"+i] == 3 && !player3.hit ) {
 						player3ControlArray[player3ControlArray.length] = loader.data["control"+i];
-					} else if( loader.data["player"+i] == 4 ) {
+						player3ControlString = player3ControlString + loader.data["control"+i].charAt(0).toUpperCase();
+					} else if( loader.data["player"+i] == 4 && !player4.hit ) {
 						player4ControlArray[player4ControlArray.length] = loader.data["control"+i];
+						player4ControlString = player4ControlString + loader.data["control"+i].charAt(0).toUpperCase();
 					}
 				}
+				
+				if( player1ControlString != "" )
+					player1ControlText.text = player1ControlString;
+				if( player2ControlString != "" )
+					player2ControlText.text = player2ControlString;
+				if( player3ControlString != "" )
+					player3ControlText.text = player3ControlString;
+				if( player4ControlString != "" )
+					player4ControlText.text = player4ControlString;
 			}
 			
 		}
@@ -309,11 +377,11 @@ package    {
 		}
 		
 		private function updateTimer():void
-		{
+		{	
 			// Timer
 			var minutes:uint = timer/60;
 			var seconds:uint = timer - minutes*60;
-			if( startTime <= 0 )
+			if( startTime <= 0 && roundStart )
 			{
 				timer -= FlxG.elapsed;
 			}
@@ -322,29 +390,87 @@ package    {
 				startTime -= FlxG.elapsed;
 			}
 			
+			// Update timer text
+			if( timer >= 0 )
+			{
+				if( seconds < 10 )
+					timerText.text = "" + minutes + ":0" + seconds;
+				else
+					timerText.text = "" + minutes + ":" + seconds;
+			}
+			
+			// Check round Started
+			if( startTime <= 0 )
+			{
+				checkAnyKeyStart();					
+			}
+			else
+			{
+				startTime -= FlxG.elapsed;
+			}
+			
+			if( !roundStart )
+			{
+				return;
+			}
+			else
+			{
+				roundStartPlayerText.visible = false;
+				roundStartExampleText.visible = false;
+				roundStartForeground.visible = false;
+				roundStartContinueText.visible = false;
+			}
+			
 			// Check round end
 			var player1Win:Boolean = ( player2.hit && player3.hit && player4.hit );
 			var player2Win:Boolean = ( player1.hit && player3.hit && player4.hit );
 			var player3Win:Boolean = ( player1.hit && player2.hit && player4.hit );
 			var player4Win:Boolean = ( player1.hit && player2.hit && player3.hit );
 			
+			if( player1.hit )
+				player1ControlText.text = "DEAD";
+			if( player2.hit )
+				player2ControlText.text = "DEAD";
+			if( player3.hit )
+				player3ControlText.text = "DEAD";
+			if( player4.hit )
+				player4ControlText.text = "DEAD";
+			
 			if( timer <= 0 || player1Win || player2Win || player3Win || player4Win )
 			{
 				if( player1Win )
-					roundEndPlayerText.text = "Player 1 WINS!";
-				if( player2Win )
-					roundEndPlayerText.text = "Player 2 WINS!";	
-				if( player3Win )
-					roundEndPlayerText.text = "Player 3 WINS!";	
-				if( player4Win )
-					roundEndPlayerText.text = "Player 4 WINS!";	
+				{
+					player1ControlText.text = "WINNER";
+					roundEndPlayerText.text = "BLUE WIN";
+					roundEndPlayerText.color = 0x19b6d8;
+				}
+				else if( player2Win )
+				{
+					player2ControlText.text = "WINNER";
+					roundEndPlayerText.text = "YELLO WIN";	
+					roundEndPlayerText.color = 0xff9a00;
+				}
+				else if( player3Win )
+				{
+					player3ControlText.text = "WINNER";
+					roundEndPlayerText.text = "RED WINS";	
+					roundEndPlayerText.color = 0xcb3e4e;
+				}
+				else if( player4Win )
+				{
+					player4ControlText.text = "WINNER";
+					roundEndPlayerText.text = "GREEN WIN";	
+					roundEndPlayerText.color = 0x11d27a;
+				}
 				else
+				{
 					roundEndPlayerText.text = "DRAW";
+				}
 				
 				showEndPrompt();
 				if( endTime <= 0 )
 				{
-					checkAnyKey();					
+					checkAnyKeyEnd();					
 				}
 				else
 				{
@@ -352,12 +478,6 @@ package    {
 				}
 				return;
 			}
-			
-			// Update timer text
-			if( seconds < 10 )
-				timerText.text = "" + minutes + ":0" + seconds;
-			else
-				timerText.text = "" + minutes + ":" + seconds;
 		}
 		
 		override public function update():void
@@ -381,10 +501,20 @@ package    {
 			PlayState._currLevel.player3.roundOver = true;
 			PlayState._currLevel.player4.roundOver = true;
 			roundEndPlayerText.visible = true;
-			roundEndText.visible = true;
+			roundEndForeground.visible = true;
+//			roundEndText.visible = true;
 		}
 		
-		private function checkAnyKey():void 
+		private function checkAnyKeyStart():void 
+		{
+			roundStartContinueText.visible = true;
+			if (FlxG.keys.any())
+			{
+				roundStart = true;
+			}		
+		}
+		
+		private function checkAnyKeyEnd():void 
 		{
 			roundEndContinueText.visible = true;
 			if (FlxG.keys.any())
