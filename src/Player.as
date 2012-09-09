@@ -79,17 +79,17 @@ package
 						
 						moveTo = tile;
 						moving = true;
-						movementDistance = Math.abs( FlxU.getDistance( this.getMidpoint(), moveTo.getMidpoint() ) );
-						movementSpeed = ( movementDistance / MOVEMENT_SPEED );
-						
-						if( moveTo.x == this.x )
-						{
-							movementUpDown = true;
-						}
-						else
-						{
-							movementUpDown = false;
-						}
+//						movementDistance = Math.abs( FlxU.getDistance( this.getMidpoint(), moveTo.getMidpoint() ) );
+//						movementSpeed = ( movementDistance / MOVEMENT_SPEED );
+//						
+//						if( moveTo.x == this.x )
+//						{
+//							movementUpDown = true;
+//						}
+//						else
+//						{
+//							movementUpDown = false;
+//						}
 					}
 				}
 			}
@@ -97,6 +97,10 @@ package
 		
 		public function updateMovement():void
 		{
+			x = moveTo.x;
+			y = moveTo.y;	
+			moving = false;
+			
 //			if( !movementUpDown )
 //			{
 //				if( moveTo.y < this.y )
@@ -127,10 +131,6 @@ package
 //				this.y = moveTo.y;
 //			}
 //			movementDistance -= 1.0;
-			
-			x = moveTo.x;
-			y = moveTo.y;	
-			moving = false;
 		}
 		
 		public function setTilePosition( x:int, y:int ):void
