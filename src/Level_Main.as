@@ -176,7 +176,7 @@ package    {
 			
 			// Timer
 			startTime = 5.0;
-			endTime = 3.0;
+			endTime = 5.0;
 			timer = MAX_TIME;
 			timerText = new FlxText(0, 32, FlxG.width, "0:00");
 			timerText.setFormat(null,16,TEXT_COLOR,"center");
@@ -219,7 +219,7 @@ package    {
 			roundStartForeground.visible = true;
 			PlayState.groupForeground.add(roundStartForeground);
 			
-			roundStartContinueText = new FlxText(0, FlxG.height - 160, FlxG.width, "PRESS ANY KEY TO CONTINUE");
+			roundStartContinueText = new FlxText(0, FlxG.height - 160, FlxG.width, "TEXT \"GO\" TO START");
 			roundStartContinueText.setFormat(null,16,CONTINUE_COLOR,"center");
 			roundStartContinueText.scrollFactor.x = roundStartContinueText.scrollFactor.y = 0;	
 			roundStartContinueText.visible = false;
@@ -231,7 +231,7 @@ package    {
 			roundStartPlayerText.visible = true;
 			PlayState.groupForeground.add(roundStartPlayerText);
 
-			roundStartExampleText = new FlxText(0, FlxG.height/2 + 10, FlxG.width, "EXAMPLE SMS: \"UUBRRDDL\"");
+			roundStartExampleText = new FlxText(0, FlxG.height/2 + 10, FlxG.width, "EXAMPLE SMS: \"uubrrddll\"");
 			roundStartExampleText.setFormat(null,16,TEXT_COLOR,"center");
 			roundStartExampleText.scrollFactor.x = roundStartExampleText.scrollFactor.y = 0;	
 			roundStartExampleText.visible = true;
@@ -251,7 +251,7 @@ package    {
 			roundEndContinueText.visible = false;
 			PlayState.groupForeground.add(roundEndContinueText);
 			
-			roundEndPlayerText = new FlxText(0, FlxG.height/2 - 50, FlxG.width, "");
+			roundEndPlayerText = new FlxText(0, FlxG.height/2 - 40, FlxG.width, "");
 			roundEndPlayerText.setFormat(null,64,TEXT_COLOR,"center");
 			roundEndPlayerText.scrollFactor.x = roundEndContinueText.scrollFactor.y = 0;	
 			roundEndPlayerText.visible = false;
@@ -273,19 +273,32 @@ package    {
 				var player3ControlString:String = "";
 				var player4ControlString:String = "";
 				for(var i:uint=0; i < loader.data.count; i++) {
-					
-					if( loader.data["player"+i] == 1 && !player1.hit ) {
-						player1ControlArray[player1ControlArray.length] = loader.data["control"+i];
-						player1ControlString = player1ControlString + loader.data["control"+i].charAt(0).toUpperCase();
-					} else if( loader.data["player"+i] == 2 && !player2.hit ) {
-						player2ControlArray[player2ControlArray.length] = loader.data["control"+i];
-						player2ControlString = player2ControlString + loader.data["control"+i].charAt(0).toUpperCase();
-					} else if( loader.data["player"+i] == 3 && !player3.hit ) {
-						player3ControlArray[player3ControlArray.length] = loader.data["control"+i];
-						player3ControlString = player3ControlString + loader.data["control"+i].charAt(0).toUpperCase();
-					} else if( loader.data["player"+i] == 4 && !player4.hit ) {
-						player4ControlArray[player4ControlArray.length] = loader.data["control"+i];
-						player4ControlString = player4ControlString + loader.data["control"+i].charAt(0).toUpperCase();
+					if( roundStart && timer > 0 )
+					{
+						if( loader.data["player"+i] == 1 && !player1.hit ) {
+							player1ControlArray[player1ControlArray.length] = loader.data["control"+i];
+							player1ControlString = player1ControlString + loader.data["control"+i].charAt(0).toUpperCase();
+						} else if( loader.data["player"+i] == 2 && !player2.hit ) {
+							player2ControlArray[player2ControlArray.length] = loader.data["control"+i];
+							player2ControlString = player2ControlString + loader.data["control"+i].charAt(0).toUpperCase();
+						} else if( loader.data["player"+i] == 3 && !player3.hit ) {
+							player3ControlArray[player3ControlArray.length] = loader.data["control"+i];
+							player3ControlString = player3ControlString + loader.data["control"+i].charAt(0).toUpperCase();
+						} else if( loader.data["player"+i] == 4 && !player4.hit ) {
+							player4ControlArray[player4ControlArray.length] = loader.data["control"+i];
+							player4ControlString = player4ControlString + loader.data["control"+i].charAt(0).toUpperCase();
+						}
+					}
+					else
+					{
+						if( loader.data["player"+i] == 1 && loader.data["control"+i] == "Go" )
+							roundStart = true;
+						if( loader.data["player"+i] == 2 && loader.data["control"+i] == "Go" )
+							roundStart = true;
+						if( loader.data["player"+i] == 3 && loader.data["control"+i] == "Go" )
+							roundStart = true;
+						if( loader.data["player"+i] == 4 && loader.data["control"+i] == "Go" )
+							roundStart = true;
 					}
 				}
 				
@@ -470,7 +483,7 @@ package    {
 				showEndPrompt();
 				if( endTime <= 0 )
 				{
-					checkAnyKeyEnd();					
+					roundEnd = true;				
 				}
 				else
 				{
@@ -507,11 +520,7 @@ package    {
 		
 		private function checkAnyKeyStart():void 
 		{
-			roundStartContinueText.visible = true;
-			if (FlxG.keys.any())
-			{
-				roundStart = true;
-			}		
+			roundStartContinueText.visible = true;	
 		}
 		
 		private function checkAnyKeyEnd():void 

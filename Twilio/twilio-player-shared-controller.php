@@ -43,6 +43,10 @@
 				if ( $character == "b" ) {
 				    $control = "Bomb";
 				}
+				
+				if ( $character == "g" ) {
+				    $control = "Go";
+				}
 
 				if ( $control != "None" ) {
 					$query="INSERT INTO controls (id, player, control ) VALUES ('$id', '$player', '$control')";

@@ -9,6 +9,8 @@ package
 		[Embed(source="data/player3.png")] private var ImgPlayer3:Class;
 		[Embed(source="data/player4.png")] private var ImgPlayer4:Class;
 		
+		[Embed(source="../data/particle.png")] private var ImgParticle:Class;
+		
 		public var startTime:Number;
 		
 		public var tileX:Number = 0;
@@ -19,8 +21,7 @@ package
 		public var hitTimer:Number = 2.0;
 		public var moveTo:Tile;
 		
-		public var movementDistance:Number;
-		public var movementSpeed:Number;
+		public var movementDistance:int;
 		public var movementUpDown:Boolean;
 		
 		public var roundOver:Boolean = false;
@@ -29,6 +30,8 @@ package
 		private var _level:Level_Main;
 		
 		public const MOVEMENT_SPEED:Number = 0.25;
+		
+		private var particle:FlxEmitterExt;
 		
 		public function Player( number:int, X:int, Y:int, tileMatrix:Array, level:Level_Main )
 		{
@@ -39,6 +42,11 @@ package
 			height = 40;
 			offset.y = 8;
 
+			// Particle
+			particle = new FlxEmitterExt(0,0,-1);
+			particle.makeParticles(ImgParticle,300,16,true,0.8);
+			PlayState.groupForeground.add(particle);
+			
 			if( number == 1 )
 				loadGraphic(ImgPlayer1,true,true,width,height);
 			else if ( number == 2 )
@@ -64,7 +72,7 @@ package
 			acceleration.y = 0;
 			
 			addAnimation("idle", [0]);
-			addAnimation("run", [0], 18);
+			addAnimation("run", [1,2,3], 14);
 			addAnimation("stun", [0], 15);
 		}
 		
@@ -87,17 +95,16 @@ package
 						
 						moveTo = tile;
 						moving = true;
-//						movementDistance = Math.abs( FlxU.getDistance( this.getMidpoint(), moveTo.getMidpoint() ) );
-//						movementSpeed = ( movementDistance / MOVEMENT_SPEED );
-//						
-//						if( moveTo.x == this.x )
-//						{
-//							movementUpDown = true;
-//						}
-//						else
-//						{
-//							movementUpDown = false;
-//						}
+						movementDistance = Math.abs( FlxU.getDistance( this.getMidpoint(), moveTo.getMidpoint() ) );
+						
+						if( moveTo.x == this.x )
+						{
+							movementUpDown = true;
+						}
+						else
+						{
+							movementUpDown = false;
+						}
 					}
 				}
 			}
@@ -105,40 +112,40 @@ package
 		
 		public function updateMovement():void
 		{
-			x = moveTo.x;
-			y = moveTo.y;	
-			moving = false;
+//			x = moveTo.x;
+//			y = moveTo.y;	
+//			moving = false;
 			
-//			if( !movementUpDown )
-//			{
-//				if( moveTo.y < this.y )
-//				{
-//					this.y -= 4;
-//				}
-//				else
-//				{
-//					this.y += 4;
-//				}
-//			}
-//			else
-//			{
-//				if( moveTo.x < this.x )
-//				{
-//					this.x -= 4;
-//				}
-//				else
-//				{
-//					this.x += 4;
-//				}
-//			}
-//			
-//			if( movementDistance <= 0 )
-//			{
-//				moving = false;
-//				this.x = moveTo.x;
-//				this.y = moveTo.y;
-//			}
-//			movementDistance -= 1.0;
+			if( movementUpDown )
+			{
+				if( moveTo.y < this.y )
+				{
+					this.y -= 2;
+				}
+				else
+				{
+					this.y += 2;
+				}
+			}
+			else
+			{
+				if( moveTo.x < this.x )
+				{
+					this.x -= 2;
+				}
+				else
+				{
+					this.x += 2;
+				}
+			}
+			
+			if( movementDistance <= 0 )
+			{
+				moving = false;
+				this.x = moveTo.x;
+				this.y = moveTo.y;
+			}
+			movementDistance -= 2;
 		}
 		
 		public function setTilePosition( x:int, y:int ):void
@@ -159,6 +166,18 @@ package
 //			velocity.y = 0;
 		}
 		
+		public function particleExplode():void
+		{
+			particle.x = x + width/2;
+			particle.y = y + height/2;
+			
+			particle.gravity = 0;
+			particle.setXSpeed(-50, 50);
+			particle.setYSpeed(-50, 50 );		
+			
+			particle.on = true;
+		}
+		
 		public function dropBomb():void
 		{
 			var bomb:Bomb = new Bomb( tileX, tileY, _tileMatrix, _level.player1, _level.player2, _level.player3, _level.player4);
@@ -168,6 +187,7 @@ package
 		public function catchFire():void 
 		{
 			hit = true;
+			particleExplode();
 			hitTimer = 2.0;
 		}
 		
@@ -241,9 +261,15 @@ package
 				}
 				return;
 			}
+			
 			if( moving )
 			{
 				updateMovement();
+				play("run");
+			}
+			else
+			{
+				play("idle");
 			}
 			
 			if( startTime > 0 )
@@ -262,19 +288,6 @@ package
 			{
 				play("idle");
 				return;
-			}
-
-			// Animation
-			if( !velocity.y )
-			{
-				if(velocity.x == 0)
-				{
-					play("idle");
-				}
-				else
-				{
-					play("run");
-				}
 			}
 		}
 	}
