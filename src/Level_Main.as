@@ -22,14 +22,12 @@ package    {
 		private var controlUpdateTimer:Number;
 		private var player1ControlArray:Array; 
 		private var player2ControlArray:Array; 
+		private var player3ControlArray:Array; 
+		private var player4ControlArray:Array; 
 		
 		// Debug
 		private var player1ControlText:FlxText;
 		private var player2ControlText:FlxText;
-		
-		// HUD
-		private var player1NumberText:FlxText;
-		private var player2NumberText:FlxText;
 		
 		// Round End
 		private var roundEnd:Boolean;
@@ -47,7 +45,7 @@ package    {
 		public const CONTROL_UPDATE_TIME:Number = 0.5;
 		public const TEXT_COLOR:uint = 0xFFFFFFFF;
 		
-		public const DEBUG_CONTROLS:Boolean = true;
+		public const DEBUG_CONTROLS:Boolean = false;
 		
 		public function Level_Main( group:FlxGroup ) {
 			
@@ -67,16 +65,33 @@ package    {
 			// Create tiles
 			createTiles();
 			
+			// Create control array
+			player1ControlArray = new Array();
+			player2ControlArray = new Array();
+			player3ControlArray = new Array();
+			player4ControlArray = new Array();
+			
 			// Create player 1
-			player1 = new Player(1, FlxG.width*1/4,FlxG.height/2,tileMatrix);
+			player1 = new Player(1, FlxG.width*1/4,FlxG.height/2,tileMatrix,this);
 			PlayState.groupPlayer.add(player1);
 			player1.setTilePosition(0,0);
 			
 			// Create player 2
-			player2 = new Player(2, FlxG.width*3/4,FlxG.height/2,tileMatrix);
+			player2 = new Player(2, FlxG.width*3/4,FlxG.height/2,tileMatrix,this);
 			PlayState.groupPlayer.add(player2);
 			player2.player2SetFacing();
-			player2.setTilePosition(BOARD_TILE_WIDTH-1,BOARD_TILE_HEIGHT-1);
+			player2.setTilePosition(BOARD_TILE_WIDTH-1,0);
+			
+			// Create player 3
+			player3 = new Player(1, FlxG.width*1/4,FlxG.height/2,tileMatrix,this);
+			PlayState.groupPlayer.add(player3);
+			player3.setTilePosition(0,BOARD_TILE_HEIGHT-1);
+
+			// Create player 4
+			player4 = new Player(2, FlxG.width*3/4,FlxG.height/2,tileMatrix,this);
+			PlayState.groupPlayer.add(player4);
+			player4.player2SetFacing();
+			player4.setTilePosition(BOARD_TILE_WIDTH-1,BOARD_TILE_HEIGHT-1);
 			
 			player2.setOtherPlayer( player1 );
 			player1.setOtherPlayer( player2 );
@@ -205,11 +220,13 @@ package    {
 
 				for(var i:uint=0; i < loader.data.count; i++) {
 					if( loader.data["player"+i] == 1 ) {
-						player1ControlArray.push( loader.data["control"+i] );
-						player1.processControl( loader.data["control"+i] );
-					} else {
-						player1ControlArray.push( loader.data["control"+i] );
-						player2.processControl( loader.data["control"+i] );
+						player1ControlArray[player1ControlArray.length] = loader.data["control"+i];
+					} else if( loader.data["player"+i] == 2 ) {
+						player2ControlArray[player2ControlArray.length] = loader.data["control"+i];
+					} else if( loader.data["player"+i] == 3 ) {
+						player3ControlArray[player3ControlArray.length] = loader.data["control"+i];
+					} else if( loader.data["player"+i] == 4 ) {
+						player4ControlArray[player4ControlArray.length] = loader.data["control"+i];
 					}
 				}
 			}
@@ -246,11 +263,39 @@ package    {
 			{
 				player1.stop();
 				player2.stop();
+				player3.stop();
+				player4.stop();
 				
 				controlUpdateTimer = CONTROL_UPDATE_TIME;
 				if( !DEBUG_CONTROLS )
 				{
-					updateSQLControls();				
+					updateSQLControls();
+					
+					// Run control from array
+					if( player1ControlArray.length > 0 )
+					{
+						player1.processControl( player1ControlArray[0] );
+						player1ControlArray = player1ControlArray.shift(); 
+					}
+					
+					if( player2ControlArray.length > 0 )
+					{
+						player2.processControl( player2ControlArray[0] );
+						player2ControlArray = player2ControlArray.shift(); 
+					}
+					
+					
+					if( player3ControlArray.length > 0 )
+					{
+						player3.processControl( player3ControlArray[0] );
+						player3ControlArray = player3ControlArray.shift(); 
+					}
+					
+					if( player4ControlArray.length > 0 )
+					{
+						player4.processControl( player4ControlArray[0] );
+						player4ControlArray = player4ControlArray.shift(); 
+					}
 				}
 				else
 				{
@@ -326,6 +371,8 @@ package    {
 		{
 			PlayState._currLevel.player1.roundOver = true;
 			PlayState._currLevel.player2.roundOver = true;
+			PlayState._currLevel.player3.roundOver = true;
+			PlayState._currLevel.player4.roundOver = true;
 			roundEndPlayerText.visible = true;
 			roundEndText.visible = true;
 		}

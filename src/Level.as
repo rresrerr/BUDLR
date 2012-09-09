@@ -6,6 +6,8 @@ package    {
 		
 		public var player1:Player;
 		public var player2:Player;
+		public var player3:Player;
+		public var player4:Player;
 		
 		public var levelSizeX:Number = 0;
 		public var levelSizeY:Number = 0;

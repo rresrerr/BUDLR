@@ -24,10 +24,11 @@ package
 		public var roundOver:Boolean = false;
 		private var _tileMatrix:Array;
 		private var _otherPlayer:Player;
+		private var _level:Level_Main;
 		
 		public const MOVEMENT_SPEED:Number = 0.25;
 		
-		public function Player( number:int, X:int, Y:int, tileMatrix:Array )
+		public function Player( number:int, X:int, Y:int, tileMatrix:Array, level:Level_Main )
 		{
 			super(X,Y);
 
@@ -42,6 +43,7 @@ package
 				loadGraphic(ImgPlayer2,true,true,width,height);
 			
 			_tileMatrix = tileMatrix;
+			_level = level;
 			
 			// Start time
 			startTime = 3.0;
@@ -153,7 +155,7 @@ package
 		
 		public function dropBomb():void
 		{
-			var bomb:Bomb = new Bomb( tileX, tileY, _tileMatrix, this, _otherPlayer);
+			var bomb:Bomb = new Bomb( tileX, tileY, _tileMatrix, _level.player1, _level.player2, _level.player3, _level.player4);
 			PlayState.groupCollects.add(bomb);
 		}
 		
@@ -184,7 +186,7 @@ package
 		{
 			if( hit )
 			{
-				return
+				return;
 			}
 			
 			if( startTime > 0 )
@@ -225,6 +227,14 @@ package
 		{		
 			super.update();
 
+			if( hit )
+			{
+				if( alpha > 0 )
+				{
+					alpha -= 0.04;
+				}
+				return;
+			}
 			if( moving )
 			{
 				updateMovement();

@@ -7,8 +7,10 @@ package
 		[Embed(source='../data/bomb.png')] private var ImgBomb:Class;
 
 		private var _tileMatrix:Array;
-		private var _player:Player;
-		private var _otherPlayer:Player;
+		private var _player1:Player;
+		private var _player2:Player;
+		private var _player3:Player;
+		private var _player4:Player;
 		
 		private var tileX:int;
 		private var tileY:int;
@@ -25,11 +27,13 @@ package
 		public const FIRE_TIME:Number = 0.05;
 		public const FIRE_DISTANCE:uint = 5;
 		
-		public function Bomb( x:Number, y:Number, tileMatrix:Array, player:Player, otherPlayer:Player ):void
+		public function Bomb( x:Number, y:Number, tileMatrix:Array, player1:Player, player2:Player, player3:Player, player4:Player ):void
 		{
 			_tileMatrix = tileMatrix;
-			_otherPlayer = otherPlayer;
-			_player = player;
+			_player1 = player1;
+			_player2 = player2;
+			_player3 = player3;
+			_player4 = player4;
 			
 			tileX = x;
 			tileY = y;
@@ -125,14 +129,24 @@ package
 							tile.spreadFire();
 						}
 						
-						if( _otherPlayer.tileX == x && _otherPlayer.tileY == y )
+						if( _player1.tileX == x && _player1.tileY == y )
 						{
-							_otherPlayer.catchFire();	
+							_player1.catchFire();	
 						}
 						
-						if( _player.tileX == x && _player.tileY == y)
+						if( _player2.tileX == x && _player2.tileY == y)
 						{
-							_player.catchFire();	
+							_player2.catchFire();	
+						}
+						
+						if( _player3.tileX == x && _player3.tileY == y)
+						{
+							_player3.catchFire();	
+						}
+						
+						if( _player4.tileX == x && _player4.tileY == y)
+						{
+							_player4.catchFire();	
 						}
 						return false;
 					}
