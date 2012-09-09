@@ -115,7 +115,7 @@ package    {
 		
 		private function createTiles():void {
 			var startX:int = 64;
-			var startY:int = 308;
+			var startY:int = 312;
 			var offsetX:int = 32;
 			var offsetY:int = -32;
 			var type:int = 0;
