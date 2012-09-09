@@ -6,6 +6,8 @@ package
 	{
 		[Embed(source="data/player1.png")] private var ImgPlayer1:Class;
 		[Embed(source="data/player2.png")] private var ImgPlayer2:Class;
+		[Embed(source="data/player3.png")] private var ImgPlayer3:Class;
+		[Embed(source="data/player4.png")] private var ImgPlayer4:Class;
 		
 		public var startTime:Number;
 		
@@ -39,8 +41,12 @@ package
 
 			if( number == 1 )
 				loadGraphic(ImgPlayer1,true,true,width,height);
-			else
+			else if ( number == 2 )
 				loadGraphic(ImgPlayer2,true,true,width,height);
+			else if ( number == 3 )
+				loadGraphic(ImgPlayer3,true,true,width,height);
+			else if ( number == 4 )
+				loadGraphic(ImgPlayer4,true,true,width,height);
 			
 			_tileMatrix = tileMatrix;
 			_level = level;

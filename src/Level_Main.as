@@ -83,12 +83,12 @@ package    {
 			player2.setTilePosition(BOARD_TILE_WIDTH-1,0);
 			
 			// Create player 3
-			player3 = new Player(1, FlxG.width*1/4,FlxG.height/2,tileMatrix,this);
+			player3 = new Player(3, FlxG.width*1/4,FlxG.height/2,tileMatrix,this);
 			PlayState.groupPlayer.add(player3);
 			player3.setTilePosition(0,BOARD_TILE_HEIGHT-1);
 
 			// Create player 4
-			player4 = new Player(2, FlxG.width*3/4,FlxG.height/2,tileMatrix,this);
+			player4 = new Player(4, FlxG.width*3/4,FlxG.height/2,tileMatrix,this);
 			PlayState.groupPlayer.add(player4);
 			player4.player2SetFacing();
 			player4.setTilePosition(BOARD_TILE_WIDTH-1,BOARD_TILE_HEIGHT-1);
@@ -101,7 +101,7 @@ package    {
 		
 		private function createTiles():void {
 			var startX:int = 64;
-			var startY:int = 288;
+			var startY:int = 308;
 			var offsetX:int = 32;
 			var offsetY:int = -32;
 			var type:int = 0;
@@ -164,7 +164,7 @@ package    {
 			startTime = 3.0;
 			endTime = 3.0;
 			timer = MAX_TIME;
-			timerText = new FlxText(0, 4, FlxG.width, "0:00");
+			timerText = new FlxText(0, 28, FlxG.width, "0:00");
 			timerText.setFormat(null,16,TEXT_COLOR,"center");
 			timerText.scrollFactor.x = timerText.scrollFactor.y = 0;
 			PlayState.groupBackground.add(timerText);
@@ -323,14 +323,21 @@ package    {
 			}
 			
 			// Check round end
-			if( timer <= 0 || player1.hit || player2.hit )
+			var player1Win:Boolean = ( player2.hit && player3.hit && player4.hit );
+			var player2Win:Boolean = ( player1.hit && player3.hit && player4.hit );
+			var player3Win:Boolean = ( player1.hit && player2.hit && player4.hit );
+			var player4Win:Boolean = ( player1.hit && player2.hit && player3.hit );
+			
+			if( timer <= 0 || player1Win || player2Win || player3Win || player4Win )
 			{
-				if( player1.hit && player2.hit )
-					roundEndPlayerText.text = "DRAW";
-				else if( player1.hit )
-					roundEndPlayerText.text = "Player 2 WINS!";
-				else if( player2.hit )
+				if( player1Win )
 					roundEndPlayerText.text = "Player 1 WINS!";
+				if( player2Win )
+					roundEndPlayerText.text = "Player 2 WINS!";	
+				if( player3Win )
+					roundEndPlayerText.text = "Player 3 WINS!";	
+				if( player4Win )
+					roundEndPlayerText.text = "Player 4 WINS!";	
 				else
 					roundEndPlayerText.text = "DRAW";
 				
