@@ -20,8 +20,8 @@ package
 			_player1 = player1;
 			_player2 = player2;
 			
-			addAnimation("fire", [0,1,2,4], 14, false);
-			addAnimation("firespread", [1,2,4], 14, false);
+			addAnimation("fire", [0,1,2,3], 12, false);
+			addAnimation("firespread", [1,2,3], 12, false);
 			
 			updateGraphic(tileType);
 		}

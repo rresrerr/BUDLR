@@ -20,6 +20,8 @@ package    {
 		public var endTime:Number;
 		private var timerText:FlxText;
 		private var controlUpdateTimer:Number;
+		private var player1ControlArray:Array; 
+		private var player2ControlArray:Array; 
 		
 		// Debug
 		private var player1ControlText:FlxText;
@@ -203,10 +205,10 @@ package    {
 
 				for(var i:uint=0; i < loader.data.count; i++) {
 					if( loader.data["player"+i] == 1 ) {
-//						player1ControlText.text = loader.data["control"+i];
+						player1ControlArray.push( loader.data["control"+i] );
 						player1.processControl( loader.data["control"+i] );
 					} else {
-//						player2ControlText.text = loader.data["control"+i];
+						player1ControlArray.push( loader.data["control"+i] );
 						player2.processControl( loader.data["control"+i] );
 					}
 				}
