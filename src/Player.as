@@ -35,7 +35,8 @@ package
 			
 			// Bounding box tweaks
 			width = 32;
-			height = 32;
+			height = 40;
+			offset.y = 8;
 
 			// Start time
 			startTime = 3.0;
