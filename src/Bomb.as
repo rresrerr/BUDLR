@@ -12,7 +12,7 @@ package
 		
 		private var tileX:int;
 		private var tileY:int;
-		private var explodeTimer:Number = 5.0;
+		private var explodeTimer:Number = 8.0;
 		private var flashTimer:Number = 1.0;
 		private var flashRate:uint = 0;
 		private var fireTimer:Number = 0;
@@ -44,10 +44,13 @@ package
 			loadGraphic(ImgBomb, true, true, width, height);
 			
 			addAnimation("ticktock0", [0,1], 2);
-			addAnimation("ticktock1", [0,1], 4);
-			addAnimation("ticktock2", [0,1], 8);
-			addAnimation("ticktock3", [0,1], 16);
-			addAnimation("ticktock4", [0,1], 32);
+			addAnimation("ticktock1", [0,1], 2);
+			addAnimation("ticktock2", [0,1], 4);
+			addAnimation("ticktock3", [0,1], 4);
+			addAnimation("ticktock4", [0,1], 8);
+			addAnimation("ticktock5", [0,1], 8);
+			addAnimation("ticktock6", [0,1], 16);
+			addAnimation("ticktock7", [0,1], 32);
 		}
 		
 		public function getTile( x:int, y:int ):Tile {
@@ -61,32 +64,32 @@ package
 				alpha = 0;
 				if( fireCounter == 0 )
 				{
-					catchFire(tileX, tileY);
+					catchFire(tileX, tileY, true);
 				}
 				else
 				{
 					if( !rightDone )
 					{
-						if( catchFire(tileX + fireCounter, tileY) )
+						if( catchFire(tileX + fireCounter, tileY, false) )
 							rightDone = true;
 					}
 					
 					if( !leftDone )
 					{
-						if( catchFire(tileX - fireCounter, tileY) )
+						if( catchFire(tileX - fireCounter, tileY, false) )
 							leftDone = true;
 						
 					}
 					
 					if( !upDone )
 					{
-						if( catchFire(tileX, tileY + fireCounter) )
+						if( catchFire(tileX, tileY + fireCounter, false) )
 							upDone = true;
 					}
 					
 					if( !downDone )
 					{
-						if( catchFire(tileX, tileY - fireCounter) )
+						if( catchFire(tileX, tileY - fireCounter, false) )
 							downDone = true;
 					}
 				}
@@ -104,7 +107,7 @@ package
 			}
 		}
 		
-		public function catchFire( x:int, y:int ):Boolean
+		public function catchFire( x:int, y:int, first:Boolean ):Boolean
 		{
 			if( x < _tileMatrix.length && x >= 0 )
 			{
@@ -113,7 +116,14 @@ package
 					var tile:Tile = _tileMatrix[x][y];	
 					if( tile && tile.type != 1 )
 					{
-						tile.catchFire();
+						if( first )
+						{
+							tile.catchFire();
+						}
+						else 
+						{
+							tile.spreadFire();
+						}
 						
 						if( _otherPlayer.tileX == x && _otherPlayer.tileY == y )
 						{

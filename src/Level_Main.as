@@ -41,11 +41,11 @@ package    {
 		public const BOARD_TILE_HEIGHT:uint = 9;
 		
 		// Consts
-		public const MAX_TIME:uint = 60;
+		public const MAX_TIME:uint = 120;
 		public const CONTROL_UPDATE_TIME:Number = 0.5;
 		public const TEXT_COLOR:uint = 0xFFFFFFFF;
 		
-		public const DEBUG_CONTROLS:Boolean = false;
+		public const DEBUG_CONTROLS:Boolean = true;
 		
 		public function Level_Main( group:FlxGroup ) {
 			

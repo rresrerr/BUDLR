@@ -15,13 +15,17 @@ package
 		public var moving:Boolean = false; 
 		public var hit:Boolean = false; 
 		public var hitTimer:Number = 2.0;
-		public var moveTo:FlxSprite;
+		public var moveTo:Tile;
+		
+		public var movementDistance:Number;
+		public var movementSpeed:Number;
+		public var movementUpDown:Boolean;
 		
 		public var roundOver:Boolean = false;
 		private var _tileMatrix:Array;
 		private var _otherPlayer:Player;
 		
-		public const MOVEMENT_SPEED:int = 400.0;
+		public const MOVEMENT_SPEED:Number = 0.25;
 		
 		public function Player( number:int, X:int, Y:int, tileMatrix:Array )
 		{
@@ -73,11 +77,60 @@ package
 						tileX = x;
 						tileY = y;
 						
-						this.x = tile.x;
-						this.y = tile.y;
+						moveTo = tile;
+						moving = true;
+						movementDistance = Math.abs( FlxU.getDistance( this.getMidpoint(), moveTo.getMidpoint() ) );
+						movementSpeed = ( movementDistance / MOVEMENT_SPEED );
+						
+						if( moveTo.x == this.x )
+						{
+							movementUpDown = true;
+						}
+						else
+						{
+							movementUpDown = false;
+						}
 					}
 				}
 			}
+		}
+		
+		public function updateMovement():void
+		{
+//			if( !movementUpDown )
+//			{
+//				if( moveTo.y < this.y )
+//				{
+//					this.y -= 4;
+//				}
+//				else
+//				{
+//					this.y += 4;
+//				}
+//			}
+//			else
+//			{
+//				if( moveTo.x < this.x )
+//				{
+//					this.x -= 4;
+//				}
+//				else
+//				{
+//					this.x += 4;
+//				}
+//			}
+//			
+//			if( movementDistance <= 0 )
+//			{
+//				moving = false;
+//				this.x = moveTo.x;
+//				this.y = moveTo.y;
+//			}
+//			movementDistance -= 1.0;
+			
+			x = moveTo.x;
+			y = moveTo.y;	
+			moving = false;
 		}
 		
 		public function setTilePosition( x:int, y:int ):void
@@ -93,9 +146,9 @@ package
 		
 		public function stop():void
 		{
-			moving = false;
-			velocity.x = 0;
-			velocity.y = 0;
+//			moving = false;
+//			velocity.x = 0;
+//			velocity.y = 0;
 		}
 		
 		public function dropBomb():void
@@ -142,24 +195,20 @@ package
 			if( control == "Left" )
 			{
 				facing = LEFT;
-				moving = true;
-				moveToTile( tileX - 1, tileY);
+				moveToTile( tileX - 1, tileY );
 			}
 			else if ( control == "Right" )
 			{
 				facing = RIGHT;
-				moving = true;
-				moveToTile( tileX + 1, tileY);
+				moveToTile( tileX + 1, tileY );
 			}
 			else if ( control == "Up" )
 			{
-				moving = true;
-				moveToTile( tileX, tileY + 1);
+				moveToTile( tileX, tileY + 1 );
 			}
 			else if ( control == "Down" )
 			{
-				moving = true;
-				moveToTile( tileX, tileY - 1);
+				moveToTile( tileX, tileY - 1 );
 			}
 			else if ( control == "Bomb" )
 			{
@@ -176,6 +225,11 @@ package
 		{		
 			super.update();
 
+			if( moving )
+			{
+				updateMovement();
+			}
+			
 			if( startTime > 0 )
 			{
 				startTime -= FlxG.elapsed;

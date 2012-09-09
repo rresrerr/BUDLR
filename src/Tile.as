@@ -7,7 +7,7 @@ package
 		[Embed(source='../data/block.png')] private var ImgTile1:Class;
 		[Embed(source='../data/block.png')] private var ImgTile2:Class;
 		[Embed(source='../data/barrel.png')] private var ImgTile3:Class;
-		[Embed(source='../data/fire.png')] private var ImgTile4:Class;
+		[Embed(source='../data/explosion.png')] private var ImgTile4:Class;
 		
 		private var _player1:Player;
 		private var _player2:Player;
@@ -20,7 +20,8 @@ package
 			_player1 = player1;
 			_player2 = player2;
 			
-			addAnimation("fire", [0,1,2,0,1,2], 8, false);
+			addAnimation("fire", [0,1,2,4], 14, false);
+			addAnimation("firespread", [1,2,4], 14, false);
 			
 			updateGraphic(tileType);
 		}
@@ -44,8 +45,20 @@ package
 					loadGraphic(ImgTile3, true, true, width, height);
 					break;
 				case 3:
+					width = 32;
+					height = 64;
+					offset.y = 38;
+					
 					loadGraphic(ImgTile4, true, true, width, height);
 					play("fire");
+					break;
+				case 4:
+					width = 32;
+					height = 64;
+					offset.y = 38;
+					
+					loadGraphic(ImgTile4, true, true, width, height);
+					play("firespread");
 					break;
 			}
 			type = tileType;
@@ -54,6 +67,11 @@ package
 		public function catchFire():void
 		{
 			updateGraphic( 3 );
+		}
+		
+		public function spreadFire():void
+		{
+			updateGraphic( 4 );
 		}
 		
 		override public function update():void
