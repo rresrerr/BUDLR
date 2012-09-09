@@ -13,6 +13,9 @@ package    {
 		[Embed(source = '../data/background.png')] private var ImgBackground:Class;
 		[Embed(source = '../data/roundover.png')] private var ImgRoundEnd:Class;
 		
+		[Embed(source = '../data/Audio/song.mp3')] private var SndSong:Class;
+		[Embed(source = '../data/Audio/intro.mp3')] private var SndIntro:Class;
+		
 		// Points
 		private var pointsText:FlxText;
 
@@ -50,8 +53,10 @@ package    {
 		public const BOARD_TILE_WIDTH:uint = 11;
 		public const BOARD_TILE_HEIGHT:uint = 9;
 		
+		private var roundEndSound:Boolean = false;
+		
 		// Consts
-		public const MAX_TIME:uint = 120;
+		public const MAX_TIME:uint = 10;
 		public const CONTROL_UPDATE_TIME:Number = 0.25;
 		public const TEXT_COLOR:uint = 0xFFFFFFFF;
 		public const CONTINUE_COLOR:uint = 0x00C0F8;
@@ -106,9 +111,6 @@ package    {
 			PlayState.groupPlayer.add(player4);
 			player4.player2SetFacing();
 			player4.setTilePosition(BOARD_TILE_WIDTH-1,BOARD_TILE_HEIGHT-1);
-			
-			player2.setOtherPlayer( player1 );
-			player1.setOtherPlayer( player2 );
 			
 			super();
 		}
@@ -299,6 +301,10 @@ package    {
 							roundStart = true;
 						if( loader.data["player"+i] == 4 && loader.data["control"+i] == "Go" )
 							roundStart = true;
+						
+						// Music
+						FlxG.play(SndIntro,0.4);
+						FlxG.playMusic(SndSong,0.6);
 					}
 				}
 				
@@ -451,6 +457,14 @@ package    {
 			
 			if( timer <= 0 || player1Win || player2Win || player3Win || player4Win )
 			{
+				// Music
+				FlxG.music.stop();
+				if( !roundEndSound )
+				{	
+					roundEndSound = true;
+					FlxG.play(SndIntro,0.4);
+				}
+				
 				if( player1Win )
 				{
 					player1ControlText.text = "WINNER";

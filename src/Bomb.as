@@ -5,6 +5,7 @@ package
 	public class Bomb extends FlxSprite
 	{
 		[Embed(source='../data/bomb.png')] private var ImgBomb:Class;
+		[Embed(source = '../data/Audio/explosion.mp3')] private var SndExplosion:Class;
 
 		private var _tileMatrix:Array;
 		private var _player1:Player;
@@ -68,6 +69,7 @@ package
 				alpha = 0;
 				if( fireCounter == 0 )
 				{
+					FlxG.play(SndExplosion,1.0);
 					catchFire(tileX, tileY, true);
 				}
 				else

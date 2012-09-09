@@ -10,6 +10,9 @@ package
 		[Embed(source="data/player4.png")] private var ImgPlayer4:Class;
 		
 		[Embed(source="../data/particle.png")] private var ImgParticle:Class;
+		[Embed(source = '../data/Audio/hit.mp3')] private var SndHit:Class;
+		[Embed(source = '../data/Audio/bombplace.mp3')] private var SndBombPlace:Class;
+		[Embed(source = '../data/Audio/move.mp3')] private var SndMove:Class;
 		
 		public var startTime:Number;
 		
@@ -93,6 +96,7 @@ package
 						tileX = x;
 						tileY = y;
 						
+						FlxG.play(SndMove,0.8);
 						moveTo = tile;
 						moving = true;
 						movementDistance = Math.abs( FlxU.getDistance( this.getMidpoint(), moveTo.getMidpoint() ) );
@@ -168,6 +172,8 @@ package
 		
 		public function particleExplode():void
 		{
+			FlxG.play(SndHit,1.0);
+			
 			particle.x = x + width/2;
 			particle.y = y + height/2;
 			
@@ -180,6 +186,7 @@ package
 		
 		public function dropBomb():void
 		{
+			FlxG.play(SndBombPlace,0.5);
 			var bomb:Bomb = new Bomb( tileX, tileY, _tileMatrix, _level.player1, _level.player2, _level.player3, _level.player4);
 			PlayState.groupCollects.add(bomb);
 		}
