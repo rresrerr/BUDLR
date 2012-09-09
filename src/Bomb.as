@@ -13,6 +13,8 @@ package
 		private var tileX:int;
 		private var tileY:int;
 		private var explodeTimer:Number = 5.0;
+		private var flashTimer:Number = 1.0;
+		private var flashRate:uint = 0;
 		private var fireTimer:Number = 0;
 		private var fireCounter:int = 0;
 		private var upDone:Boolean = false;
@@ -39,6 +41,12 @@ package
 			width = 32;
 			height = 32;
 			loadGraphic(ImgBomb, true, true, width, height);
+			
+			addAnimation("ticktock0", [0,1], 2);
+			addAnimation("ticktock1", [0,1], 4);
+			addAnimation("ticktock2", [0,1], 8);
+			addAnimation("ticktock3", [0,1], 16);
+			addAnimation("ticktock4", [0,1], 32);
 		}
 		
 		public function getTile( x:int, y:int ):Tile {
@@ -123,7 +131,9 @@ package
 		}
 		
 		override public function update():void
-		{			
+		{		
+			play("ticktock"+flashRate);
+			
 			if( explodeTimer <= 0 )
 			{
 				updateFire();
@@ -131,6 +141,16 @@ package
 			else
 			{
 				explodeTimer -= FlxG.elapsed;
+				
+				if( flashTimer <= 0 )
+				{
+					flashTimer = 1.0;
+					flashRate++;
+				}
+				else
+				{
+					flashTimer -= FlxG.elapsed;
+				}
 			}
 			super.update();
 		}

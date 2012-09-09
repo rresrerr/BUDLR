@@ -7,6 +7,7 @@ package
 		[Embed(source='../data/block.png')] private var ImgTile1:Class;
 		[Embed(source='../data/block.png')] private var ImgTile2:Class;
 		[Embed(source='../data/barrel.png')] private var ImgTile3:Class;
+		[Embed(source='../data/fire.png')] private var ImgTile4:Class;
 		
 		private var _player1:Player;
 		private var _player2:Player;
@@ -18,6 +19,8 @@ package
 			
 			_player1 = player1;
 			_player2 = player2;
+			
+			addAnimation("fire", [0,1,2,0,1,2], 8, false);
 			
 			updateGraphic(tileType);
 		}
@@ -40,18 +43,26 @@ package
 				case 2:
 					loadGraphic(ImgTile3, true, true, width, height);
 					break;
+				case 3:
+					loadGraphic(ImgTile4, true, true, width, height);
+					play("fire");
+					break;
 			}
 			type = tileType;
 		}
 		
 		public function catchFire():void
 		{
-			updateGraphic( 2 );
+			updateGraphic( 3 );
 		}
 		
 		override public function update():void
 		{			
 			super.update();
+			if( finished )
+			{
+				updateGraphic( 0 );
+			}
 		}
 	}
 }

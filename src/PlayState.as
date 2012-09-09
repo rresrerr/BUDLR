@@ -28,9 +28,8 @@ package
 			
 			this.add(groupBackground);
 			this.add(groupTiles);
-			this.add(groupPlayer);
 			this.add(groupCollects);
-			
+			this.add(groupPlayer);
 			this.add(groupForeground);
 		}
 		
