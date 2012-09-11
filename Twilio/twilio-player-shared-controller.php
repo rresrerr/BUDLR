@@ -49,7 +49,7 @@
 				}
 
 				if ( $control != "None" ) {
-					$query="INSERT INTO controls (id, player, control ) VALUES ('$id', '$player', '$control')";
+					$query="INSERT INTO controls (id, player, control, phonenumber ) VALUES ('$id', '$player', '$control', '$phone_number')";
 					$message = "Player 1, Control Sent: $body";
 					if ( !mysql_query($query) )
 					{

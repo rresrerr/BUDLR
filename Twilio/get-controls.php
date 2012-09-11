@@ -20,7 +20,9 @@
 				$player = mysql_result($result, $i, "player");
 				$control = mysql_result($result, $i, "control");
 				$id = mysql_result($result, $i, "id");
+				$ip = "" + $_SERVER['REMOTE_ADDR'];
 				mysql_query( "UPDATE controls SET registered = 1 WHERE id = '$id'" );
+				mysql_query( "UPDATE controls SET registeredip = $ip WHERE id = '$id'" );
 
 				echo "player$i=$player&control$i=$control&";
 				$i++;

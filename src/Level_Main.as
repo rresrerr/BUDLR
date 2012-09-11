@@ -221,7 +221,7 @@ package    {
 			roundStartForeground.visible = true;
 			PlayState.groupForeground.add(roundStartForeground);
 			
-			roundStartContinueText = new FlxText(0, FlxG.height - 160, FlxG.width, "TEXT \"GO\" TO START");
+			roundStartContinueText = new FlxText(0, FlxG.height - 160, FlxG.width, "PRESS ANY KEY TO START");
 			roundStartContinueText.setFormat(null,16,CONTINUE_COLOR,"center");
 			roundStartContinueText.scrollFactor.x = roundStartContinueText.scrollFactor.y = 0;	
 			roundStartContinueText.visible = false;
@@ -264,7 +264,7 @@ package    {
 			
 			var myLoader:URLLoader = new URLLoader();
 			myLoader.dataFormat = URLLoaderDataFormat.VARIABLES;
-			myLoader.load(new URLRequest("http://travis.aristomatic.com/games/Distrupt/get-controls.php"));
+			myLoader.load(new URLRequest("get-controls.php"));
 			myLoader.addEventListener(Event.COMPLETE, onDataLoad);
 			
 			function onDataLoad(event:Event):void {
@@ -293,18 +293,14 @@ package    {
 					}
 					else
 					{
-						if( loader.data["player"+i] == 1 && loader.data["control"+i] == "Go" )
-							roundStart = true;
-						if( loader.data["player"+i] == 2 && loader.data["control"+i] == "Go" )
-							roundStart = true;
-						if( loader.data["player"+i] == 3 && loader.data["control"+i] == "Go" )
-							roundStart = true;
-						if( loader.data["player"+i] == 4 && loader.data["control"+i] == "Go" )
-							roundStart = true;
-						
-						// Music
-						FlxG.play(SndIntro,0.4);
-						FlxG.playMusic(SndSong,0.6);
+//						if( loader.data["player"+i] == 1 && loader.data["control"+i] == "Go" )
+//							roundStart = true;
+//						if( loader.data["player"+i] == 2 && loader.data["control"+i] == "Go" )
+//							roundStart = true;
+//						if( loader.data["player"+i] == 3 && loader.data["control"+i] == "Go" )
+//							roundStart = true;
+//						if( loader.data["player"+i] == 4 && loader.data["control"+i] == "Go" )
+//							roundStart = true;
 					}
 				}
 				
@@ -535,6 +531,17 @@ package    {
 		private function checkAnyKeyStart():void 
 		{
 			roundStartContinueText.visible = true;	
+			if (FlxG.keys.any())
+			{
+				if( !roundStart )
+				{
+					roundStart = true;
+					
+					// Music
+					FlxG.play(SndIntro,0.4);
+					FlxG.playMusic(SndSong,0.6);
+				}
+			}
 		}
 		
 		private function checkAnyKeyEnd():void 
