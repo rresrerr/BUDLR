@@ -5,6 +5,7 @@ package    {
 	public class Level_Menu extends Level{
 
 		[Embed(source = '../data/menu-background.png')] private var ImgBackground:Class;
+		[Embed(source = '../data/Audio/player-ready.mp3')] private var SndPlayerReady:Class;
 	
 		public var startTime:Number;
 		
@@ -20,11 +21,7 @@ package    {
 		private var player2NumberText:FlxText;
 		private var player3NumberText:FlxText;
 		private var player4NumberText:FlxText;
-		
-		private var player1Ready:Boolean = false;
-		private var player2Ready:Boolean = false;
-		private var player3Ready:Boolean = false;
-		private var player4Ready:Boolean = false;
+
 		private var go:Boolean = false;
 		private var numPlayers:int = 0;
 		
@@ -36,6 +33,11 @@ package    {
 			
 			levelSizeX = 480;
 			levelSizeY = 400;
+			
+			DisruptSF2012.player1Ready = false;
+			DisruptSF2012.player2Ready = false;
+			DisruptSF2012.player3Ready = false;
+			DisruptSF2012.player4Ready = false;
 			
 			startTime = 1.0;
 			
@@ -69,36 +71,36 @@ package    {
 			PlayState.groupForeground.add(readyText);
 			
 			var offset:int = 71;
-			var numberY:int = 110;
-			var readyY:int = 128;
+			var numberY:int = 118;
+			var readyY:int = 136;
 			var readyX:int = 140;
 			player1ReadyText = new FlxText(readyX, readyY, FlxG.width, "READY");
-			player1ReadyText.setFormat(null,32,0xcb3e4e,"center");
+			player1ReadyText.setFormat(null,32,0x19b6d8,"center");
 			player1ReadyText.visible = false;
 			PlayState.groupForeground.add(player1ReadyText);
 			
 			player1NumberText = new FlxText(readyX, numberY, FlxG.width, "555-555-5555");
-			player1NumberText.setFormat(null,16,0xcb3e4e,"center");
+			player1NumberText.setFormat(null,16,0x19b6d8,"center");
 			player1NumberText.visible = false;
 			PlayState.groupForeground.add(player1NumberText);
 			
 			player2ReadyText = new FlxText(readyX, readyY + offset, FlxG.width, "READY");
-			player2ReadyText.setFormat(null,32,0x19b6d8,"center");
+			player2ReadyText.setFormat(null,32,0xff9a00,"center");
 			player2ReadyText.visible = false;
 			PlayState.groupForeground.add(player2ReadyText);
 			
 			player2NumberText = new FlxText(readyX, numberY + offset, FlxG.width, "555-555-5555");
-			player2NumberText.setFormat(null,16,0x19b6d8,"center");
+			player2NumberText.setFormat(null,16,0xff9a00,"center");
 			player2NumberText.visible = false;
 			PlayState.groupForeground.add(player2NumberText);
 			
 			player3ReadyText = new FlxText(readyX, readyY + offset*2, FlxG.width, "READY");
-			player3ReadyText.setFormat(null,32,0xff9a00,"center");
+			player3ReadyText.setFormat(null,32,0xcb3e4e,"center");
 			player3ReadyText.visible = false;
 			PlayState.groupForeground.add(player3ReadyText);
 			
 			player3NumberText = new FlxText(readyX, numberY + offset*2, FlxG.width, "555-555-5555");
-			player3NumberText.setFormat(null,16,0xff9a00,"center");
+			player3NumberText.setFormat(null,16,0xcb3e4e,"center");
 			player3NumberText.visible = false;
 			PlayState.groupForeground.add(player3NumberText);
 			
@@ -123,33 +125,37 @@ package    {
 		
 		override public function update():void
 		{	
-			if( FlxG.keys.ONE && !player1Ready )
+			if( FlxG.keys.ONE && !DisruptSF2012.player1Ready )
 			{
 				numPlayers++;
-				player1Ready = true;
+				DisruptSF2012.player1Ready = true;
 				player1ReadyText.visible = true;
-				player1NumberText.visible = true;
+				FlxG.play(SndPlayerReady);
+//				player1NumberText.visible = true;
 			}
-			else if( FlxG.keys.TWO && !player2Ready )
+			else if( FlxG.keys.TWO && !DisruptSF2012.player2Ready )
 			{
 				numPlayers++;
-				player2Ready = true;
+				DisruptSF2012.player2Ready = true;
 				player2ReadyText.visible = true;
-				player2NumberText.visible = true;
+				FlxG.play(SndPlayerReady);
+//				player2NumberText.visible = true;
 			}
-			else if( FlxG.keys.THREE && !player3Ready )
+			else if( FlxG.keys.THREE && !DisruptSF2012.player3Ready )
 			{
 				numPlayers++;
-				player3Ready = true;
+				DisruptSF2012.player3Ready = true;
 				player3ReadyText.visible = true;
-				player3NumberText.visible = true;
+				FlxG.play(SndPlayerReady);
+//				player3NumberText.visible = true;
 			}
-			else if( FlxG.keys.FOUR && !player4Ready )
+			else if( FlxG.keys.FOUR && !DisruptSF2012.player4Ready )
 			{
 				numPlayers++;
-				player4Ready = true;
+				DisruptSF2012.player4Ready = true;
 				player4ReadyText.visible = true;
-				player4NumberText.visible = true;
+				FlxG.play(SndPlayerReady);
+//				player4NumberText.visible = true;
 			}
 			else if( FlxG.keys.FIVE && numPlayers >= 2 )
 			{

@@ -13,6 +13,11 @@ package    {
 		[Embed(source = '../data/background.png')] private var ImgBackground:Class;
 		[Embed(source = '../data/roundover.png')] private var ImgRoundEnd:Class;
 		
+		[Embed(source = '../data/player-blue-corner.png')] private var ImgBlueCorner:Class;
+		[Embed(source = '../data/player-green-corner.png')] private var ImgGreenCorner:Class;
+		[Embed(source = '../data/player-red-corner.png')] private var ImgRedCorner:Class;
+		[Embed(source = '../data/player-yellow-corner.png')] private var ImgYellowCorner:Class;
+		
 		[Embed(source = '../data/Audio/song.mp3')] private var SndSong:Class;
 		[Embed(source = '../data/Audio/intro.mp3')] private var SndIntro:Class;
 		
@@ -20,8 +25,8 @@ package    {
 		private var pointsText:FlxText;
 
 		// Timer
-		public var startTime:Number;
-		public var endTime:Number;
+		public var startTime:Number = 1.0;
+		public var endTime:Number = 5.0;
 		private var timerText:FlxText;
 		private var controlUpdateTimer:Number;
 		private var player1ControlArray:Array; 
@@ -73,6 +78,9 @@ package    {
 			
 			// Round start
 			roundStart = true;
+			FlxG.play(SndIntro,0.4);
+			FlxG.playMusic(SndSong,0.6);
+			
 			buildRoundStart();
 			
 			// Round end
@@ -91,27 +99,57 @@ package    {
 			player3ControlArray = new Array();
 			player4ControlArray = new Array();
 			
+			var cornerSprite:FlxSprite;
+			
 			// Create player 1
-			player1 = new Player(1, FlxG.width*1/4,FlxG.height/2,tileMatrix,this);
-			PlayState.groupPlayer.add(player1);
-			player1.setTilePosition(0,0);
+			if( DisruptSF2012.player1Ready )
+			{
+				player1 = new Player(1, FlxG.width*1/4,FlxG.height/2,tileMatrix,this);
+				PlayState.groupPlayer.add(player1);
+				player1.setTilePosition(0,0);
+			
+				cornerSprite = new FlxSprite(0,FlxG.height - 118);
+				cornerSprite.loadGraphic(ImgBlueCorner, true, true, 196, 100);	
+				PlayState.groupBackground.add(cornerSprite);
+			}
 			
 			// Create player 2
-			player2 = new Player(2, FlxG.width*3/4,FlxG.height/2,tileMatrix,this);
-			PlayState.groupPlayer.add(player2);
-			player2.player2SetFacing();
-			player2.setTilePosition(BOARD_TILE_WIDTH-1,0);
+			if( DisruptSF2012.player2Ready )
+			{
+				player2 = new Player(2, FlxG.width*3/4,FlxG.height/2,tileMatrix,this);
+				PlayState.groupPlayer.add(player2);
+				player2.player2SetFacing();
+				player2.setTilePosition(BOARD_TILE_WIDTH-1,0);
+				
+				cornerSprite = new FlxSprite(FlxG.width - 196,FlxG.height - 118);
+				cornerSprite.loadGraphic(ImgYellowCorner, true, true, 196, 100);	
+				PlayState.groupBackground.add(cornerSprite);
+			}
 			
 			// Create player 3
-			player3 = new Player(3, FlxG.width*1/4,FlxG.height/2,tileMatrix,this);
-			PlayState.groupPlayer.add(player3);
-			player3.setTilePosition(0,BOARD_TILE_HEIGHT-1);
+			if( DisruptSF2012.player3Ready )
+			{
+				player3 = new Player(3, FlxG.width*1/4,FlxG.height/2,tileMatrix,this);
+				PlayState.groupPlayer.add(player3);
+				player3.setTilePosition(0,BOARD_TILE_HEIGHT-1);
+				
+				cornerSprite = new FlxSprite(0,19);
+				cornerSprite.loadGraphic(ImgRedCorner, true, true, 196, 100);	
+				PlayState.groupBackground.add(cornerSprite);
+			}
 
 			// Create player 4
-			player4 = new Player(4, FlxG.width*3/4,FlxG.height/2,tileMatrix,this);
-			PlayState.groupPlayer.add(player4);
-			player4.player2SetFacing();
-			player4.setTilePosition(BOARD_TILE_WIDTH-1,BOARD_TILE_HEIGHT-1);
+			if( DisruptSF2012.player4Ready )
+			{
+				player4 = new Player(4, FlxG.width*3/4,FlxG.height/2,tileMatrix,this);
+				PlayState.groupPlayer.add(player4);
+				player4.player2SetFacing();
+				player4.setTilePosition(BOARD_TILE_WIDTH-1,BOARD_TILE_HEIGHT-1);
+				
+				cornerSprite = new FlxSprite(FlxG.width - 196,19);
+				cornerSprite.loadGraphic(ImgGreenCorner, true, true, 196, 100);	
+				PlayState.groupBackground.add(cornerSprite);
+			}
 			
 			super();
 		}
@@ -178,8 +216,6 @@ package    {
 			PlayState.groupBackground.add(backgroundSprite);
 			
 			// Timer
-			startTime = 1.0;
-			endTime = 5.0;
 			timer = MAX_TIME;
 			timerText = new FlxText(0, 32, FlxG.width, "0:00");
 			timerText.setFormat(null,16,TEXT_COLOR,"center");
@@ -455,12 +491,6 @@ package    {
 			var player3Win:Boolean = ( player1Hit && player2Hit && player4Hit );
 			var player4Win:Boolean = ( player1Hit && player2Hit && player3Hit );
 			
-			var player1Win:Boolean = false;
-			var player2Win:Boolean = false;
-			var player3Win:Boolean = false;
-			var player4Win:Boolean = false;			
-			
-			
 			if( player1 && player1.hit )
 				player1ControlText.text = "DEAD";
 			if( player2 && player2.hit )
@@ -538,10 +568,10 @@ package    {
 		
 		private function showEndPrompt():void 
 		{
-			PlayState._currLevel.player1.roundOver = true;
-			PlayState._currLevel.player2.roundOver = true;
-			PlayState._currLevel.player3.roundOver = true;
-			PlayState._currLevel.player4.roundOver = true;
+			if( PlayState._currLevel.player1 ) PlayState._currLevel.player1.roundOver = true;
+			if( PlayState._currLevel.player2 ) PlayState._currLevel.player2.roundOver = true;
+			if( PlayState._currLevel.player3 ) PlayState._currLevel.player3.roundOver = true;
+			if( PlayState._currLevel.player4 ) PlayState._currLevel.player4.roundOver = true;
 			roundEndPlayerText.visible = true;
 			roundEndForeground.visible = true;
 //			roundEndText.visible = true;
