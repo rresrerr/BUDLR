@@ -72,6 +72,7 @@ package    {
 			buildHUD();
 			
 			// Round start
+			roundStart = true;
 			buildRoundStart();
 			
 			// Round end
@@ -130,18 +131,18 @@ package    {
 				var column:Array = new Array();
 				for( var y:int = 0; y < BOARD_TILE_HEIGHT; y++ )
 				{
-					if( blockRow && blockColumn )
+					if( blockColumn && blockRow )
 					{
 						type = 1;
-						blockRow = false;
+						blockColumn = false;
 					}
 					else
 					{
 						type = 0;
-						blockRow = true;
+						blockColumn = true;
 					}
 					
-					var tile:Tile = new Tile(type, startX + x*offsetX,  startY + y*offsetY, player1, player2);
+					var tile:Tile = new Tile(type, startX + x*offsetX,  startY + y*offsetY);
 					
 					if( type == 1 )
 						PlayState.groupBackground.add(tile);
@@ -151,15 +152,15 @@ package    {
 					column.push(tile);
 				}
 				
-				if( blockColumn )
+				if( blockRow )
 				{
-					blockColumn = false;
+					blockRow = false;
 				}
 				else
 				{
-					blockColumn = true;
+					blockRow = true;
 				}
-				blockRow = false;
+				blockColumn = false;
 				
 				tileMatrix.push(column);
 			}
@@ -177,7 +178,7 @@ package    {
 			PlayState.groupBackground.add(backgroundSprite);
 			
 			// Timer
-			startTime = 5.0;
+			startTime = 1.0;
 			endTime = 5.0;
 			timer = MAX_TIME;
 			timerText = new FlxText(0, 32, FlxG.width, "0:00");
@@ -277,16 +278,16 @@ package    {
 				for(var i:uint=0; i < loader.data.count; i++) {
 					if( roundStart && timer > 0 )
 					{
-						if( loader.data["player"+i] == 1 && !player1.hit ) {
+						if( loader.data["player"+i] == 1 && player1 && !player1.hit ) {
 							player1ControlArray[player1ControlArray.length] = loader.data["control"+i];
 							player1ControlString = player1ControlString + loader.data["control"+i].charAt(0).toUpperCase();
-						} else if( loader.data["player"+i] == 2 && !player2.hit ) {
+						} else if( loader.data["player"+i] == 2 && player2 && !player2.hit ) {
 							player2ControlArray[player2ControlArray.length] = loader.data["control"+i];
 							player2ControlString = player2ControlString + loader.data["control"+i].charAt(0).toUpperCase();
-						} else if( loader.data["player"+i] == 3 && !player3.hit ) {
+						} else if( loader.data["player"+i] == 3 && player3 && !player3.hit ) {
 							player3ControlArray[player3ControlArray.length] = loader.data["control"+i];
 							player3ControlString = player3ControlString + loader.data["control"+i].charAt(0).toUpperCase();
-						} else if( loader.data["player"+i] == 4 && !player4.hit ) {
+						} else if( loader.data["player"+i] == 4 && player4 && !player4.hit ) {
 							player4ControlArray[player4ControlArray.length] = loader.data["control"+i];
 							player4ControlString = player4ControlString + loader.data["control"+i].charAt(0).toUpperCase();
 						}
@@ -344,10 +345,17 @@ package    {
 		{
 			if( controlUpdateTimer <= 0 )
 			{
-				player1.stop();
-				player2.stop();
-				player3.stop();
-				player4.stop();
+				if( player1 )
+					player1.stop();
+				
+				if( player2 )
+					player2.stop();
+				
+				if( player3 )
+					player3.stop();
+				
+				if( player4 )
+					player4.stop();
 				
 				controlUpdateTimer = CONTROL_UPDATE_TIME;
 				if( !DEBUG_CONTROLS )
@@ -413,16 +421,16 @@ package    {
 				else
 					timerText.text = "" + minutes + ":" + seconds;
 			}
-			
-			// Check round Started
-			if( startTime <= 0 )
-			{
-				checkAnyKeyStart();					
-			}
-			else
-			{
-				startTime -= FlxG.elapsed;
-			}
+
+//			// Check round Started
+//			if( startTime <= 0 )
+//			{
+//				checkAnyKeyStart();					
+//			}
+//			else
+//			{
+//				startTime -= FlxG.elapsed;
+//			}
 			
 			if( !roundStart )
 			{
@@ -437,18 +445,29 @@ package    {
 			}
 			
 			// Check round end
-			var player1Win:Boolean = ( player2.hit && player3.hit && player4.hit );
-			var player2Win:Boolean = ( player1.hit && player3.hit && player4.hit );
-			var player3Win:Boolean = ( player1.hit && player2.hit && player4.hit );
-			var player4Win:Boolean = ( player1.hit && player2.hit && player3.hit );
+			var player1Hit:Boolean = ( !player1 || player1.hit );
+			var player2Hit:Boolean = ( !player2 || player2.hit );
+			var player3Hit:Boolean = ( !player3 || player3.hit );
+			var player4Hit:Boolean = ( !player4 || player4.hit );
 			
-			if( player1.hit )
+			var player1Win:Boolean = ( player2Hit && player3Hit && player4Hit );
+			var player2Win:Boolean = ( player1Hit && player3Hit && player4Hit );
+			var player3Win:Boolean = ( player1Hit && player2Hit && player4Hit );
+			var player4Win:Boolean = ( player1Hit && player2Hit && player3Hit );
+			
+			var player1Win:Boolean = false;
+			var player2Win:Boolean = false;
+			var player3Win:Boolean = false;
+			var player4Win:Boolean = false;			
+			
+			
+			if( player1 && player1.hit )
 				player1ControlText.text = "DEAD";
-			if( player2.hit )
+			if( player2 && player2.hit )
 				player2ControlText.text = "DEAD";
-			if( player3.hit )
+			if( player3 && player3.hit )
 				player3ControlText.text = "DEAD";
-			if( player4.hit )
+			if( player4 && player4.hit )
 				player4ControlText.text = "DEAD";
 			
 			if( timer <= 0 || player1Win || player2Win || player3Win || player4Win )

@@ -9,16 +9,11 @@ package
 		[Embed(source='../data/barrel.png')] private var ImgTile3:Class;
 		[Embed(source='../data/explosion.png')] private var ImgTile4:Class;
 		
-		private var _player1:Player;
-		private var _player2:Player;
 		public var type:int;
 		
-		public function Tile( tileType:Number, X:Number, Y:Number, player1:Player, player2:Player ):void
+		public function Tile( tileType:Number, X:Number, Y:Number ):void
 		{
 			super(X,Y);
-			
-			_player1 = player1;
-			_player2 = player2;
 			
 			addAnimation("fire", [0,1,2,3], 12, false);
 			addAnimation("firespread", [1,2,3], 12, false);

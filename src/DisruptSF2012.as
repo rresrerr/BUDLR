@@ -1,7 +1,7 @@
 package
 {
 	import org.flixel.*; 
-	[SWF(width="960", height="800", backgroundColor="#000000")] 
+	[SWF(width="480", height="400", backgroundColor="#000000")] 
 	
 	public class DisruptSF2012 extends FlxGame
 	{
@@ -9,7 +9,7 @@ package
 		
 		public function DisruptSF2012()
 		{
-			super(480,400,PlayState,2);
+			super(480,400,PlayState,1);
 		}
 	}
 }
