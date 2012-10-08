@@ -301,7 +301,7 @@ package    {
 			
 			var myLoader:URLLoader = new URLLoader();
 			myLoader.dataFormat = URLLoaderDataFormat.VARIABLES;
-			myLoader.load(new URLRequest("get-controls.php"));
+			myLoader.load(new URLRequest("http://travis.aristomatic.com/games/Distrupt/get-controls.php"));
 			myLoader.addEventListener(Event.COMPLETE, onDataLoad);
 			
 			function onDataLoad(event:Event):void {
@@ -399,26 +399,26 @@ package    {
 					updateSQLControls();
 					
 					// Run control from array
-					if( player1ControlArray.length > 0 )
+					if( player1 && player1ControlArray.length > 0 )
 					{
 						player1.processControl( player1ControlArray[0] );
 						player1ControlArray = player1ControlArray.shift(); 
 					}
 					
-					if( player2ControlArray.length > 0 )
+					if( player2 && player2ControlArray.length > 0 )
 					{
 						player2.processControl( player2ControlArray[0] );
 						player2ControlArray = player2ControlArray.shift(); 
 					}
 					
 					
-					if( player3ControlArray.length > 0 )
+					if( player3 && player3ControlArray.length > 0 )
 					{
 						player3.processControl( player3ControlArray[0] );
 						player3ControlArray = player3ControlArray.shift(); 
 					}
 					
-					if( player4ControlArray.length > 0 )
+					if( player4 && player4ControlArray.length > 0 )
 					{
 						player4.processControl( player4ControlArray[0] );
 						player4ControlArray = player4ControlArray.shift(); 

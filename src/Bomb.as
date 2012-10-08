@@ -131,22 +131,22 @@ package
 							tile.spreadFire();
 						}
 						
-						if( _player1.tileX == x && _player1.tileY == y )
-						{
+						if( _player1 && _player1.tileX == x && _player1.tileY == y )
+						{ 
 							_player1.catchFire();	
 						}
 						
-						if( _player2.tileX == x && _player2.tileY == y)
+						if( _player2 && _player2.tileX == x && _player2.tileY == y)
 						{
 							_player2.catchFire();	
 						}
 						
-						if( _player3.tileX == x && _player3.tileY == y)
+						if( _player3 && _player3.tileX == x && _player3.tileY == y)
 						{
 							_player3.catchFire();	
 						}
 						
-						if( _player4.tileX == x && _player4.tileY == y)
+						if( _player4 && _player4.tileX == x && _player4.tileY == y)
 						{
 							_player4.catchFire();	
 						}
