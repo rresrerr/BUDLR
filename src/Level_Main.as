@@ -108,9 +108,9 @@ package    {
 				PlayState.groupPlayer.add(player1);
 				player1.setTilePosition(0,0);
 			
-				cornerSprite = new FlxSprite(0,FlxG.height - 118);
-				cornerSprite.loadGraphic(ImgBlueCorner, true, true, 196, 100);	
-				PlayState.groupBackground.add(cornerSprite);
+//				cornerSprite = new FlxSprite(0,FlxG.height - 118);
+//				cornerSprite.loadGraphic(ImgBlueCorner, true, true, 196, 100);	
+//				PlayState.groupBackground.add(cornerSprite);
 			}
 			
 			// Create player 2
@@ -121,9 +121,9 @@ package    {
 				player2.player2SetFacing();
 				player2.setTilePosition(BOARD_TILE_WIDTH-1,0);
 				
-				cornerSprite = new FlxSprite(FlxG.width - 196,FlxG.height - 118);
-				cornerSprite.loadGraphic(ImgYellowCorner, true, true, 196, 100);	
-				PlayState.groupBackground.add(cornerSprite);
+//				cornerSprite = new FlxSprite(FlxG.width - 196,FlxG.height - 118);
+//				cornerSprite.loadGraphic(ImgYellowCorner, true, true, 196, 100);	
+//				PlayState.groupBackground.add(cornerSprite);
 			}
 			
 			// Create player 3
@@ -133,9 +133,9 @@ package    {
 				PlayState.groupPlayer.add(player3);
 				player3.setTilePosition(0,BOARD_TILE_HEIGHT-1);
 				
-				cornerSprite = new FlxSprite(0,19);
-				cornerSprite.loadGraphic(ImgRedCorner, true, true, 196, 100);	
-				PlayState.groupBackground.add(cornerSprite);
+//				cornerSprite = new FlxSprite(0,19);
+//				cornerSprite.loadGraphic(ImgRedCorner, true, true, 196, 100);	
+//				PlayState.groupBackground.add(cornerSprite);
 			}
 
 			// Create player 4
@@ -146,9 +146,9 @@ package    {
 				player4.player2SetFacing();
 				player4.setTilePosition(BOARD_TILE_WIDTH-1,BOARD_TILE_HEIGHT-1);
 				
-				cornerSprite = new FlxSprite(FlxG.width - 196,19);
-				cornerSprite.loadGraphic(ImgGreenCorner, true, true, 196, 100);	
-				PlayState.groupBackground.add(cornerSprite);
+//				cornerSprite = new FlxSprite(FlxG.width - 196,19);
+//				cornerSprite.loadGraphic(ImgGreenCorner, true, true, 196, 100);	
+//				PlayState.groupBackground.add(cornerSprite);
 			}
 			
 			super();
@@ -156,7 +156,7 @@ package    {
 		
 		private function createTiles():void {
 			var startX:int = 64;
-			var startY:int = 312;
+			var startY:int = 308;
 			var offsetX:int = 32;
 			var offsetY:int = -32;
 			var type:int = 0;
@@ -217,7 +217,7 @@ package    {
 			
 			// Timer
 			timer = MAX_TIME;
-			timerText = new FlxText(0, 32, FlxG.width, "0:00");
+			timerText = new FlxText(0, 14, FlxG.width, "0:00");
 			timerText.setFormat(null,16,TEXT_COLOR,"center");
 			timerText.scrollFactor.x = timerText.scrollFactor.y = 0;
 			PlayState.groupBackground.add(timerText);
