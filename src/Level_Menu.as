@@ -34,10 +34,10 @@ package    {
 			levelSizeX = 480;
 			levelSizeY = 400;
 			
-			DisruptSF2012.player1Ready = false;
-			DisruptSF2012.player2Ready = false;
-			DisruptSF2012.player3Ready = false;
-			DisruptSF2012.player4Ready = false;
+			BUDLR.player1Ready = false;
+			BUDLR.player2Ready = false;
+			BUDLR.player3Ready = false;
+			BUDLR.player4Ready = false;
 			
 			startTime = 1.0;
 			
@@ -125,34 +125,34 @@ package    {
 		
 		override public function update():void
 		{	
-			if( FlxG.keys.ONE && !DisruptSF2012.player1Ready )
+			if( FlxG.keys.ONE && !BUDLR.player1Ready )
 			{
 				numPlayers++;
-				DisruptSF2012.player1Ready = true;
+				BUDLR.player1Ready = true;
 				player1ReadyText.visible = true;
 				FlxG.play(SndPlayerReady);
 //				player1NumberText.visible = true;
 			}
-			else if( FlxG.keys.TWO && !DisruptSF2012.player2Ready )
+			else if( FlxG.keys.TWO && !BUDLR.player2Ready )
 			{
 				numPlayers++;
-				DisruptSF2012.player2Ready = true;
+				BUDLR.player2Ready = true;
 				player2ReadyText.visible = true;
 				FlxG.play(SndPlayerReady);
 //				player2NumberText.visible = true;
 			}
-			else if( FlxG.keys.THREE && !DisruptSF2012.player3Ready )
+			else if( FlxG.keys.THREE && !BUDLR.player3Ready )
 			{
 				numPlayers++;
-				DisruptSF2012.player3Ready = true;
+				BUDLR.player3Ready = true;
 				player3ReadyText.visible = true;
 				FlxG.play(SndPlayerReady);
 //				player3NumberText.visible = true;
 			}
-			else if( FlxG.keys.FOUR && !DisruptSF2012.player4Ready )
+			else if( FlxG.keys.FOUR && !BUDLR.player4Ready )
 			{
 				numPlayers++;
-				DisruptSF2012.player4Ready = true;
+				BUDLR.player4Ready = true;
 				player4ReadyText.visible = true;
 				FlxG.play(SndPlayerReady);
 //				player4NumberText.visible = true;

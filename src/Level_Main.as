@@ -102,7 +102,7 @@ package    {
 			var cornerSprite:FlxSprite;
 			
 			// Create player 1
-			if( DisruptSF2012.player1Ready )
+			if( BUDLR.player1Ready )
 			{
 				player1 = new Player(1, FlxG.width*1/4,FlxG.height/2,tileMatrix,this);
 				PlayState.groupPlayer.add(player1);
@@ -114,7 +114,7 @@ package    {
 			}
 			
 			// Create player 2
-			if( DisruptSF2012.player2Ready )
+			if( BUDLR.player2Ready )
 			{
 				player2 = new Player(2, FlxG.width*3/4,FlxG.height/2,tileMatrix,this);
 				PlayState.groupPlayer.add(player2);
@@ -127,7 +127,7 @@ package    {
 			}
 			
 			// Create player 3
-			if( DisruptSF2012.player3Ready )
+			if( BUDLR.player3Ready )
 			{
 				player3 = new Player(3, FlxG.width*1/4,FlxG.height/2,tileMatrix,this);
 				PlayState.groupPlayer.add(player3);
@@ -139,7 +139,7 @@ package    {
 			}
 
 			// Create player 4
-			if( DisruptSF2012.player4Ready )
+			if( BUDLR.player4Ready )
 			{
 				player4 = new Player(4, FlxG.width*3/4,FlxG.height/2,tileMatrix,this);
 				PlayState.groupPlayer.add(player4);

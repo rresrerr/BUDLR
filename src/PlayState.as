@@ -25,7 +25,7 @@ package
 			groupForeground = new FlxGroup;
 			
 			// Create the level
-			var currLevelClass:Class = levelArray[DisruptSF2012.currLevelIndex];
+			var currLevelClass:Class = levelArray[BUDLR.currLevelIndex];
 			_currLevel = new currLevelClass( groupBackground );
 			
 			this.add(groupBackground);
@@ -52,10 +52,10 @@ package
 		
 		public function nextLevel():void
 		{
-			DisruptSF2012.currLevelIndex++;
-			if( DisruptSF2012.currLevelIndex > levelArray.length - 1 )
+			BUDLR.currLevelIndex++;
+			if( BUDLR.currLevelIndex > levelArray.length - 1 )
 			{
-				DisruptSF2012.currLevelIndex = 0;
+				BUDLR.currLevelIndex = 0;
 			}
 			FlxG.switchState(new PlayState());
 		}

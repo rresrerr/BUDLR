@@ -1,10 +1,11 @@
 package
 {
 	import org.flixel.*; 
-//	[SWF(width="480", height="400", backgroundColor="#000000")]
-	[SWF(width="960", height="800", backgroundColor="#000000")]
+	[SWF(width="480", height="400", backgroundColor="#000000")]
+//	[SWF(width="960", height="800", backgroundColor="#000000")]
+	[Frame(factoryClass="Preloader")]
 	
-	public class DisruptSF2012 extends FlxGame
+	public class BUDLR extends FlxGame
 	{
 		public static var currLevelIndex:uint = 0;
 		public static var player1Ready:Boolean = false;
@@ -12,10 +13,10 @@ package
 		public static var player3Ready:Boolean = false;
 		public static var player4Ready:Boolean = false;
 		
-		public function DisruptSF2012()
+		public function BUDLR()
 		{
-//			super(480,400,PlayState,1);
-			super(480,400,PlayState,2);
+			super(480,400,PlayState,1);
+//			super(480,400,PlayState,2);
 		}
 	}
 }
