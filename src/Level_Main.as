@@ -301,7 +301,7 @@ package    {
 			
 			var myLoader:URLLoader = new URLLoader();
 			myLoader.dataFormat = URLLoaderDataFormat.VARIABLES;
-			myLoader.load(new URLRequest("http://travis.aristomatic.com/games/Distrupt/get-controls.php"));
+			myLoader.load(new URLRequest("http://travis.aristomatic.com/games/BUDLR/get-controls.php"));
 			myLoader.addEventListener(Event.COMPLETE, onDataLoad);
 			
 			function onDataLoad(event:Event):void {

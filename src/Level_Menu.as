@@ -1,5 +1,11 @@
 package    {
 	
+	import flash.events.Event;
+	import flash.net.URLLoader;
+	import flash.net.URLLoaderDataFormat;
+	import flash.net.URLRequest;
+	import flash.net.URLVariables;
+	
 	import org.flixel.*;
 	
 	public class Level_Menu extends Level{
@@ -16,6 +22,12 @@ package    {
 		private var player2ReadyText:FlxText;
 		private var player3ReadyText:FlxText;
 		private var player4ReadyText:FlxText;
+		
+		private var player1Control:Boolean = false;
+		private var player2Control:Boolean = false;
+		private var player3Control:Boolean = false;
+		private var player4Control:Boolean = false;
+		private var playerGoControl:Boolean = false;
 		
 		private var player1NumberText:FlxText;
 		private var player2NumberText:FlxText;
@@ -123,41 +135,101 @@ package    {
 			}
 		}
 		
+		private function updateSQLControls():void {
+			
+			var myLoader:URLLoader = new URLLoader();
+			myLoader.dataFormat = URLLoaderDataFormat.VARIABLES;
+			myLoader.load(new URLRequest("http://travis.aristomatic.com/games/BUDLR/get-controls.php"));
+			myLoader.addEventListener(Event.COMPLETE, onDataLoad);
+			
+			function onDataLoad(event:Event):void {
+				
+				var loader:URLLoader = URLLoader(event.target);
+				
+				for(var i:uint=0; i < loader.data.count; i++) {
+					if( loader.data["player"+i] == 1 && loader.data["control"+i] == "Ready" )
+					{
+						player1NumberText.text = stringToNumberString( loader.data["phonenumber"+i] );
+						player1Control = true;
+					}
+					if( loader.data["player"+i] == 2 && loader.data["control"+i] == "Ready" )
+					{
+						player2NumberText.text = stringToNumberString( loader.data["phonenumber"+i] );
+						player2Control = true;
+					}
+					if( loader.data["player"+i] == 3 && loader.data["control"+i] == "Ready" )
+					{
+						player3NumberText.text = stringToNumberString( loader.data["phonenumber"+i] );
+						player3Control = true;
+					}
+					if( loader.data["player"+i] == 4 && loader.data["control"+i] == "Ready" )
+					{
+						player4NumberText.text = stringToNumberString( loader.data["phonenumber"+i] );
+						player4Control = true;
+					}
+					
+					if( numPlayers >= 2 )
+					{
+						if( loader.data["player"+i] == 1 && loader.data["control"+i] == "Go" )
+							playerGoControl = true;
+						if( loader.data["player"+i] == 2 && loader.data["control"+i] == "Go" )
+							playerGoControl = true;
+						if( loader.data["player"+i] == 3 && loader.data["control"+i] == "Go" )
+							playerGoControl = true;
+						if( loader.data["player"+i] == 4 && loader.data["control"+i] == "Go" )
+							playerGoControl = true;
+					}
+				}
+				
+			}	
+		}
+		
+		public function stringToNumberString( string:String ):String
+		{	
+			var one:String = string.slice(2,5);
+			var two:String = string.slice(5,8);
+			var three:String = string.slice(8,12);
+			var numberString:String = one + "-" + two + "-" + three;
+			return numberString;
+		}
+		
 		override public function update():void
 		{	
-			if( FlxG.keys.ONE && !BUDLR.player1Ready )
+			updateSQLControls();
+			
+			if( ( FlxG.keys.ONE || player1Control ) && !BUDLR.player1Ready )
 			{
 				numPlayers++;
 				BUDLR.player1Ready = true;
 				player1ReadyText.visible = true;
 				FlxG.play(SndPlayerReady);
-//				player1NumberText.visible = true;
+				player1NumberText.visible = true;
 			}
-			else if( FlxG.keys.TWO && !BUDLR.player2Ready )
+			else if( ( FlxG.keys.TWO || player2Control ) && !BUDLR.player2Ready )
 			{
 				numPlayers++;
 				BUDLR.player2Ready = true;
 				player2ReadyText.visible = true;
 				FlxG.play(SndPlayerReady);
-//				player2NumberText.visible = true;
+				player2NumberText.visible = true;
 			}
-			else if( FlxG.keys.THREE && !BUDLR.player3Ready )
+			else if( ( FlxG.keys.THREE || player3Control ) && !BUDLR.player3Ready )
 			{
 				numPlayers++;
 				BUDLR.player3Ready = true;
 				player3ReadyText.visible = true;
 				FlxG.play(SndPlayerReady);
-//				player3NumberText.visible = true;
+				player3NumberText.visible = true;
 			}
-			else if( FlxG.keys.FOUR && !BUDLR.player4Ready )
+			else if( ( FlxG.keys.FOUR || player4Control ) && !BUDLR.player4Ready )
 			{
 				numPlayers++;
 				BUDLR.player4Ready = true;
 				player4ReadyText.visible = true;
 				FlxG.play(SndPlayerReady);
-//				player4NumberText.visible = true;
+				player4NumberText.visible = true;
 			}
-			else if( FlxG.keys.FIVE && numPlayers >= 2 )
+			else if( ( FlxG.keys.FIVE || playerGoControl ) && numPlayers >= 2 )
 			{
 				go = true;
 			}

@@ -47,6 +47,10 @@
 				if ( $character == "g" ) {
 				    $control = "Go";
 				}
+				
+				if ( $body == "ready" ) {
+					$control = "Ready";
+				}
 
 				if ( $control != "None" ) {
 					$query="INSERT INTO controls (id, player, control, phonenumber ) VALUES ('$id', '$player', '$control', '$phone_number')";

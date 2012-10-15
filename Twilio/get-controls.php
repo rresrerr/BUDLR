@@ -21,10 +21,11 @@
 				$control = mysql_result($result, $i, "control");
 				$id = mysql_result($result, $i, "id");
 				$ip = "" + $_SERVER['REMOTE_ADDR'];
+				$phonenumber = mysql_result($result, $i, "phonenumber");
 				mysql_query( "UPDATE controls SET registered = 1 WHERE id = '$id'" );
 				mysql_query( "UPDATE controls SET registeredip = $ip WHERE id = '$id'" );
 
-				echo "player$i=$player&control$i=$control&";
+				echo "player$i=$player&control$i=$control&phonenumber$i=$phonenumber&";
 				$i++;
 			}
 			echo "count=$i";
