@@ -149,21 +149,25 @@ package    {
 				for(var i:uint=0; i < loader.data.count; i++) {
 					if( loader.data["player"+i] == 1 && loader.data["control"+i] == "Ready" )
 					{
+						BUDLR.player1PhoneNumber = loader.data["phonenumber"+i];
 						player1NumberText.text = stringToNumberString( loader.data["phonenumber"+i] );
 						player1Control = true;
 					}
 					if( loader.data["player"+i] == 2 && loader.data["control"+i] == "Ready" )
 					{
+						BUDLR.player2PhoneNumber = loader.data["phonenumber"+i];
 						player2NumberText.text = stringToNumberString( loader.data["phonenumber"+i] );
 						player2Control = true;
 					}
 					if( loader.data["player"+i] == 3 && loader.data["control"+i] == "Ready" )
 					{
+						BUDLR.player3PhoneNumber = loader.data["phonenumber"+i];
 						player3NumberText.text = stringToNumberString( loader.data["phonenumber"+i] );
 						player3Control = true;
 					}
 					if( loader.data["player"+i] == 4 && loader.data["control"+i] == "Ready" )
 					{
+						BUDLR.player3PhoneNumber = loader.data["phonenumber"+i];
 						player4NumberText.text = stringToNumberString( loader.data["phonenumber"+i] );
 						player4Control = true;
 					}

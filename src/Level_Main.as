@@ -315,17 +315,29 @@ package    {
 					if( roundStart && timer > 0 )
 					{
 						if( loader.data["player"+i] == 1 && player1 && !player1.hit ) {
-							player1ControlArray[player1ControlArray.length] = loader.data["control"+i];
-							player1ControlString = player1ControlString + loader.data["control"+i].charAt(0).toUpperCase();
+							if( BUDLR.player1PhoneNumber == loader.data["phonenumber"+i] )
+							{
+								player1ControlArray[player1ControlArray.length] = loader.data["control"+i];
+								player1ControlString = player1ControlString + loader.data["control"+i].charAt(0).toUpperCase();
+							}
 						} else if( loader.data["player"+i] == 2 && player2 && !player2.hit ) {
-							player2ControlArray[player2ControlArray.length] = loader.data["control"+i];
-							player2ControlString = player2ControlString + loader.data["control"+i].charAt(0).toUpperCase();
+							if( BUDLR.player2PhoneNumber == loader.data["phonenumber"+i] )
+							{
+								player2ControlArray[player2ControlArray.length] = loader.data["control"+i];
+								player2ControlString = player2ControlString + loader.data["control"+i].charAt(0).toUpperCase();
+							}
 						} else if( loader.data["player"+i] == 3 && player3 && !player3.hit ) {
-							player3ControlArray[player3ControlArray.length] = loader.data["control"+i];
-							player3ControlString = player3ControlString + loader.data["control"+i].charAt(0).toUpperCase();
+							if( BUDLR.player3PhoneNumber == loader.data["phonenumber"+i] )
+							{
+								player3ControlArray[player3ControlArray.length] = loader.data["control"+i];
+								player3ControlString = player3ControlString + loader.data["control"+i].charAt(0).toUpperCase();
+							}
 						} else if( loader.data["player"+i] == 4 && player4 && !player4.hit ) {
-							player4ControlArray[player4ControlArray.length] = loader.data["control"+i];
-							player4ControlString = player4ControlString + loader.data["control"+i].charAt(0).toUpperCase();
+							if( BUDLR.player4PhoneNumber == loader.data["phonenumber"+i] )
+							{
+								player4ControlArray[player4ControlArray.length] = loader.data["control"+i];
+								player4ControlString = player4ControlString + loader.data["control"+i].charAt(0).toUpperCase();
+							}
 						}
 					}
 					else

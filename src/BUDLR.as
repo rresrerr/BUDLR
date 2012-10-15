@@ -13,6 +13,11 @@ package
 		public static var player3Ready:Boolean = false;
 		public static var player4Ready:Boolean = false;
 		
+		public static var player1PhoneNumber:String = "";
+		public static var player2PhoneNumber:String = "";
+		public static var player3PhoneNumber:String = "";
+		public static var player4PhoneNumber:String = "";
+		
 		public function BUDLR()
 		{
 			super(480,400,PlayState,1);
