@@ -42,7 +42,7 @@ package
 
 			// Bounding box tweaks
 			width = 32;
-			height = 40;
+			height = 38;
 			offset.y = 8;
 
 			// Particle
