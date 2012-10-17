@@ -6,7 +6,6 @@ package
 	{
 		[Embed(source='../data/block.png')] private var ImgTile1:Class;
 		[Embed(source='../data/block.png')] private var ImgTile2:Class;
-		[Embed(source='../data/barrel.png')] private var ImgTile3:Class;
 		[Embed(source='../data/explosion.png')] private var ImgTile4:Class;
 		
 		public var type:int;
@@ -35,9 +34,6 @@ package
 					break;
 				case 1:
 					loadGraphic(ImgTile2, true, true, width, height);
-					break;
-				case 2:
-					loadGraphic(ImgTile3, true, true, width, height);
 					break;
 				case 3:
 					width = 32;
