@@ -52,6 +52,8 @@ package
 		
 		public function nextLevel():void
 		{
+			_currLevel.destroy();
+			
 			BUDLR.currLevelIndex++;
 			if( BUDLR.currLevelIndex > levelArray.length - 1 )
 			{

@@ -63,7 +63,7 @@ package    {
 		// Consts
 		public const MAX_TIME:uint = 120;
 		public const CONTROL_UPDATE_TIME:Number = 0.25;
-		public const TEXT_COLOR:uint = 0xFFFFFFFF;
+		public const TEXT_COLOR:uint = 0xa7f2cd;
 		public const CONTINUE_COLOR:uint = 0x00C0F8;
 		
 		public const DEBUG_CONTROLS:Boolean = false;
@@ -301,17 +301,20 @@ package    {
 			
 			var myLoader:URLLoader = new URLLoader();
 			myLoader.dataFormat = URLLoaderDataFormat.VARIABLES;
-			myLoader.load(new URLRequest("http://travis.aristomatic.com/games/BUDLR/get-controls.php"));
-			myLoader.addEventListener(Event.COMPLETE, onDataLoad);
+			myLoader.load(new URLRequest("BUDLR/get-controls.php"));
+			myLoader.addEventListener(Event.COMPLETE, onDataLoadMain);
+		
+			var player1ControlString:String = "";
+			var player2ControlString:String = "";
+			var player3ControlString:String = "";
+			var player4ControlString:String = "";
+
+			function onDataLoadMain(event:Event):void {
 			
-			function onDataLoad(event:Event):void {
 				var loader:URLLoader = URLLoader(event.target);
 
-				var player1ControlString:String = "";
-				var player2ControlString:String = "";
-				var player3ControlString:String = "";
-				var player4ControlString:String = "";
 				for(var i:uint=0; i < loader.data.count; i++) {
+					
 					if( roundStart && timer > 0 )
 					{
 						if( loader.data["player"+i] == 1 && player1 && !player1.hit ) {
@@ -352,17 +355,16 @@ package    {
 //							roundStart = true;
 					}
 				}
-				
-				if( player1ControlString != "" )
-					player1ControlText.text = player1ControlString;
-				if( player2ControlString != "" )
-					player2ControlText.text = player2ControlString;
-				if( player3ControlString != "" )
-					player3ControlText.text = player3ControlString;
-				if( player4ControlString != "" )
-					player4ControlText.text = player4ControlString;
 			}
-			
+
+			if( player1ControlString != "" )
+				player1ControlText.text = player1ControlString;
+			if( player2ControlString != "" )
+				player2ControlText.text = player2ControlString;
+			if( player3ControlString != "" )
+				player3ControlText.text = player3ControlString;
+			if( player4ControlString != "" )
+				player4ControlText.text = player4ControlString;
 		}
 		
 		private function updateKeyboardControls():void {

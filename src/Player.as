@@ -41,7 +41,7 @@ package
 			super(X,Y);
 
 			// Bounding box tweaks
-			width = 32;
+			width = 39;
 			height = 38;
 			offset.y = 8;
 

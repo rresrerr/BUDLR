@@ -2,7 +2,7 @@ package
 {
 	import org.flixel.*; 
 //	[SWF(width="480", height="400", backgroundColor="#000000")]
-	[SWF(width="960", height="800", backgroundColor="#000000")]
+	[SWF(width="960", height="760", backgroundColor="#000000")]
 	[Frame(factoryClass="Preloader")]
 	
 	public class BUDLR extends FlxGame
