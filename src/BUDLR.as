@@ -7,7 +7,7 @@ package
 	import org.flixel.FlxG;
 	import org.flixel.FlxGame;
 
-//	[SWF(width="480", height="400", backgroundColor="#000000")]
+//	[SWF(width="640", height="320", backgroundColor="#000000")]
 	[SWF(width="1920", height="1080", backgroundColor="#000000")]
 //	[Frame(factoryClass="Preloader")]
 	
@@ -26,7 +26,7 @@ package
 		
 		public function BUDLR()
 		{
-//			super(480,400,PlayState,1);
+//			super(640,320,PlayState,1);
 			super(640,360,PlayState,3);
 			
 			FlxG.stage.displayState = StageDisplayState.FULL_SCREEN;

@@ -6,9 +6,13 @@ package
 	{
 		[Embed(source='../data/block.png')] private var ImgTile1:Class;
 		[Embed(source='../data/block.png')] private var ImgTile2:Class;
+		
 		[Embed(source='../data/explosion.png')] private var ImgTile4:Class;
+		[Embed(source='../data/destruct.png')] private var ImgTile5:Class;
 		
 		public var type:int;
+		public var tileX:int;
+		public var tileY:int;
 		
 		public function Tile( tileType:Number, X:Number, Y:Number ):void
 		{
@@ -24,6 +28,7 @@ package
 		{
 			width = 32;
 			height = 36;
+			offset.x = 0;
 			offset.y = 4;
 			alpha = 1;
 			
@@ -36,20 +41,27 @@ package
 					loadGraphic(ImgTile2, true, true, width, height);
 					break;
 				case 3:
-					width = 32;
+					width = 33;
 					height = 64;
+					offset.x = 0;
 					offset.y = 38;
 					
 					loadGraphic(ImgTile4, true, true, width, height);
 					play("fire");
 					break;
 				case 4:
-					width = 32;
+					width = 33;
 					height = 64;
+					offset.x = 0;
 					offset.y = 38;
 					
 					loadGraphic(ImgTile4, true, true, width, height);
 					play("firespread");
+					break;
+				case 5:
+					height = 40;
+					offset.y = 8;
+					loadGraphic(ImgTile5, true, true, width, height);
 					break;
 			}
 			type = tileType;

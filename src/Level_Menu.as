@@ -55,9 +55,9 @@ package    {
 
 		private var go:Boolean = false;
 		private var numPlayers:int = 0;
-		private var minPlayers:int = 1;
+		private var minPlayers:int = 2;
 		
-		private var tutorialCountdownTimer:Number = 13;
+		private var tutorialCountdownTimer:Number = 5;
 		private var tutorialCountdownText:FlxText;
 		private var tutorialCountdownDone:Boolean = false;
 	

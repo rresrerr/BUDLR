@@ -63,7 +63,7 @@ package
 			_level = level;
 			
 			// Start time
-			startTime = 3.0;
+			startTime = 0.0;
 
 			// Basic player physics
 			drag.x = MOVEMENT_SPEED*8;
@@ -91,7 +91,7 @@ package
 				if( y >= 0 && y < _tileMatrix[x].length )
 				{
 					var tile:Tile = _tileMatrix[x][y];	
-					if( tile.type != 1 )
+					if( tile.type != 1 && tile.type != 5 )
 					{
 						tileX = x;
 						tileY = y;
@@ -187,7 +187,8 @@ package
 		public function dropBomb():void
 		{
 			FlxG.play(SndBombPlace,0.5);
-			var bomb:Bomb = new Bomb( tileX, tileY, _tileMatrix, _level.player1, _level.player2, _level.player3, _level.player4);
+			var bomb:Bomb = new Bomb( tileX, tileY, _tileMatrix, _level.player1, _level.player2, _level.player3, _level.player4, _level);
+			_level.bombArray.push( bomb );
 			PlayState.groupCollects.add(bomb);
 		}
 		

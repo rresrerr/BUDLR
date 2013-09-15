@@ -1,6 +1,7 @@
 package
 {
 	import org.flixel.*;
+	import org.flixel.FlxSortGroup;
 	
 	public class PlayState extends BasePlayState
 	{
@@ -9,7 +10,8 @@ package
 		public static var groupBackground:FlxGroup;
 		public static var groupPlayer:FlxGroup;
 		public static var groupCollects:FlxGroup;
-		public static var groupTiles:FlxGroup;
+		public static var groupCollectLabels:FlxGroup;
+		public static var groupTiles:FlxSortGroup;
 		public static var groupBlocks:FlxGroup;
 		public static var groupForeground:FlxGroup;
 		
@@ -20,7 +22,8 @@ package
 			groupBackground = new FlxGroup;
 			groupPlayer = new FlxGroup;
 			groupCollects = new FlxGroup;
-			groupTiles = new FlxGroup;
+			groupCollectLabels = new FlxGroup;
+			groupTiles = new FlxSortGroup;
 			groupBlocks = new FlxGroup;
 			groupForeground = new FlxGroup;
 			
@@ -29,8 +32,9 @@ package
 			_currLevel = new currLevelClass( groupBackground );
 			
 			this.add(groupBackground);
-			this.add(groupTiles);
 			this.add(groupCollects);
+			this.add(groupCollectLabels);
+			this.add(groupTiles);
 			this.add(groupPlayer);
 			this.add(groupBlocks);
 			this.add(groupForeground);

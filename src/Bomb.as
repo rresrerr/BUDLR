@@ -1,6 +1,8 @@
 package
 {
-	import org.flixel.*;
+	import org.flixel.FlxG;
+	import org.flixel.FlxSprite;
+	import org.flixel.FlxText;
 	
 	public class Bomb extends FlxSprite
 	{
@@ -13,9 +15,11 @@ package
 		private var _player3:Player;
 		private var _player4:Player;
 		
-		private var tileX:int;
-		private var tileY:int;
-		private var explodeTimer:Number = 8.0;
+		private var timerText:FlxText;
+		
+		public var tileX:int;
+		public var tileY:int;
+		private var explodeTimer:Number = 11.0;
 		private var flashTimer:Number = 1.0;
 		private var flashRate:uint = 0;
 		private var fireTimer:Number = 0;
@@ -25,16 +29,21 @@ package
 		private var leftDone:Boolean = false;
 		private var rightDone:Boolean = false;		
 		
+		private var _level:Level_Main;
+		
+		public const TEXT_COLOR:uint = 0xFFFFFF;
+		
 		public const FIRE_TIME:Number = 0.05;
 		public const FIRE_DISTANCE:uint = 5;
 		
-		public function Bomb( x:Number, y:Number, tileMatrix:Array, player1:Player, player2:Player, player3:Player, player4:Player ):void
+		public function Bomb( x:Number, y:Number, tileMatrix:Array, player1:Player, player2:Player, player3:Player, player4:Player, level:Level_Main ):void
 		{
 			_tileMatrix = tileMatrix;
 			_player1 = player1;
 			_player2 = player2;
 			_player3 = player3;
 			_player4 = player4;
+			_level = level;
 			
 			tileX = x;
 			tileY = y;
@@ -48,14 +57,43 @@ package
 			offset.y = 6;
 			loadGraphic(ImgBomb, true, true, width, height);
 			
+			timerText = new FlxText(0, 0, 64, "10");
+			timerText.x = 0;
+			timerText.y = 0;
+			timerText.offset.x = timerText.width/2 - 14;
+			timerText.offset.y = timerText.height/2 - 9;
+			timerText.setFormat(null,16,TEXT_COLOR,"center",20);
+			timerText.visible = true;
+			PlayState.groupCollectLabels.add(timerText);
+			
 			addAnimation("ticktock0", [0,1], 2);
 			addAnimation("ticktock1", [0,1], 2);
-			addAnimation("ticktock2", [0,1], 4);
+			addAnimation("ticktock2", [0,1], 2);
 			addAnimation("ticktock3", [0,1], 4);
-			addAnimation("ticktock4", [0,1], 8);
-			addAnimation("ticktock5", [0,1], 8);
-			addAnimation("ticktock6", [0,1], 16);
-			addAnimation("ticktock7", [0,1], 32);
+			addAnimation("ticktock4", [0,1], 4);
+			addAnimation("ticktock5", [0,1], 4);
+			addAnimation("ticktock6", [0,1], 8);
+			addAnimation("ticktock7", [0,1], 8);
+			addAnimation("ticktock8", [0,1], 8);
+			addAnimation("ticktock9", [0,1], 16);
+			addAnimation("ticktock10", [0,1], 32);
+			
+//			addAnimation("ticktock0", [0,1], 2);
+//			addAnimation("ticktock1", [0,1], 2);
+//			addAnimation("ticktock2", [0,1], 2);
+//			addAnimation("ticktock3", [0,1], 2);
+//			addAnimation("ticktock4", [0,1], 4);
+//			addAnimation("ticktock5", [0,1], 4);
+//			addAnimation("ticktock6", [0,1], 4);
+//			addAnimation("ticktock7", [0,1], 4);
+//			addAnimation("ticktock8", [0,1], 8);
+//			addAnimation("ticktock9", [0,1], 8);
+//			addAnimation("ticktock10", [0,1], 8);
+//			addAnimation("ticktock11", [0,1], 8);
+//			addAnimation("ticktock12", [0,1], 16);
+//			addAnimation("ticktock13", [0,1], 16);
+//			addAnimation("ticktock14", [0,1], 32);
+//			addAnimation("ticktock15", [0,1], 32);
 		}
 		
 		public function getTile( x:int, y:int ):Tile {
@@ -67,10 +105,15 @@ package
 			if( fireTimer <= 0 )
 			{
 				alpha = 0;
+				timerText.visible = false;
+				
 				if( fireCounter == 0 )
 				{
 					FlxG.play(SndExplosion,1.0);
 					catchFire(tileX, tileY, true);
+					
+					// Remove bomb from array
+					_level.bombArray.splice( _level.bombArray.indexOf( this ), 1 );
 				}
 				else
 				{
@@ -122,6 +165,13 @@ package
 					var tile:Tile = _tileMatrix[x][y];	
 					if( tile && tile.type != 1 )
 					{
+						// Destruct
+						if( tile.type == 5 )
+						{
+							tile.spreadFire();
+							return true;
+						}
+						
 						if( first )
 						{
 							tile.catchFire();
@@ -159,6 +209,9 @@ package
 		
 		override public function update():void
 		{		
+			timerText.x = this.x;
+			timerText.y = this.y;
+			
 			play("ticktock"+flashRate);
 			
 			if( explodeTimer <= 0 )
@@ -178,6 +231,9 @@ package
 				{
 					flashTimer -= FlxG.elapsed;
 				}
+				
+				var explodeTimerInt:int = explodeTimer;
+				timerText.text = "" + explodeTimerInt + "";
 			}
 			super.update();
 		}

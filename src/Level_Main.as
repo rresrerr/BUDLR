@@ -6,7 +6,10 @@ package    {
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
 	
-	import org.flixel.*;
+	import org.flixel.FlxG;
+	import org.flixel.FlxGroup;
+	import org.flixel.FlxSprite;
+	import org.flixel.FlxText;
 	
 	public class Level_Main extends Level{
 	
@@ -21,11 +24,14 @@ package    {
 		[Embed(source = '../data/Audio/song.mp3')] private var SndSong:Class;
 		[Embed(source = '../data/Audio/intro.mp3')] private var SndIntro:Class;
 		
+		public var gameOver:Boolean = false;
+		public var bombArray:Array;
+		
 		// Points
 		private var pointsText:FlxText;
 
 		// Timer
-		public var startTime:Number = 1.0;
+		public var startTime:Number = 0.0;
 		public var endTime:Number = 5.0;
 		private var timerText:FlxText;
 		private var controlUpdateTimer:Number;
@@ -60,18 +66,29 @@ package    {
 		
 		private var roundEndSound:Boolean = false;
 		
+		// Bombs
+		public var randomBombTimer:Number = 0;
+		public var randomBombTimerMax:Number = 3;
+		public var randomBombTimerDec:Number = 0.5;
+		public var randomBombTimerMin:Number = 1;
+		public var randomBombTextDir:Boolean = false;
+		public var randomBombTextScaleDec:Number = 0.005;
+		public var randomBombTextScaleMax:Number = 0.9;
+		
 		// Consts
-		public const MAX_TIME:uint = 120;
+		public const MAX_TIME:uint = 5;
 		public const CONTROL_UPDATE_TIME:Number = 0.25;
 		public const TEXT_COLOR:uint = 0xa7f2cd;
 		public const CONTINUE_COLOR:uint = 0x00C0F8;
 		
-		public const DEBUG_CONTROLS:Boolean = false;
+		public const DEBUG_CONTROLS:Boolean = true;
 		
 		public function Level_Main( group:FlxGroup ) {
 			
 			levelSizeX = FlxG.width;
 			levelSizeY = FlxG.height;
+			
+			bombArray = new Array();
 			
 			// HUD
 			buildHUD();
@@ -101,16 +118,19 @@ package    {
 			
 			var cornerSprite:FlxSprite;
 			
-			BUDLR.player1Ready = true;
-			BUDLR.player2Ready = true;
-			BUDLR.player3Ready = true;
-			BUDLR.player4Ready = true;
+			if( DEBUG_CONTROLS )
+			{
+				BUDLR.player1Ready = true;
+				BUDLR.player2Ready = true;
+				BUDLR.player3Ready = true;
+				BUDLR.player4Ready = true;
+			}
 				
 			// Create player 1
 			if( BUDLR.player1Ready )
 			{
 				player1 = new Player(1, FlxG.width*1/4,FlxG.height/2,tileMatrix,this);
-				PlayState.groupPlayer.add(player1);
+				PlayState.groupTiles.add(player1);
 				player1.setTilePosition(0,0);
 			
 //				cornerSprite = new FlxSprite(79,FlxG.height - 102);
@@ -122,7 +142,7 @@ package    {
 			if( BUDLR.player2Ready )
 			{
 				player2 = new Player(2, FlxG.width*3/4,FlxG.height/2,tileMatrix,this);
-				PlayState.groupPlayer.add(player2);
+				PlayState.groupTiles.add(player2);
 				player2.player2SetFacing();
 				player2.setTilePosition(BOARD_TILE_WIDTH-1,0);
 				
@@ -135,7 +155,7 @@ package    {
 			if( BUDLR.player3Ready )
 			{
 				player3 = new Player(3, FlxG.width*1/4,FlxG.height/2,tileMatrix,this);
-				PlayState.groupPlayer.add(player3);
+				PlayState.groupTiles.add(player3);
 				player3.setTilePosition(0,BOARD_TILE_HEIGHT-1);
 				
 //				cornerSprite = new FlxSprite(79,2);
@@ -147,7 +167,7 @@ package    {
 			if( BUDLR.player4Ready )
 			{
 				player4 = new Player(4, FlxG.width*3/4,FlxG.height/2,tileMatrix,this);
-				PlayState.groupPlayer.add(player4);
+				PlayState.groupTiles.add(player4);
 				player4.player2SetFacing();
 				player4.setTilePosition(BOARD_TILE_WIDTH-1,BOARD_TILE_HEIGHT-1);
 				
@@ -169,6 +189,18 @@ package    {
 			
 			var blockRow:Boolean = false;
 			var blockColumn:Boolean = false;
+			
+			var destructRow1:Array = [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0];
+			var destructRow2:Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+			var destructRow3:Array = [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0];	
+			var destructRow4:Array = [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1];	
+			var destructRow5:Array = [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1];	
+			var destructRow6:Array = [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1];	
+			var destructRow7:Array = [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0];	
+			var destructRow8:Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];	
+			var destructRow9:Array = [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0];	
+			var destructs:Array = [destructRow9, destructRow8, destructRow7, destructRow6, destructRow5, destructRow4, destructRow3, destructRow2, destructRow1 ];
+
 			for( var x:int = 0; x < BOARD_TILE_WIDTH; x++ )
 			{	
 				var column:Array = new Array();
@@ -185,10 +217,17 @@ package    {
 						blockColumn = true;
 					}
 					
+					if( destructs[y][x] == 1 )
+					{
+						type = 5;
+					}
+					
 					var tile:Tile = new Tile(type, startX + x*offsetX,  startY + y*offsetY);
+					tile.tileX = x;
+					tile.tileY = y;
 					
 					if( type == 1 )
-						PlayState.groupBackground.add(tile);
+						PlayState.groupTiles.add(tile);
 					else
 						PlayState.groupTiles.add(tile);
 					
@@ -222,7 +261,7 @@ package    {
 			
 			// Timer
 			timer = MAX_TIME;
-			timerText = new FlxText(0, -4, FlxG.width, "0:00");
+			timerText = new FlxText(0, -4, FlxG.width, "");
 			timerText.setFormat(null,32,TEXT_COLOR,"center");
 			timerText.scrollFactor.x = timerText.scrollFactor.y = 0;
 			PlayState.groupBackground.add(timerText);
@@ -463,15 +502,15 @@ package    {
 			{
 				startTime -= FlxG.elapsed;
 			}
-			
-			// Update timer text
-			if( timer >= 0 )
-			{
-				if( seconds < 10 )
-					timerText.text = "" + minutes + ":0" + seconds;
-				else
-					timerText.text = "" + minutes + ":" + seconds;
-			}
+//			
+//			// Update timer text
+//			if( timer >= 0 )
+//			{
+//				if( seconds < 10 )
+//					timerText.text = "" + minutes + ":0" + seconds;
+//				else
+//					timerText.text = "" + minutes + ":" + seconds;
+//			}
 
 //			// Check round Started
 //			if( startTime <= 0 )
@@ -515,43 +554,48 @@ package    {
 			if( player4 && player4.hit )
 				player4ControlText.text = "DEAD";
 			
-			if( timer <= 0 || player1Win || player2Win || player3Win || player4Win )
+			if( player1Win || player2Win || player3Win || player4Win )
+//			if( timer <= 0 || player1Win || player2Win || player3Win || player4Win )
 			{
 				// Music
 //				FlxG.music.stop();
-				if( !roundEndSound )
-				{	
-					roundEndSound = true;
-					FlxG.play(SndIntro,0.4);
-				}
 				
-				if( player1Win )
+				if( !gameOver )
 				{
-					player1ControlText.text = "WINNER";
-					roundEndPlayerText.text = "BLUE WIN";
-					roundEndPlayerText.color = 0x19b6d8;
-				}
-				else if( player2Win )
-				{
-					player2ControlText.text = "WINNER";
-					roundEndPlayerText.text = "YELLO WIN";	
-					roundEndPlayerText.color = 0xff9a00;
-				}
-				else if( player3Win )
-				{
-					player3ControlText.text = "WINNER";
-					roundEndPlayerText.text = "RED WINS";	
-					roundEndPlayerText.color = 0xcb3e4e;
-				}
-				else if( player4Win )
-				{
-					player4ControlText.text = "WINNER";
-					roundEndPlayerText.text = "GREEN WIN";	
-					roundEndPlayerText.color = 0x11d27a;
-				}
-				else
-				{
-					roundEndPlayerText.text = "DRAW";
+					if( !roundEndSound )
+					{	
+						roundEndSound = true;
+						FlxG.play(SndIntro,0.4);
+					}
+					
+					if( player1Win )
+					{
+						player1ControlText.text = "WINNER";
+						roundEndPlayerText.text = "BLUE WIN";
+						roundEndPlayerText.color = 0x19b6d8;
+					}
+					else if( player2Win )
+					{
+						player2ControlText.text = "WINNER";
+						roundEndPlayerText.text = "YELLO WIN";	
+						roundEndPlayerText.color = 0xff9a00;
+					}
+					else if( player3Win )
+					{
+						player3ControlText.text = "WINNER";
+						roundEndPlayerText.text = "RED WINS";	
+						roundEndPlayerText.color = 0xcb3e4e;
+					}
+					else if( player4Win )
+					{
+						player4ControlText.text = "WINNER";
+						roundEndPlayerText.text = "GREEN WIN";	
+						roundEndPlayerText.color = 0x11d27a;
+					}
+					else
+					{
+						roundEndPlayerText.text = "DRAW";
+					}
 				}
 				
 				showEndPrompt();
@@ -567,11 +611,113 @@ package    {
 			}
 		}
 		
+		private function placeRandomBomb():void 
+		{
+			var validTiles:Array = new Array();
+			
+			for( var x:int = 0; x < BOARD_TILE_WIDTH; x++ )
+			{
+				for( var y:int = 0; y < BOARD_TILE_HEIGHT; y++ )
+				{
+					var tile:Tile = tileMatrix[x][y];
+					if( isValidBombPos( x, y ) )
+					{
+						validTiles.push(tile);
+					}
+				}
+			}
+			
+			if( validTiles.length > 0 )
+			{
+				var randomIndex:int = Math.floor(Math.random() * validTiles.length);
+				var randomTile:Tile = validTiles[randomIndex];
+				var bomb:Bomb = new Bomb( randomTile.tileX, randomTile.tileY, tileMatrix, player1, player2, player3, player4, this);
+				bombArray.push( bomb );
+				PlayState.groupCollects.add(bomb);
+			}
+			
+		}
+		
+		private function randomBombs():void 
+		{
+			if( timer <= 0 )
+			{
+				timerText.text = "RANDOM BOMBS!";	
+				
+				if( randomBombTimer <= 0 )
+				{				
+					placeRandomBomb();
+					
+					if( randomBombTimerMax > randomBombTimerMin )
+					{
+						randomBombTimer = randomBombTimerMax;
+						randomBombTimerMax -= randomBombTimerDec;
+					}
+					else
+					{
+						randomBombTimer = randomBombTimerMin;
+					}
+				}
+				else
+				{
+					randomBombTimer -= FlxG.elapsed;
+				}		
+				
+				if( randomBombTextDir )
+				{
+					timerText.scale.x -= randomBombTextScaleDec;
+					timerText.scale.y -= randomBombTextScaleDec;
+					if( timerText.scale.x < randomBombTextScaleMax )
+					{
+						randomBombTextDir = false;
+					}
+				}
+				else
+				{
+					timerText.scale.x += randomBombTextScaleDec;
+					timerText.scale.y += randomBombTextScaleDec;
+					if( timerText.scale.x >= 1 )
+					{
+						randomBombTextDir = true;
+					}				
+				}
+				
+			}
+		}
+		
+		private function isValidBombPos( x:int, y:int ):Boolean
+		{
+			var tile:Tile = tileMatrix[x][y];
+			if( tile.type != 0 )
+			{
+				return false;				
+			}
+			
+			if( ( player1.tileX == x && player1.tileY == y ) || ( player2.tileX == x && player2.tileY == y ) || ( player3.tileX == x && player3.tileY == y ) || ( player4.tileX == x && player4.tileY == y ))
+			{
+				return false;
+			}
+			
+			for( var i:int = 0; i < bombArray.length; i++ )
+			{
+				var bomb:Bomb = bombArray[i];
+				if( bomb.tileX == x  && bomb.tileY == y )
+				{
+					return false;
+				}
+			}
+			
+			return true;
+		}
+		
 		override public function update():void
 		{	
 			// Timer
 			updateTimer();
 			
+			// Drop random bombs
+			randomBombs();
+				
 			// Controls
 			updateControls();
 
@@ -589,6 +735,8 @@ package    {
 			if( PlayState._currLevel.player4 ) PlayState._currLevel.player4.roundOver = true;
 			roundEndPlayerText.visible = true;
 			roundEndForeground.visible = true;
+			
+			gameOver = true;
 //			roundEndText.visible = true;
 		}
 		
