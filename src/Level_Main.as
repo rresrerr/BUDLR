@@ -68,20 +68,20 @@ package    {
 		
 		// Bombs
 		public var randomBombTimer:Number = 0;
-		public var randomBombTimerMax:Number = 3;
+		public var randomBombTimerMax:Number = 8;
 		public var randomBombTimerDec:Number = 0.5;
-		public var randomBombTimerMin:Number = 1;
+		public var randomBombTimerMin:Number = 2;
 		public var randomBombTextDir:Boolean = false;
 		public var randomBombTextScaleDec:Number = 0.005;
 		public var randomBombTextScaleMax:Number = 0.9;
 		
 		// Consts
-		public const MAX_TIME:uint = 5;
+		public const MAX_TIME:uint = 60;
 		public const CONTROL_UPDATE_TIME:Number = 0.25;
 		public const TEXT_COLOR:uint = 0xa7f2cd;
 		public const CONTINUE_COLOR:uint = 0x00C0F8;
 		
-		public const DEBUG_CONTROLS:Boolean = true;
+		public const DEBUG_CONTROLS:Boolean = false;
 		
 		public function Level_Main( group:FlxGroup ) {
 			
@@ -190,15 +190,15 @@ package    {
 			var blockRow:Boolean = false;
 			var blockColumn:Boolean = false;
 			
-			var destructRow1:Array = [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0];
+			var destructRow1:Array = [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0];
 			var destructRow2:Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-			var destructRow3:Array = [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0];	
-			var destructRow4:Array = [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1];	
-			var destructRow5:Array = [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1];	
-			var destructRow6:Array = [1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1];	
-			var destructRow7:Array = [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0];	
+			var destructRow3:Array = [0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0];	
+			var destructRow4:Array = [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0];	
+			var destructRow5:Array = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];	
+			var destructRow6:Array = [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0];	
+			var destructRow7:Array = [0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0];	
 			var destructRow8:Array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];	
-			var destructRow9:Array = [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0];	
+			var destructRow9:Array = [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0];	
 			var destructs:Array = [destructRow9, destructRow8, destructRow7, destructRow6, destructRow5, destructRow4, destructRow3, destructRow2, destructRow1 ];
 
 			for( var x:int = 0; x < BOARD_TILE_WIDTH; x++ )
@@ -277,7 +277,7 @@ package    {
 			player1ControlText = new FlxText(0, FlxG.height - 37, FlxG.width*1/2, "");
 			player1ControlText.setFormat(null,32,0x19b6d8,"left");
 			player1ControlText.scrollFactor.x = player1ControlText.scrollFactor.y = 0;
-			PlayState.groupBackground.add(player1ControlText);
+			PlayState.groupForeground.add(player1ControlText);
 			
 			player2ControlText = new FlxText(FlxG.width*1/2, FlxG.height - 37, FlxG.width*1/2, "");
 			player2ControlText.setFormat(null,32,0xff9a00,"right");
@@ -400,16 +400,17 @@ package    {
 //							roundStart = true;
 					}
 				}
+				
+				if( player1ControlString != "" )
+					player1ControlText.text = player1ControlString;
+				if( player2ControlString != "" )
+					player2ControlText.text = player2ControlString;
+				if( player3ControlString != "" )
+					player3ControlText.text = player3ControlString;
+				if( player4ControlString != "" )
+					player4ControlText.text = player4ControlString;
+				
 			}
-
-			if( player1ControlString != "" )
-				player1ControlText.text = player1ControlString;
-			if( player2ControlString != "" )
-				player2ControlText.text = player2ControlString;
-			if( player3ControlString != "" )
-				player3ControlText.text = player3ControlString;
-			if( player4ControlString != "" )
-				player4ControlText.text = player4ControlString;
 		}
 		
 		private function updateKeyboardControls():void {
@@ -461,21 +462,29 @@ package    {
 					if( player1 && player1ControlArray.length > 0 )
 					{
 						player1.processControl( player1ControlArray.shift() ); 
+						if( player1ControlText.text != "" )
+							player1ControlText.text = player1ControlText.text.substr(1);
 					}
 					
 					if( player2 && player2ControlArray.length > 0 )
 					{
 						player2.processControl( player2ControlArray.shift() );
+						if( player2ControlText.text != "" )
+							player2ControlText.text = player2ControlText.text.substr(1);
 					}
 					
 					if( player3 && player3ControlArray.length > 0 )
 					{
 						player3.processControl( player3ControlArray.shift() );
+						if( player3ControlText.text != "" )
+							player3ControlText.text = player3ControlText.text.substr(1);
 					}
 					
 					if( player4 && player4ControlArray.length > 0 )
 					{
 						player4.processControl( player4ControlArray.shift() );
+						if( player4ControlText.text != "" )
+							player4ControlText.text = player4ControlText.text.substr(1);
 					}
 				}
 				else
@@ -693,7 +702,7 @@ package    {
 				return false;				
 			}
 			
-			if( ( player1.tileX == x && player1.tileY == y ) || ( player2.tileX == x && player2.tileY == y ) || ( player3.tileX == x && player3.tileY == y ) || ( player4.tileX == x && player4.tileY == y ))
+			if( ( player1 && player1.tileX == x && player1.tileY == y ) || ( player2 && player2.tileX == x && player2.tileY == y ) || ( player3 && player3.tileX == x && player3.tileY == y ) || (  player4 && player4.tileX == x && player4.tileY == y ))
 			{
 				return false;
 			}
