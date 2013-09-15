@@ -301,7 +301,7 @@ package    {
 			
 			var myLoader:URLLoader = new URLLoader();
 			myLoader.dataFormat = URLLoaderDataFormat.VARIABLES;
-			myLoader.load(new URLRequest("BUDLR/get-controls.php"));
+			myLoader.load(new URLRequest("http://www.b-u-d-l-r.com/BUDLR/get-controls.php"));
 			myLoader.addEventListener(Event.COMPLETE, onDataLoadMain);
 		
 			var player1ControlString:String = "";

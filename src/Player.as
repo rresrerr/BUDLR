@@ -4,10 +4,10 @@ package
 	
 	public class Player extends FlxSprite
 	{
-		[Embed(source="data/player1.png")] private var ImgPlayer1:Class;
-		[Embed(source="data/player2.png")] private var ImgPlayer2:Class;
-		[Embed(source="data/player3.png")] private var ImgPlayer3:Class;
-		[Embed(source="data/player4.png")] private var ImgPlayer4:Class;
+		[Embed(source="../data/player1.png")] private var ImgPlayer1:Class;
+		[Embed(source="../data/player2.png")] private var ImgPlayer2:Class;
+		[Embed(source="../data/player3.png")] private var ImgPlayer3:Class;
+		[Embed(source="../data/player4.png")] private var ImgPlayer4:Class;
 		
 		[Embed(source="../data/particle.png")] private var ImgParticle:Class;
 		[Embed(source = '../data/Audio/hit.mp3')] private var SndHit:Class;

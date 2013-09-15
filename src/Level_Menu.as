@@ -43,7 +43,7 @@ package    {
 		private var player2Control:Boolean = false;
 		private var player3Control:Boolean = false;
 		private var player4Control:Boolean = false;
-		private var playerGoControl:Boolean = false;
+		private var playerGoControl:Boolean = true;
 		
 		private var player1NumberText:FlxText;
 		private var player2NumberText:FlxText;
@@ -54,9 +54,10 @@ package    {
 		private var starSprite2:FlxSprite;
 
 		private var go:Boolean = false;
-		private var numPlayers:int = 0;
+		private var numPlayers:int = 1;
+		private var minPlayers:int = 1;
 		
-		private var tutorialCountdownTimer:Number = 6;
+		private var tutorialCountdownTimer:Number = 13;
 		private var tutorialCountdownText:FlxText;
 		private var tutorialCountdownDone:Boolean = false;
 	
@@ -70,8 +71,8 @@ package    {
 			
 			super();
 			
-			levelSizeX = 480;
-			levelSizeY = 400;
+			levelSizeX = FlxG.width;
+			levelSizeY = FlxG.height;
 			
 			BUDLR.player1Ready = false;
 			BUDLR.player2Ready = false;
@@ -96,7 +97,7 @@ package    {
 		{
 			var backgroundSprite:FlxSprite;
 			backgroundSprite = new FlxSprite(0,0);
-			backgroundSprite.loadGraphic(ImgBackground, true, true, levelSizeX, levelSizeY);	
+			backgroundSprite.loadGraphic(ImgBackground, true, true, 960, 540);	
 			PlayState.groupBackground.add(backgroundSprite);
 	
 			starSprite1 = new FlxSprite(0,0);
@@ -109,33 +110,40 @@ package    {
 		
 			gameTitle = new IntroSplash(0,0);
 			gameTitle.x = FlxG.width/2 - 176;
-			gameTitle.y = 8;
+			gameTitle.y = 6;
 			PlayState.groupForeground.add(gameTitle);
 			
 			directionsSprite:FlxSprite;
 			directionsSprite = new FlxSprite(0,0);
-			directionsSprite.visible = false;
-			directionsSprite.y = 116;
+			directionsSprite.visible = true;
 			directionsSprite.loadGraphic(ImgDirections, true, true, 480, 261);	
+			directionsSprite.x = FlxG.width / 2;
+			directionsSprite.y = FlxG.height / 2;
+			directionsSprite.offset.x = directionsSprite.width/2;
+			directionsSprite.offset.y = directionsSprite.height/2;
+			
 			PlayState.groupForeground.add(directionsSprite);
 			
-			tutorialCountdownText = new FlxText(0, 46, FlxG.width, "5");
-			tutorialCountdownText.setFormat(null,64,TEXT_COLOR,"right");
+			tutorialCountdownText = new FlxText(0, 0, FlxG.width, "5");
+			tutorialCountdownText.x = 152;
+			tutorialCountdownText.y = FlxG.height/2 - 64;
+			tutorialCountdownText.setFormat(null,64,TEXT_COLOR,"center");
 			tutorialCountdownText.visible = false;
 			PlayState.groupForeground.add(tutorialCountdownText);
 			
 			portraitsSprite = new FlxSprite(0,0);
-			portraitsSprite.loadGraphic(ImgPortraits, true, true, 263, 271);	
-			portraitsSprite.x = 40;
-			portraitsSprite.y = 104;
+			portraitsSprite.loadGraphic(ImgPortraits, true, true, 240, 248);	
+			portraitsSprite.x = FlxG.width / 2 - 200;
+			portraitsSprite.y = FlxG.height / 2 - 70;
 			PlayState.groupForeground.add(portraitsSprite);
 			
-			var offset:int = 68;
+			var offset:Number = 62.5;
 			var numberY:int = 124;
-			var readyY:int = 136;
-			var readyX:int = 360;
-			var readyXNumber:int = 156;
-			var readyAlpha:Number = 0.2;
+			var readyY:int = FlxG.height / 2 - 41;
+			var readyX:int = FlxG.width / 2 + 122;
+			var textReadyX:int = FlxG.width / 2 - 140;
+			var readyXNumber:int = FlxG.width / 2 + 124;
+			var readyAlpha:Number = 0.1;
 			
 			player1Ready:FlxSprite;
 			player1Ready = new FlxSprite(0,0);
@@ -146,12 +154,12 @@ package    {
 			player1Ready.alpha = readyAlpha;
 			PlayState.groupForeground.add(player1Ready);
 			
-			player1NumberText = new FlxText(readyXNumber, numberY, FlxG.width, "555-555-5555");
-			player1NumberText.setFormat(null,8,0x19b6d8,"center");
-			player1NumberText.visible = false;
+			player1NumberText = new FlxText(readyXNumber, numberY, FlxG.width, "Waiting...");
+			player1NumberText.setFormat(null,8,0x19b6d8,"left");
+			player1NumberText.visible = true;
 			PlayState.groupForeground.add(player1NumberText);
 			
-			ready1Text = new FlxText(108, 114, FlxG.width, "Text \"READY\" to");
+			ready1Text = new FlxText(textReadyX, 114, FlxG.width, "Text \"READY\" to");
 			ready1Text.setFormat(null,16,0x19b6d8,"left");
 			ready1Text.visible = true;
 			PlayState.groupForeground.add(ready1Text);
@@ -165,12 +173,12 @@ package    {
 			player2Ready.alpha = readyAlpha;
 			PlayState.groupForeground.add(player2Ready);
 			
-			player2NumberText = new FlxText(readyXNumber, numberY + offset, FlxG.width, "555-555-5555");
-			player2NumberText.setFormat(null,8,0xff9a00,"center");
-			player2NumberText.visible = false;
+			player2NumberText = new FlxText(readyXNumber, numberY + offset, FlxG.width, "Waiting...");
+			player2NumberText.setFormat(null,8,0xff9a00,"left");
+			player2NumberText.visible = true;
 			PlayState.groupForeground.add(player2NumberText);
 			
-			ready2Text = new FlxText(108, 114 + offset, FlxG.width, "Text \"READY\" to");
+			ready2Text = new FlxText(textReadyX, 114 + offset, FlxG.width, "Text \"READY\" to");
 			ready2Text.setFormat(null,16,0xff9a00,"left");
 			ready2Text.visible = true;
 			PlayState.groupForeground.add(ready2Text);
@@ -184,12 +192,12 @@ package    {
 			player3Ready.alpha = readyAlpha;
 			PlayState.groupForeground.add(player3Ready);
 			
-			player3NumberText = new FlxText(readyXNumber, numberY + offset*2, FlxG.width, "555-555-5555");
-			player3NumberText.setFormat(null,8,0xcb3e4e,"center");
-			player3NumberText.visible = false;
+			player3NumberText = new FlxText(readyXNumber, numberY + offset*2, FlxG.width, "Waiting...");
+			player3NumberText.setFormat(null,8,0xcb3e4e,"left");
+			player3NumberText.visible = true;
 			PlayState.groupForeground.add(player3NumberText);
 			
-			ready3Text = new FlxText(108, 114 + offset*2, FlxG.width, "Text \"READY\" to");
+			ready3Text = new FlxText(textReadyX, 114 + offset*2, FlxG.width, "Text \"READY\" to");
 			ready3Text.setFormat(null,16,0xcb3e4e,"left");
 			ready3Text.visible = true;
 			PlayState.groupForeground.add(ready3Text);
@@ -203,12 +211,12 @@ package    {
 			player4Ready.alpha = readyAlpha;
 			PlayState.groupForeground.add(player4Ready);
 		
-			player4NumberText = new FlxText(readyXNumber, numberY + offset*3, FlxG.width, "555-555-5555");
-			player4NumberText.setFormat(null,8,0x11d27a,"center");
-			player4NumberText.visible = false;
+			player4NumberText = new FlxText(readyXNumber, numberY + offset*3, FlxG.width, "Waiting...");
+			player4NumberText.setFormat(null,8,0x11d27a,"left");
+			player4NumberText.visible = true;
 			PlayState.groupForeground.add(player4NumberText);
 			
-			ready4Text = new FlxText(108, 114 + offset*3, FlxG.width, "Text \"READY\" to");
+			ready4Text = new FlxText(textReadyX, 114 + offset*3, FlxG.width, "Text \"READY\" to");
 			ready4Text.setFormat(null,16,0x11d27a,"left");
 			ready4Text.visible = true;
 			PlayState.groupForeground.add(ready4Text);
@@ -216,7 +224,7 @@ package    {
 		
 		public function updateReadyText():void
 		{
-			if( numPlayers >= 2 )
+			if( numPlayers >= minPlayers )
 			{
 				if( BUDLR.player1Ready )
 					ready1Text.text = "Text \"GO\" to";
@@ -236,7 +244,7 @@ package    {
 			
 			var myLoader:URLLoader = new URLLoader();
 			myLoader.dataFormat = URLLoaderDataFormat.VARIABLES;
-			myLoader.load(new URLRequest("BUDLR/get-controls.php"));
+			myLoader.load(new URLRequest("http://www.b-u-d-l-r.com/BUDLR/get-controls.php"));
 			myLoader.addEventListener(Event.COMPLETE, onDataLoad);
 			
 			function onDataLoad(event:Event):void {
@@ -269,7 +277,7 @@ package    {
 						player4Control = true;
 					}
 					
-					if( numPlayers >= 2 )
+					if( numPlayers >= minPlayers )
 					{
 						if( loader.data["player"+i] == 1 && loader.data["control"+i] == "Go" )
 							playerGoControl = true;
@@ -375,7 +383,7 @@ package    {
 				FlxG.play(SndPlayerReady);
 				player4NumberText.visible = true;
 			}
-			else if( ( FlxG.keys.FIVE || playerGoControl ) && numPlayers >= 2 )
+			else if( ( FlxG.keys.FIVE || playerGoControl ) && numPlayers >= minPlayers )
 			{
 				portraitsSprite.visible = false;
 				player1Ready.visible = false;
@@ -392,6 +400,8 @@ package    {
 				ready2Text.visible = false;
 				ready3Text.visible = false;
 				ready4Text.visible = false;
+				
+				gameTitle.visible = false;
 				
 				directionsSprite.visible = true;
 				tutorialCountdownText.visible = true;
