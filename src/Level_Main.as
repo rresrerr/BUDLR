@@ -70,8 +70,8 @@ package    {
 		
 		public function Level_Main( group:FlxGroup ) {
 			
-			levelSizeX = 480;
-			levelSizeY = 400;
+			levelSizeX = FlxG.width;
+			levelSizeY = FlxG.height;
 			
 			// HUD
 			buildHUD();
@@ -101,6 +101,11 @@ package    {
 			
 			var cornerSprite:FlxSprite;
 			
+			BUDLR.player1Ready = true;
+			BUDLR.player2Ready = true;
+			BUDLR.player3Ready = true;
+			BUDLR.player4Ready = true;
+				
 			// Create player 1
 			if( BUDLR.player1Ready )
 			{
@@ -108,7 +113,7 @@ package    {
 				PlayState.groupPlayer.add(player1);
 				player1.setTilePosition(0,0);
 			
-//				cornerSprite = new FlxSprite(0,FlxG.height - 118);
+//				cornerSprite = new FlxSprite(79,FlxG.height - 102);
 //				cornerSprite.loadGraphic(ImgBlueCorner, true, true, 196, 100);	
 //				PlayState.groupBackground.add(cornerSprite);
 			}
@@ -121,7 +126,7 @@ package    {
 				player2.player2SetFacing();
 				player2.setTilePosition(BOARD_TILE_WIDTH-1,0);
 				
-//				cornerSprite = new FlxSprite(FlxG.width - 196,FlxG.height - 118);
+//				cornerSprite = new FlxSprite(FlxG.width - 196 - 79,FlxG.height - 102);
 //				cornerSprite.loadGraphic(ImgYellowCorner, true, true, 196, 100);	
 //				PlayState.groupBackground.add(cornerSprite);
 			}
@@ -133,7 +138,7 @@ package    {
 				PlayState.groupPlayer.add(player3);
 				player3.setTilePosition(0,BOARD_TILE_HEIGHT-1);
 				
-//				cornerSprite = new FlxSprite(0,19);
+//				cornerSprite = new FlxSprite(79,2);
 //				cornerSprite.loadGraphic(ImgRedCorner, true, true, 196, 100);	
 //				PlayState.groupBackground.add(cornerSprite);
 			}
@@ -146,7 +151,7 @@ package    {
 				player4.player2SetFacing();
 				player4.setTilePosition(BOARD_TILE_WIDTH-1,BOARD_TILE_HEIGHT-1);
 				
-//				cornerSprite = new FlxSprite(FlxG.width - 196,19);
+//				cornerSprite = new FlxSprite(FlxG.width - 196 - 79,2);
 //				cornerSprite.loadGraphic(ImgGreenCorner, true, true, 196, 100);	
 //				PlayState.groupBackground.add(cornerSprite);
 			}
@@ -155,8 +160,8 @@ package    {
 		}
 		
 		private function createTiles():void {
-			var startX:int = 64;
-			var startY:int = 308;
+			var startX:int = FlxG.width / 2 - 176;
+			var startY:int = FlxG.height / 2 + 113;
 			var offsetX:int = 32;
 			var offsetY:int = -32;
 			var type:int = 0;
@@ -217,8 +222,8 @@ package    {
 			
 			// Timer
 			timer = MAX_TIME;
-			timerText = new FlxText(0, 14, FlxG.width, "0:00");
-			timerText.setFormat(null,16,TEXT_COLOR,"center");
+			timerText = new FlxText(0, -4, FlxG.width, "0:00");
+			timerText.setFormat(null,32,TEXT_COLOR,"center");
 			timerText.scrollFactor.x = timerText.scrollFactor.y = 0;
 			PlayState.groupBackground.add(timerText);
 			
@@ -230,23 +235,23 @@ package    {
 			PlayState.groupBackground.add(pointsText);
 			
 			// Debug
-			player1ControlText = new FlxText(0, FlxG.height - 22, FlxG.width*1/2, "");
-			player1ControlText.setFormat(null,16,0x19b6d8,"left");
+			player1ControlText = new FlxText(0, FlxG.height - 37, FlxG.width*1/2, "");
+			player1ControlText.setFormat(null,32,0x19b6d8,"left");
 			player1ControlText.scrollFactor.x = player1ControlText.scrollFactor.y = 0;
 			PlayState.groupBackground.add(player1ControlText);
 			
-			player2ControlText = new FlxText(FlxG.width*1/2, FlxG.height - 22, FlxG.width*1/2, "");
-			player2ControlText.setFormat(null,16,0xff9a00,"right");
+			player2ControlText = new FlxText(FlxG.width*1/2, FlxG.height - 37, FlxG.width*1/2, "");
+			player2ControlText.setFormat(null,32,0xff9a00,"right");
 			player2ControlText.scrollFactor.x = player2ControlText.scrollFactor.y = 0;
 			PlayState.groupBackground.add(player2ControlText);
 			
-			player3ControlText = new FlxText(0, -1, FlxG.width*1/2, "");
-			player3ControlText.setFormat(null,16,0xcb3e4e,"left");
+			player3ControlText = new FlxText(0, -2, FlxG.width*1/2, "");
+			player3ControlText.setFormat(null,32,0xcb3e4e,"left");
 			player3ControlText.scrollFactor.x = player3ControlText.scrollFactor.y = 0;
 			PlayState.groupBackground.add(player3ControlText);
 			
-			player4ControlText = new FlxText(FlxG.width*1/2, -1, FlxG.width*1/2, "");
-			player4ControlText.setFormat(null,16,0x11d27a,"right");
+			player4ControlText = new FlxText(FlxG.width*1/2, -2, FlxG.width*1/2, "");
+			player4ControlText.setFormat(null,32,0x11d27a,"right");
 			player4ControlText.scrollFactor.x = player4ControlText.scrollFactor.y = 0;
 			PlayState.groupBackground.add(player4ControlText);
 		}
@@ -281,6 +286,7 @@ package    {
 			roundEndForeground = new FlxSprite(0,0);
 			roundEndForeground.loadGraphic(ImgRoundEnd, true, true, levelSizeX, levelSizeY);
 			roundEndForeground.scrollFactor.x = roundEndForeground.scrollFactor.y = 0;
+			roundEndForeground.y = 0;
 			roundEndForeground.visible = false;
 			PlayState.groupForeground.add(roundEndForeground);
 			
@@ -290,7 +296,7 @@ package    {
 			roundEndContinueText.visible = false;
 			PlayState.groupForeground.add(roundEndContinueText);
 			
-			roundEndPlayerText = new FlxText(0, FlxG.height/2 - 40, FlxG.width, "");
+			roundEndPlayerText = new FlxText(0, FlxG.height/2 - 40, FlxG.width, "BLUE WIN");
 			roundEndPlayerText.setFormat(null,64,TEXT_COLOR,"center");
 			roundEndPlayerText.scrollFactor.x = roundEndContinueText.scrollFactor.y = 0;	
 			roundEndPlayerText.visible = false;
@@ -415,27 +421,22 @@ package    {
 					// Run control from array
 					if( player1 && player1ControlArray.length > 0 )
 					{
-						player1.processControl( player1ControlArray[0] );
-						player1ControlArray = player1ControlArray.shift(); 
+						player1.processControl( player1ControlArray.shift() ); 
 					}
 					
 					if( player2 && player2ControlArray.length > 0 )
 					{
-						player2.processControl( player2ControlArray[0] );
-						player2ControlArray = player2ControlArray.shift(); 
+						player2.processControl( player2ControlArray.shift() );
 					}
-					
 					
 					if( player3 && player3ControlArray.length > 0 )
 					{
-						player3.processControl( player3ControlArray[0] );
-						player3ControlArray = player3ControlArray.shift(); 
+						player3.processControl( player3ControlArray.shift() );
 					}
 					
 					if( player4 && player4ControlArray.length > 0 )
 					{
-						player4.processControl( player4ControlArray[0] );
-						player4ControlArray = player4ControlArray.shift(); 
+						player4.processControl( player4ControlArray.shift() );
 					}
 				}
 				else
@@ -517,7 +518,7 @@ package    {
 			if( timer <= 0 || player1Win || player2Win || player3Win || player4Win )
 			{
 				// Music
-				FlxG.music.stop();
+//				FlxG.music.stop();
 				if( !roundEndSound )
 				{	
 					roundEndSound = true;

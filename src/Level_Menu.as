@@ -43,7 +43,7 @@ package    {
 		private var player2Control:Boolean = false;
 		private var player3Control:Boolean = false;
 		private var player4Control:Boolean = false;
-		private var playerGoControl:Boolean = true;
+		private var playerGoControl:Boolean = false;
 		
 		private var player1NumberText:FlxText;
 		private var player2NumberText:FlxText;
@@ -54,7 +54,7 @@ package    {
 		private var starSprite2:FlxSprite;
 
 		private var go:Boolean = false;
-		private var numPlayers:int = 1;
+		private var numPlayers:int = 0;
 		private var minPlayers:int = 1;
 		
 		private var tutorialCountdownTimer:Number = 13;
@@ -115,7 +115,7 @@ package    {
 			
 			directionsSprite:FlxSprite;
 			directionsSprite = new FlxSprite(0,0);
-			directionsSprite.visible = true;
+			directionsSprite.visible = false;
 			directionsSprite.loadGraphic(ImgDirections, true, true, 480, 261);	
 			directionsSprite.x = FlxG.width / 2;
 			directionsSprite.y = FlxG.height / 2;
