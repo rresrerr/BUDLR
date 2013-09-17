@@ -19,7 +19,7 @@ package
 		
 		public var tileX:int;
 		public var tileY:int;
-		private var explodeTimer:Number = 11.0;
+		private var explodeTimer:Number = 13.0;
 		private var flashTimer:Number = 1.0;
 		private var flashRate:uint = 0;
 		private var fireTimer:Number = 0;
@@ -75,8 +75,10 @@ package
 			addAnimation("ticktock6", [0,1], 8);
 			addAnimation("ticktock7", [0,1], 8);
 			addAnimation("ticktock8", [0,1], 8);
-			addAnimation("ticktock9", [0,1], 16);
-			addAnimation("ticktock10", [0,1], 32);
+			addAnimation("ticktock9", [0,1], 8);
+			addAnimation("ticktock10", [0,1], 16);
+			addAnimation("ticktock11", [0,1], 16);
+			addAnimation("ticktock12", [0,1], 32);
 			
 //			addAnimation("ticktock0", [0,1], 2);
 //			addAnimation("ticktock1", [0,1], 2);

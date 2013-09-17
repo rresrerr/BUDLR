@@ -272,7 +272,7 @@ package    {
 					}
 					if( loader.data["player"+i] == 4 && loader.data["control"+i] == "Ready" )
 					{
-						BUDLR.player3PhoneNumber = loader.data["phonenumber"+i];
+						BUDLR.player4PhoneNumber = loader.data["phonenumber"+i];
 						player4NumberText.text = stringToNumberString( loader.data["phonenumber"+i] );
 						player4Control = true;
 					}

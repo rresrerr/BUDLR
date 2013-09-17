@@ -360,7 +360,7 @@ package    {
 
 				for(var i:uint=0; i < loader.data.count; i++) {
 					
-					if( roundStart && timer > 0 )
+					if( roundStart )
 					{
 						if( loader.data["player"+i] == 1 && player1 && !player1.hit ) {
 							if( BUDLR.player1PhoneNumber == loader.data["phonenumber"+i] )
