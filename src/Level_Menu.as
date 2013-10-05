@@ -58,7 +58,7 @@ package    {
 		private var numPlayers:int = 0;
 		private var minPlayers:int = 2;
 		
-		private var tutorialCountdownTimer:Number = 3;
+		private var tutorialCountdownTimer:Number = 13;
 		private var tutorialCountdownText:FlxText;
 		private var tutorialCountdownDone:Boolean = false;
 	

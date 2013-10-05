@@ -83,7 +83,7 @@ package    {
 		public const TEXT_COLOR:uint = 0xa7f2cd;
 		public const CONTINUE_COLOR:uint = 0x00C0F8;
 		
-		public const DEBUG_CONTROLS:Boolean = true;
+		public const DEBUG_CONTROLS:Boolean = false;
 		
 		public function Level_Main( group:FlxGroup ) {
 			

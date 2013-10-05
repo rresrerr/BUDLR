@@ -43,6 +43,7 @@ package
 			// Bounding box tweaks
 			width = 39;
 			height = 38;
+			offset.x = 3;
 			offset.y = 8;
 
 			// Particle
@@ -74,7 +75,7 @@ package
 			// Gravity
 			acceleration.y = 0;
 			
-			addAnimation("idle", [0]);
+			addAnimation("idle", [4,5,6,7], 8);
 			addAnimation("run", [1,2,3], 14);
 			addAnimation("stun", [0], 15);
 		}
