@@ -23,8 +23,8 @@ package
 			groupBackground = new FlxGroup;
 			groupPlayer = new FlxGroup;
 			groupCollects = new FlxGroup;
-			groupBombDrop = new FlxGroup;
 			groupCollectLabels = new FlxGroup;
+			groupBombDrop = new FlxGroup;
 			groupTiles = new FlxSortGroup;
 			groupBlocks = new FlxGroup;
 			groupForeground = new FlxGroup;
@@ -36,8 +36,8 @@ package
 			this.add(groupBackground);
 			this.add(groupBombDrop);
 			this.add(groupCollects);
-			this.add(groupTiles);
 			this.add(groupCollectLabels);
+			this.add(groupTiles);
 			this.add(groupPlayer);
 			this.add(groupBlocks);
 			this.add(groupForeground);

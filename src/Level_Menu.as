@@ -348,7 +348,7 @@ package    {
 				controlUpdateTimer -= FlxG.elapsed;
 			}
 			
-			if( ( FlxG.keys.ONE || player1Control ) && !BUDLR.player1Ready )
+			if( ( FlxG.keys.ONE || player1Control ) && !BUDLR.player1Ready && !go )
 			{
 				numPlayers++;
 				BUDLR.player1Ready = true;
@@ -357,7 +357,7 @@ package    {
 				FlxG.play(SndPlayerReady);
 				player1NumberText.visible = true;
 			}
-			else if( ( FlxG.keys.TWO || player2Control ) && !BUDLR.player2Ready )
+			else if( ( FlxG.keys.TWO || player2Control ) && !BUDLR.player2Ready && !go)
 			{
 				numPlayers++;
 				BUDLR.player2Ready = true;
@@ -366,7 +366,7 @@ package    {
 				FlxG.play(SndPlayerReady);
 				player2NumberText.visible = true;
 			}
-			else if( ( FlxG.keys.THREE || player3Control ) && !BUDLR.player3Ready )
+			else if( ( FlxG.keys.THREE || player3Control ) && !BUDLR.player3Ready && !go )
 			{
 				numPlayers++;
 				BUDLR.player3Ready = true;
@@ -375,7 +375,7 @@ package    {
 				FlxG.play(SndPlayerReady);
 				player3NumberText.visible = true;
 			}
-			else if( ( FlxG.keys.FOUR || player4Control ) && !BUDLR.player4Ready )
+			else if( ( FlxG.keys.FOUR || player4Control ) && !BUDLR.player4Ready && !go )
 			{
 				numPlayers++;
 				BUDLR.player4Ready = true;

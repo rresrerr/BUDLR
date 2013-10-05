@@ -8,7 +8,8 @@ package
 		[Embed(source='../data/block.png')] private var ImgTile2:Class;
 		
 		[Embed(source='../data/explosion.png')] private var ImgTile4:Class;
-		[Embed(source='../data/destruct.png')] private var ImgTile5:Class;
+		[Embed(source='../data/destruct-1.png')] private var ImgDestruct1:Class;
+		[Embed(source='../data/destruct-2.png')] private var ImgDestruct2:Class;
 		
 		public var type:int;
 		public var tileX:int;
@@ -59,9 +60,17 @@ package
 					play("firespread");
 					break;
 				case 5:
-					height = 40;
-					offset.y = 8;
-					loadGraphic(ImgTile5, true, true, width, height);
+					height = 38;
+					offset.y = 6;
+					
+					if( Math.random() <= 0.5 )
+					{			
+						loadGraphic(ImgDestruct1, true, true, width, height);
+					}
+					else
+					{
+						loadGraphic(ImgDestruct2, true, true, width, height);
+					}
 					break;
 			}
 			type = tileType;

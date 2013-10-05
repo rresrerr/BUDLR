@@ -186,10 +186,15 @@ package
 		
 		public function dropBomb():void
 		{
-			FlxG.play(SndBombPlace,0.5);
-			var bomb:Bomb = new Bomb( tileX, tileY, _tileMatrix, _level.player1, _level.player2, _level.player3, _level.player4, _level);
-			_level.bombArray.push( bomb );
-			PlayState.groupTiles.add(bomb);
+			var validTiles:Array = new Array();
+			
+			if( _level.isValidBombPos( tileX, tileY, false ) )
+			{
+				FlxG.play(SndBombPlace,0.5);
+				var bomb:Bomb = new Bomb( tileX, tileY, _tileMatrix, _level.player1, _level.player2, _level.player3, _level.player4, _level);
+				_level.bombArray.push( bomb );
+				PlayState.groupCollects.add(bomb);
+			}
 		}
 		
 		public function catchFire():void 

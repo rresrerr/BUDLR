@@ -78,12 +78,12 @@ package    {
 		public var randomBombTextScaleMax:Number = 0.9;
 		
 		// Consts
-		public const MAX_TIME:uint = 1;
+		public const MAX_TIME:uint = 60;
 		public const CONTROL_UPDATE_TIME:Number = 0.25;
 		public const TEXT_COLOR:uint = 0xa7f2cd;
 		public const CONTINUE_COLOR:uint = 0x00C0F8;
 		
-		public const DEBUG_CONTROLS:Boolean = false;
+		public const DEBUG_CONTROLS:Boolean = true;
 		
 		public function Level_Main( group:FlxGroup ) {
 			
@@ -644,10 +644,10 @@ package    {
 				var randomTile:Tile = validTiles[randomIndex];
 				var bomb:Bomb = new Bomb( randomTile.tileX, randomTile.tileY, tileMatrix, player1, player2, player3, player4, this);
 				bombArray.push( bomb );
-				PlayState.groupTiles.add(bomb);
+				PlayState.groupCollects.add(bomb);
 				
 				var bombDrop:BombDrop = new BombDrop( bomb.x, bomb.y );
-				PlayState.groupTiles.add(bombDrop);
+				PlayState.groupCollects.add(bombDrop);
 				
 				// Sound
 				FlxG.play( SndBombDrop, 1.0 );
@@ -702,7 +702,7 @@ package    {
 			}
 		}
 		
-		private function isValidBombPos( x:int, y:int ):Boolean
+		public function isValidBombPos( x:int, y:int, checkPlayer:Boolean = true):Boolean
 		{
 			var tile:Tile = tileMatrix[x][y];
 			if( tile.type != 0 )
@@ -710,9 +710,12 @@ package    {
 				return false;				
 			}
 			
-			if( ( player1 && player1.tileX == x && player1.tileY == y ) || ( player2 && player2.tileX == x && player2.tileY == y ) || ( player3 && player3.tileX == x && player3.tileY == y ) || (  player4 && player4.tileX == x && player4.tileY == y ))
+			if( checkPlayer )
 			{
-				return false;
+				if( ( player1 && player1.tileX == x && player1.tileY == y ) || ( player2 && player2.tileX == x && player2.tileY == y ) || ( player3 && player3.tileX == x && player3.tileY == y ) || (  player4 && player4.tileX == x && player4.tileY == y ))
+				{
+					return false;
+				}
 			}
 			
 			for( var i:int = 0; i < bombArray.length; i++ )

@@ -54,14 +54,14 @@ package
 			
 			width = 32;
 			height = 32;
-			offset.y = 6;
+			offset.y = 4;
 			loadGraphic(ImgBomb, true, true, width, height);
 			
 			timerText = new FlxText(0, 0, 64, "10");
 			timerText.x = 0;
 			timerText.y = 0;
 			timerText.offset.x = timerText.width/2 - 14;
-			timerText.offset.y = timerText.height/2 - 9;
+			timerText.offset.y = timerText.height/2 - 11;
 			timerText.setFormat(null,16,TEXT_COLOR,"center",20);
 			timerText.visible = true;
 			PlayState.groupCollectLabels.add(timerText);
