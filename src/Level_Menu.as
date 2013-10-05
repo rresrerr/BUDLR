@@ -23,6 +23,7 @@ package    {
 		[Embed(source = '../data/green-ready.png')] private var ImgReady4:Class;
 		
 		[Embed(source = '../data/Audio/player-ready.mp3')] private var SndPlayerReady:Class;
+		[Embed(source = '../data/Audio/ready.mp3')] private var SndSong:Class;
 	
 		public var startTime:Number;
 		
@@ -57,7 +58,7 @@ package    {
 		private var numPlayers:int = 0;
 		private var minPlayers:int = 2;
 		
-		private var tutorialCountdownTimer:Number = 5;
+		private var tutorialCountdownTimer:Number = 3;
 		private var tutorialCountdownText:FlxText;
 		private var tutorialCountdownDone:Boolean = false;
 	
@@ -405,6 +406,11 @@ package    {
 				
 				directionsSprite.visible = true;
 				tutorialCountdownText.visible = true;
+				
+				if( !go )
+				{
+					FlxG.playMusic( SndSong, 0.2 );
+				}
 				
 				go = true;
 			}

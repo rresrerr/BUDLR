@@ -21,6 +21,8 @@ package    {
 		[Embed(source = '../data/player-red-corner.png')] private var ImgRedCorner:Class;
 		[Embed(source = '../data/player-yellow-corner.png')] private var ImgYellowCorner:Class;
 		
+		[Embed(source = '../data/Audio/bombdrop.mp3')] private var SndBombDrop:Class;
+		
 		[Embed(source = '../data/Audio/song.mp3')] private var SndSong:Class;
 		[Embed(source = '../data/Audio/intro.mp3')] private var SndIntro:Class;
 		
@@ -68,7 +70,7 @@ package    {
 		
 		// Bombs
 		public var randomBombTimer:Number = 0;
-		public var randomBombTimerMax:Number = 8;
+		public var randomBombTimerMax:Number = 6;
 		public var randomBombTimerDec:Number = 0.5;
 		public var randomBombTimerMin:Number = 2;
 		public var randomBombTextDir:Boolean = false;
@@ -76,7 +78,7 @@ package    {
 		public var randomBombTextScaleMax:Number = 0.9;
 		
 		// Consts
-		public const MAX_TIME:uint = 60;
+		public const MAX_TIME:uint = 1;
 		public const CONTROL_UPDATE_TIME:Number = 0.25;
 		public const TEXT_COLOR:uint = 0xa7f2cd;
 		public const CONTINUE_COLOR:uint = 0x00C0F8;
@@ -642,7 +644,13 @@ package    {
 				var randomTile:Tile = validTiles[randomIndex];
 				var bomb:Bomb = new Bomb( randomTile.tileX, randomTile.tileY, tileMatrix, player1, player2, player3, player4, this);
 				bombArray.push( bomb );
-				PlayState.groupCollects.add(bomb);
+				PlayState.groupTiles.add(bomb);
+				
+				var bombDrop:BombDrop = new BombDrop( bomb.x, bomb.y );
+				PlayState.groupTiles.add(bombDrop);
+				
+				// Sound
+				FlxG.play( SndBombDrop, 1.0 );
 			}
 			
 		}

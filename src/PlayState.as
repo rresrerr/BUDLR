@@ -9,6 +9,7 @@ package
 		
 		public static var groupBackground:FlxGroup;
 		public static var groupPlayer:FlxGroup;
+		public static var groupBombDrop:FlxGroup;
 		public static var groupCollects:FlxGroup;
 		public static var groupCollectLabels:FlxGroup;
 		public static var groupTiles:FlxSortGroup;
@@ -22,6 +23,7 @@ package
 			groupBackground = new FlxGroup;
 			groupPlayer = new FlxGroup;
 			groupCollects = new FlxGroup;
+			groupBombDrop = new FlxGroup;
 			groupCollectLabels = new FlxGroup;
 			groupTiles = new FlxSortGroup;
 			groupBlocks = new FlxGroup;
@@ -32,9 +34,10 @@ package
 			_currLevel = new currLevelClass( groupBackground );
 			
 			this.add(groupBackground);
+			this.add(groupBombDrop);
 			this.add(groupCollects);
-			this.add(groupCollectLabels);
 			this.add(groupTiles);
+			this.add(groupCollectLabels);
 			this.add(groupPlayer);
 			this.add(groupBlocks);
 			this.add(groupForeground);
